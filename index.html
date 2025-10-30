@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
-    /* ==== MÀU CAM - TRẮNG - ĐEN ==== */
     body {
       background-color: #111;
       color: #fff;
@@ -68,6 +67,7 @@
       height: 500px;
       z-index: 1;
     }
+
     .animate-fade-in {
       animation: fadeIn 1s ease-in-out;
     }
@@ -81,7 +81,6 @@
       transition: transform 0.2s linear;
     }
 
-    /* Đồng hồ cát nhấp nháy */
     .hourglass {
       font-size: 48px;
       color: #ffae00;
@@ -90,6 +89,17 @@
     @keyframes blink {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.5; transform: scale(1.1); }
+    }
+
+    #aiResult img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 2px solid #ff7b00;
+    }
+    #aiLoading {
+      color: #ffae00;
+      animation: blink 1s infinite;
     }
   </style>
 </head>
@@ -119,7 +129,7 @@
       </div>
 
       <!-- Bản đồ -->
-      <div class="col-md-8">
+      <div class="col-md-7">
         <div class="card shadow-lg mb-3 animate-fade-in">
           <div class="card-header"><i class="fas fa-map-marked-alt me-2"></i>Bản đồ nhiệm vụ</div>
           <div id="map"></div>
@@ -131,13 +141,27 @@
       </div>
 
       <!-- Sidebar phải -->
-      <div class="col-md-2 sidebar-right">
+      <div class="col-md-3 sidebar-right">
+        <!-- Drone Status -->
         <div class="card shadow-lg mb-3 animate-fade-in">
           <div class="card-header"><i class="fas fa-satellite me-2"></i>Trạng thái Drone</div>
           <div class="card-body text-center">
             <div id="droneWaitIcon"><i class="fas fa-hourglass-half hourglass"></i></div>
             <img id="droneIcon" src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" style="display: none;" />
             <p class="mt-2" id="droneStatus">Đang chờ lệnh...</p>
+          </div>
+        </div>
+
+        <!-- AI YOLO Section -->
+        <div class="card shadow-lg mb-3 animate-fade-in">
+          <div class="card-header"><i class="fas fa-brain me-2"></i>AI Phân Tích Khí Hậu</div>
+          <div class="card-body text-center">
+            <input type="file" id="aiInput" class="form-control mb-2" accept="image/*">
+            <button id="sendAI" class="btn btn-primary w-100 mb-2">
+              <i class="fas fa-paper-plane me-2"></i>Gửi đến AI
+            </button>
+            <div id="aiLoading" style="display:none;">⏳ Đang phân tích...</div>
+            <div id="aiResult" class="text-start"></div>
           </div>
         </div>
       </div>
@@ -147,7 +171,7 @@
   <!-- JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // === Khởi tạo bản đồ ===
+    // === BẢN ĐỒ ===
     const map = L.map("map").setView([10.762622, 106.660172], 13);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
@@ -159,20 +183,17 @@
     let droneAngle = 0;
     let droneFlying = false;
 
-    // === Click để thêm waypoint ===
     map.on("click", function (e) {
       const lat = e.latlng.lat.toFixed(6);
       const lng = e.latlng.lng.toFixed(6);
-      const alt = prompt("Nhập độ cao bay (m) cho waypoint này:", "10");
+      const alt = prompt("Nhập độ cao bay (m):", "10");
       if (alt !== null) {
         const marker = L.marker([lat, lng]).addTo(map)
-          .bindPopup(`<b>Waypoint</b><br>Lat: ${lat}<br>Lng: ${lng}<br>Alt: ${alt}m`)
-          .openPopup();
+          .bindPopup(`<b>Waypoint</b><br>Lat: ${lat}<br>Lng: ${lng}<br>Alt: ${alt}m`).openPopup();
         waypoints.push({ lat, lng, alt });
       }
     });
 
-    // === Xóa toàn bộ waypoint ===
     document.getElementById("clearWaypoints").onclick = () => {
       waypoints = [];
       map.eachLayer((layer) => {
@@ -180,7 +201,6 @@
       });
     };
 
-    // === Mô phỏng drone nghiêng khi bay ===
     function simulateDroneMotion() {
       if (!droneFlying) return;
       droneAngle += 10;
@@ -193,7 +213,6 @@
       requestAnimationFrame(simulateDroneMotion);
     }
 
-    // === Nút Mission ===
     document.getElementById("startMission").onclick = () => {
       if (waypoints.length === 0) {
         alert("Chưa có waypoint nào!");
@@ -205,6 +224,33 @@
       droneFlying = true;
       simulateDroneMotion();
       alert("Mission bắt đầu với " + waypoints.length + " waypoint!");
+    };
+
+    // === GỬI ẢNH LÊN AI YOLO ===
+    const API_URL = "https://jadiel-sleuthlike-yadira.ngrok-free.dev/predict"; // Flask ngrok của bạn
+    document.getElementById("sendAI").onclick = async () => {
+      const fileInput = document.getElementById("aiInput");
+      const file = fileInput.files[0];
+      if (!file) return alert("Vui lòng chọn ảnh!");
+
+      document.getElementById("aiLoading").style.display = "block";
+      document.getElementById("aiResult").innerHTML = "";
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(",")[1];
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: base64 }),
+        });
+        const data = await res.json();
+        document.getElementById("aiLoading").style.display = "none";
+        document.getElementById("aiResult").innerHTML =
+          `<b>Kết quả AI:</b><br><pre>${JSON.stringify(data, null, 2)}</pre>` +
+          (data.image ? `<img src="data:image/jpeg;base64,${data.image}" />` : "");
+      };
+      reader.readAsDataURL(file);
     };
   </script>
 </body>
