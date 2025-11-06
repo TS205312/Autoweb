@@ -1,253 +1,259 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FALCON X 2025</title>
-
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lời chúc 20-10 — Lớp A16</title>
   <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: "Poppins", sans-serif;
-    }
-    .header {
-      background: linear-gradient(90deg, #ff7b00, #ff9e00);
-      border-bottom: 4px solid #ff9e00;
-      box-shadow: 0 3px 15px rgba(255, 165, 0, 0.4);
-    }
-    .header h1 {
-      font-weight: 800;
-      font-size: 2rem;
-      color: white;
-      text-shadow:
-        -2px -2px 0 #ff7b00,
-        2px -2px 0 #ff7b00,
-        -2px 2px 0 #ff7b00,
-        2px 2px 0 #ff7b00,
-        0 0 12px rgba(255, 140, 0, 0.8);
-      letter-spacing: 1px;
-      text-align: center;
-    }
-    h1 span {
-      display: inline-block;
-      padding: 5px 15px;
-      border: 3px solid #fff;
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.3);
-      box-shadow: 0 0 10px #ff7b00;
+    /* Reset cơ bản */
+    *, *::before, *::after { box-sizing: border-box; }
+    html,body { height:100%; margin:0; font-family: "Times New Roman", Georgia, serif; background:#e9ecef; -webkit-font-smoothing:antialiased; }
+    
+    /* Khung đen lớn bên ngoài */
+    .frame {
+      width: 96%;
+      max-width: 1220px;
+      margin: 28px auto;
+      background: #000;
+      padding: 12px;
+      border-radius: 18px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.35);
     }
 
+    /* Card nội dung chính */
     .card {
-      background-color: #1b1b1b;
-      color: white;
-      border: 2px solid #ff7b00;
-      border-radius: 15px;
-    }
-    .card-header {
-      font-weight: 600;
-      background-color: #ff7b00 !important;
-      color: black !important;
-      border-bottom: 2px solid #ff9e00;
+      background: #efe6e4; /* màu nền nội bộ giống ảnh */
+      border-radius: 16px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 28px;
+      align-items: start;
+      position: relative;
     }
 
-    .btn-primary { background-color: #ff7b00; border: none; color: black; }
-    .btn-primary:hover { background-color: #ff9e00; color: black; }
-    .btn-success { background-color: #00c853; border: none; }
-    .btn-success:hover { background-color: #00e676; }
-    .btn-danger { background-color: #d62828; }
-    .btn-warning { background-color: #ffa600; color: black; }
-
-    #map {
-      border: 3px solid #ff7b00;
-      border-radius: 10px;
-      height: 500px;
-      z-index: 1;
+    /* Hình minh họa góc trái */
+    .left {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
     }
-
-    .animate-fade-in {
-      animation: fadeIn 1s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    #droneIcon {
-      width: 60px;
-      transform-origin: center;
-      transition: transform 0.2s linear;
-    }
-
-    .hourglass {
-      font-size: 48px;
-      color: #ffae00;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.1); }
-    }
-
-    #aiResult img {
+    .illustration {
       width: 100%;
+      max-width: 320px;
+      height: 320px;
       border-radius: 10px;
-      margin-top: 10px;
-      border: 2px solid #ff7b00;
+      overflow: hidden;
+      background: linear-gradient(#cfefff,#eaf6ff);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      box-shadow: inset 0 -6px 20px rgba(0,0,0,0.06);
     }
-    #aiLoading {
-      color: #ffae00;
-      animation: blink 1s infinite;
+    .illustration img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
+
+    /* Nút cam "Kính tặng Thầy" */
+    .gift-btn {
+      background: #ff7f2a;
+      color: #fff;
+      padding: 12px 26px;
+      border-radius: 26px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+      transition: transform .08s ease;
+    }
+    .gift-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
+
+    /* Thông tin nhỏ bên dưới trái */
+    .meta-left {
+      text-align: center;
+      font-size: 14px;
+      color: #222;
+      line-height: 1.3;
+    }
+    .meta-left .subtitle { font-weight:700; margin-bottom:6px; font-size:14px; }
+
+    /* Phần phải chứa tiêu đề & nội dung */
+    .right {
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      justify-content:flex-start;
+    }
+    .title {
+      font-size: 34px;
+      font-weight:700;
+      text-align:center;
+      margin: 4px 0 0 0;
+    }
+    .subtitle {
+      text-align:center;
+      font-size:18px;
+      color:#333;
+      margin-top:6px;
+      font-style:italic;
+    }
+
+    /* Hộp nội dung lời chúc */
+    .message-wrap {
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+    }
+    .message {
+      background:#fff;
+      border-radius:18px;
+      padding: 26px 30px;
+      max-width:760px;
+      font-size:18px;
+      line-height:1.7;
+      color:#222;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      text-align:justify;
+    }
+    .signature {
+      margin-top:12px;
+      text-align:center;
+      font-weight:700;
+    }
+
+    /* Dòng thông tin chân */
+    .footer-row {
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-top:18px;
+      justify-content:center;
+    }
+    .date-chip {
+      background:#111;
+      color:#fff;
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:700;
+    }
+    .school {
+      color:#666;
+      font-size:15px;
+    }
+
+    /* Nút "Bật Pháo Bông" ở dưới phải (nổi) */
+    .firework-wrap {
+      display:flex;
+      justify-content:center;
+      margin-top:20px;
+    }
+    .firework-btn {
+      background:#ff7f2a;
+      color:#fff;
+      padding:14px 26px;
+      border-radius:18px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 10px 0 rgba(0,0,0,0.12);
+      transition: transform .09s ease;
+    }
+    .firework-btn:active { transform: translateY(3px); box-shadow: 0 6px 0 rgba(0,0,0,0.12); }
+
+    /* Responsive: gộp cột trên điện thoại */
+    @media (max-width:900px){
+      .card { grid-template-columns: 1fr; padding:18px; gap:16px; }
+      .illustration { height:260px; max-width:100%; }
+      .title { font-size:26px; }
+      .message { font-size:16px; padding:18px; }
+    }
+
+    /* Tweak typography for elegant look */
+    .message p { margin:0; }
   </style>
 </head>
-
 <body>
-  <div class="container-fluid">
-    <header class="header py-3 d-flex justify-content-between align-items-center">
-      <h1 class="text-center flex-grow-1"><span>FALCON X 2025</span></h1>
-      <button id="themeToggle" class="btn btn-sm btn-outline-light"><i class="fas fa-moon"></i></button>
-    </header>
+  <div class="frame" role="main" aria-label="Thiệp chúc mừng 20-10">
+    <div class="card">
+      <!-- Cột trái: ảnh + nút -->
+      <div class="left">
+        <div class="illustration" aria-hidden="true">
+          <!-- Thay đường dẫn ảnh nếu cần; file hiện có: 5b628ebc-71a8-4bec-871d-a7950c8621f7.png -->
+          <img src="./5b628ebc-71a8-4bec-871d-a7950c8621f7.png" alt="Minh họa phong cảnh" />
+        </div>
 
-    <div class="row">
-      <!-- Sidebar trái -->
-      <div class="col-md-2 sidebar-left">
-        <div class="card shadow-lg mb-3 animate-fade-in">
-          <div class="card-header"><i class="fas fa-gamepad me-2"></i>Điều Khiển</div>
-          <div class="card-body">
-            <p>Roll: <span id="rollValue">0°</span></p>
-            <p>Pitch: <span id="pitchValue">0°</span></p>
-            <p>Yaw: <span id="yawValue">0°</span></p>
-            <p>Throttle: <span id="throttleValue">0%</span></p>
-            <button id="arm" class="btn btn-warning w-100 mt-2"><i class="fas fa-power-off me-2"></i>Arm</button>
-            <button id="takeoff" class="btn btn-primary w-100 mt-2"><i class="fas fa-plane-departure me-2"></i>Takeoff</button>
-            <button id="rth" class="btn btn-secondary w-100 mt-2"><i class="fas fa-home me-2"></i>Return Home</button>
-          </div>
+        <button class="gift-btn" type="button">Kính tặng Thầy</button>
+
+        <div class="meta-left">
+          <div class="subtitle">Thầy – Giáo viên</div>
+          <div>Ngày Nhà giáo Việt Nam 20-11</div>
         </div>
       </div>
 
-      <!-- Bản đồ -->
-      <div class="col-md-7">
-        <div class="card shadow-lg mb-3 animate-fade-in">
-          <div class="card-header"><i class="fas fa-map-marked-alt me-2"></i>Bản đồ nhiệm vụ</div>
-          <div id="map"></div>
-          <div class="card-footer text-center">
-            <button id="startMission" class="btn btn-success m-1"><i class="fas fa-play me-2"></i>Bắt đầu Mission</button>
-            <button id="clearWaypoints" class="btn btn-danger m-1"><i class="fas fa-trash me-2"></i>Xóa tất cả</button>
-          </div>
+      <!-- Cột phải: tiêu đề + nội dung -->
+      <div class="right">
+        <div>
+          <div class="title">Lời chúc 20-10 từ lớp A16 (2024-2027)</div>
+          <div class="subtitle">Kính gửi thầy – Xin thay mặt lớp 11A16, chúng em xin gửi đến thầy lời chúc chân thành nhất</div>
         </div>
-      </div>
 
-      <!-- Sidebar phải -->
-      <div class="col-md-3 sidebar-right">
-        <!-- Drone Status -->
-        <div class="card shadow-lg mb-3 animate-fade-in">
-          <div class="card-header"><i class="fas fa-satellite me-2"></i>Trạng thái Drone</div>
-          <div class="card-body text-center">
-            <div id="droneWaitIcon"><i class="fas fa-hourglass-half hourglass"></i></div>
-            <img id="droneIcon" src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" style="display: none;" />
-            <p class="mt-2" id="droneStatus">Đang chờ lệnh...</p>
+        <div class="message-wrap">
+          <div class="message" role="article" aria-label="Nội dung lời chúc">
+            <p>
+              Nhân ngày 20/11, em xin gửi đến cô lời cảm ơn chân thành nhất. Chúc cô luôn xinh đẹp, dịu dàng, tràn đầy năng lượng và tình yêu với nghề. Cảm ơn cô vì những kiến thức, sự quan tâm và yêu thương đã dành cho chúng em. Mong cô luôn rạng rỡ như những đóa hoa trên bục giảng!
+            </p>
+            <div class="signature">-A16-</div>
           </div>
         </div>
 
-        <!-- AI + Video Stream -->
-        <div class="card shadow-lg mb-3 animate-fade-in">
-          <div class="card-header"><i class="fas fa-video me-2"></i>Video + AI Phân Tích</div>
-          <div class="card-body text-center">
-            <img id="liveStream" src="http://YOUR_PI_IP:5000/video_feed" 
-                 class="img-fluid rounded mb-2" 
-                 alt="Video Drone Stream">
+        <div class="footer-row" aria-hidden="false">
+          <div class="date-chip">20-10</div>
+          <div class="school">Trường THPT Trần Khai Nguyên - Thành Phố Hồ Chí Minh</div>
+        </div>
 
-            <button id="refreshAI" class="btn btn-primary w-100 mb-2">
-              <i class="fas fa-sync me-2"></i>Cập nhật Phân tích AI
-            </button>
-            <div id="aiLoading" style="display:none;">⏳ Đang phân tích...</div>
-            <div id="aiResult" class="text-start"></div>
-          </div>
+        <div class="firework-wrap">
+          <button class="firework-btn" id="fireworkBtn">Bật Pháo Bông</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- JS nhỏ: hiệu ứng phóng to/animation khi nhấn nút -->
   <script>
-    // === BẢN ĐỒ ===
-    const map = L.map("map").setView([10.762622, 106.660172], 13);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
-
-    let waypoints = [];
-    let droneIconEl = document.getElementById("droneIcon");
-    let droneWaitIcon = document.getElementById("droneWaitIcon");
-    let droneAngle = 0;
-    let droneFlying = false;
-
-    map.on("click", function (e) {
-      const lat = e.latlng.lat.toFixed(6);
-      const lng = e.latlng.lng.toFixed(6);
-      const alt = prompt("Nhập độ cao bay (m):", "10");
-      if (alt !== null) {
-        const marker = L.marker([lat, lng]).addTo(map)
-          .bindPopup(`<b>Waypoint</b><br>Lat: ${lat}<br>Lng: ${lng}<br>Alt: ${alt}m`).openPopup();
-        waypoints.push({ lat, lng, alt });
+    const btn = document.getElementById('fireworkBtn');
+    btn.addEventListener('click', () => {
+      // Hiệu ứng đơn giản: nhấp chuột làm nút "nhảy" và tạo confetti CSS tạm thời
+      btn.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-8px)' }, { transform: 'translateY(0)' }], { duration: 400 });
+      // Tạo confetti đơn giản bằng lớp DOM
+      const colors = ['#ff7f2a','#ffd166','#6ad7ff','#ff6fb5'];
+      for (let i=0;i<24;i++){
+        const s = document.createElement('div');
+        s.style.position='fixed';
+        s.style.left = (50 + (Math.random()-0.5)*60) + 'vw';
+        s.style.top  = (40 + Math.random()*30) + 'vh';
+        s.style.width = s.style.height = (6 + Math.random()*8) + 'px';
+        s.style.background = colors[Math.floor(Math.random()*colors.length)];
+        s.style.borderRadius='2px';
+        s.style.opacity = '0.95';
+        s.style.transform = 'translateY(-40px) rotate('+ (Math.random()*360) +'deg)';
+        s.style.zIndex = 9999;
+        s.style.pointerEvents='none';
+        document.body.appendChild(s);
+        // animation
+        const dx = (Math.random()-0.5)*300;
+        const dy = 400 + Math.random()*200;
+        s.animate([
+          { transform: `translate(0,0) rotate(0)`, opacity:1 },
+          { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random()*720}deg)`, opacity:0 }
+        ], { duration: 1200 + Math.random()*800, easing: 'cubic-bezier(.2,.8,.2,1)'});
+        // remove after
+        setTimeout(()=> s.remove(), 2200);
       }
     });
-
-    document.getElementById("clearWaypoints").onclick = () => {
-      waypoints = [];
-      map.eachLayer((layer) => {
-        if (layer instanceof L.Marker) map.removeLayer(layer);
-      });
-    };
-
-    function simulateDroneMotion() {
-      if (!droneFlying) return;
-      droneAngle += 10;
-      const roll = Math.sin(Date.now() / 300) * 20;
-      const pitch = Math.cos(Date.now() / 400) * 15;
-      droneIconEl.style.transform = `rotate(${droneAngle}deg) skew(${roll}deg, ${pitch}deg)`;
-      document.getElementById("rollValue").innerText = roll.toFixed(1) + "°";
-      document.getElementById("pitchValue").innerText = pitch.toFixed(1) + "°";
-      document.getElementById("yawValue").innerText = droneAngle.toFixed(1) + "°";
-      requestAnimationFrame(simulateDroneMotion);
-    }
-
-    document.getElementById("startMission").onclick = () => {
-      if (waypoints.length === 0) {
-        alert("Chưa có waypoint nào!");
-        return;
-      }
-      document.getElementById("droneStatus").innerText = "Đang thực hiện mission...";
-      droneWaitIcon.style.display = "none";
-      droneIconEl.style.display = "inline";
-      droneFlying = true;
-      simulateDroneMotion();
-      alert("Mission bắt đầu với " + waypoints.length + " waypoint!");
-    };
-
-    // === AI YOLO PHÂN TÍCH ẢNH ===
-    const API_URL = "https://YOUR_AI_SERVER.ngrok-free.app/predict"; // Flask AI server URL
-
-    document.getElementById("refreshAI").onclick = async () => {
-      document.getElementById("aiLoading").style.display = "block";
-      document.getElementById("aiResult").innerHTML = "";
-
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        document.getElementById("aiLoading").style.display = "none";
-        document.getElementById("aiResult").innerHTML =
-          `<b>Kết quả AI:</b><br><pre>${JSON.stringify(data.result, null, 2)}</pre>` +
-          (data.image ? `<img src="data:image/jpeg;base64,${data.image}" />` : "");
-      } catch (err) {
-        document.getElementById("aiLoading").style.display = "none";
-        document.getElementById("aiResult").innerText = "❌ Lỗi kết nối đến AI server!";
-      }
-    };
   </script>
 </body>
 </html>
