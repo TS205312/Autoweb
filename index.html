@@ -1,258 +1,230 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lời chúc 20-10 — Lớp A16</title>
-  <style>
-    /* Reset cơ bản */
-    *, *::before, *::after { box-sizing: border-box; }
-    html,body { height:100%; margin:0; font-family: "Times New Roman", Georgia, serif; background:#e9ecef; -webkit-font-smoothing:antialiased; }
-    
-    /* Khung đen lớn bên ngoài */
-    .frame {
-      width: 96%;
-      max-width: 1220px;
-      margin: 28px auto;
-      background: #000;
-      padding: 12px;
-      border-radius: 18px;
-      box-shadow: 0 18px 30px rgba(0,0,0,0.35);
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lời chúc 20-10 lớp A16</title>
+<style>
+/* --- Cài đặt cơ bản --- */
+*,*::before,*::after{box-sizing:border-box;}
+body{
+  margin:0;
+  background:#f2f2f5;
+  font-family:"Times New Roman",serif;
+  color:#222;
+}
 
-    /* Card nội dung chính */
-    .card {
-      background: #efe6e4; /* màu nền nội bộ giống ảnh */
-      border-radius: 16px;
-      padding: 28px;
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 28px;
-      align-items: start;
-      position: relative;
-    }
+/* --- Khung ngoài màu đen nhẹ bóng đổ --- */
+.frame{
+  background:#000;
+  border-radius:20px;
+  padding:12px;
+  width:96%;
+  max-width:1220px;
+  margin:30px auto;
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
 
-    /* Hình minh họa góc trái */
-    .left {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      align-items: center;
-    }
-    .illustration {
-      width: 100%;
-      max-width: 320px;
-      height: 320px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: linear-gradient(#cfefff,#eaf6ff);
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      box-shadow: inset 0 -6px 20px rgba(0,0,0,0.06);
-    }
-    .illustration img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+/* --- Nền chính hơi hồng be giống hình --- */
+.card{
+  background:#ede4e1;
+  border-radius:18px;
+  padding:30px;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:28px;
+  align-items:start;
+}
 
-    /* Nút cam "Kính tặng Thầy" */
-    .gift-btn {
-      background: #ff7f2a;
-      color: #fff;
-      padding: 12px 26px;
-      border-radius: 26px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 0 rgba(0,0,0,0.12);
-      transition: transform .08s ease;
-    }
-    .gift-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
+/* --- Cột trái: ảnh, nút, chú thích --- */
+.left{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+.illustration{
+  width:100%;
+  max-width:320px;
+  height:320px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#d5e8f4;
+}
+.illustration img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-    /* Thông tin nhỏ bên dưới trái */
-    .meta-left {
-      text-align: center;
-      font-size: 14px;
-      color: #222;
-      line-height: 1.3;
-    }
-    .meta-left .subtitle { font-weight:700; margin-bottom:6px; font-size:14px; }
+/* --- Nút cam “Kính tặng Thầy” --- */
+.gift-btn{
+  background:#f67626;
+  color:#fff;
+  font-weight:600;
+  padding:12px 26px;
+  border-radius:26px;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 6px 0 rgba(0,0,0,0.15);
+  transition:transform .08s ease;
+}
+.gift-btn:active{transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,0.15);}
 
-    /* Phần phải chứa tiêu đề & nội dung */
-    .right {
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-      justify-content:flex-start;
-    }
-    .title {
-      font-size: 34px;
-      font-weight:700;
-      text-align:center;
-      margin: 4px 0 0 0;
-    }
-    .subtitle {
-      text-align:center;
-      font-size:18px;
-      color:#333;
-      margin-top:6px;
-      font-style:italic;
-    }
+/* --- Dòng chú thích dưới nút --- */
+.meta-left{
+  text-align:center;
+  font-size:14px;
+  color:#1c1c1c;
+  line-height:1.3;
+}
+.meta-left .subtitle{font-weight:700;margin-bottom:4px;}
 
-    /* Hộp nội dung lời chúc */
-    .message-wrap {
-      margin-top: 18px;
-      display:flex;
-      justify-content:center;
-    }
-    .message {
-      background:#fff;
-      border-radius:18px;
-      padding: 26px 30px;
-      max-width:760px;
-      font-size:18px;
-      line-height:1.7;
-      color:#222;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-      text-align:justify;
-    }
-    .signature {
-      margin-top:12px;
-      text-align:center;
-      font-weight:700;
-    }
+/* --- Cột phải: tiêu đề + nội dung --- */
+.title{
+  text-align:center;
+  font-size:34px;
+  font-weight:700;
+  color:#000;
+  margin:0;
+}
+.subtitle{
+  text-align:center;
+  font-size:18px;
+  font-style:italic;
+  color:#403333;
+  margin-top:8px;
+}
 
-    /* Dòng thông tin chân */
-    .footer-row {
-      display:flex;
-      gap:14px;
-      align-items:center;
-      margin-top:18px;
-      justify-content:center;
-    }
-    .date-chip {
-      background:#111;
-      color:#fff;
-      padding:10px 16px;
-      border-radius:12px;
-      font-weight:700;
-    }
-    .school {
-      color:#666;
-      font-size:15px;
-    }
+/* --- Khung lời chúc màu trắng sữa --- */
+.message{
+  background:#fff;
+  border-radius:18px;
+  padding:28px 30px;
+  margin:22px auto 0 auto;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  line-height:1.7;
+  font-size:18px;
+  max-width:760px;
+  text-align:justify;
+  color:#222;
+}
+.signature{
+  text-align:center;
+  font-weight:700;
+  margin-top:14px;
+}
 
-    /* Nút "Bật Pháo Bông" ở dưới phải (nổi) */
-    .firework-wrap {
-      display:flex;
-      justify-content:center;
-      margin-top:20px;
-    }
-    .firework-btn {
-      background:#ff7f2a;
-      color:#fff;
-      padding:14px 26px;
-      border-radius:18px;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-      box-shadow: 0 10px 0 rgba(0,0,0,0.12);
-      transition: transform .09s ease;
-    }
-    .firework-btn:active { transform: translateY(3px); box-shadow: 0 6px 0 rgba(0,0,0,0.12); }
+/* --- Chân trang --- */
+.footer-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  margin-top:20px;
+}
+.date-chip{
+  background:#000;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:12px;
+  font-weight:700;
+}
+.school{
+  color:#555;
+  font-size:15px;
+}
 
-    /* Responsive: gộp cột trên điện thoại */
-    @media (max-width:900px){
-      .card { grid-template-columns: 1fr; padding:18px; gap:16px; }
-      .illustration { height:260px; max-width:100%; }
-      .title { font-size:26px; }
-      .message { font-size:16px; padding:18px; }
-    }
+/* --- Nút Bật pháo bông --- */
+.firework-wrap{display:flex;justify-content:center;margin-top:20px;}
+.firework-btn{
+  background:#f67626;
+  color:#fff;
+  font-weight:700;
+  border:none;
+  padding:14px 26px;
+  border-radius:18px;
+  cursor:pointer;
+  box-shadow:0 10px 0 rgba(0,0,0,0.12);
+  transition:transform .08s ease;
+}
+.firework-btn:active{transform:translateY(3px);box-shadow:0 6px 0 rgba(0,0,0,0.12);}
 
-    /* Tweak typography for elegant look */
-    .message p { margin:0; }
-  </style>
+/* --- Responsive --- */
+@media(max-width:900px){
+  .card{grid-template-columns:1fr;padding:18px;}
+  .illustration{height:260px;}
+  .title{font-size:26px;}
+  .message{font-size:16px;padding:18px;}
+}
+</style>
 </head>
 <body>
-  <div class="frame" role="main" aria-label="Thiệp chúc mừng 20-10">
-    <div class="card">
-      <!-- Cột trái: ảnh + nút -->
-      <div class="left">
-        <div class="illustration" aria-hidden="true">
-          <!-- Thay đường dẫn ảnh nếu cần; file hiện có: 5b628ebc-71a8-4bec-871d-a7950c8621f7.png -->
-          <img src="./5b628ebc-71a8-4bec-871d-a7950c8621f7.png" alt="Minh họa phong cảnh" />
-        </div>
 
-        <button class="gift-btn" type="button">Kính tặng Thầy</button>
-
-        <div class="meta-left">
-          <div class="subtitle">Thầy Hồ Chí Công – Giáo viên ban giám thị</div>
-          <div>Ngày Nhà giáo Việt Nam 20-11</div>
-        </div>
+<div class="frame">
+  <div class="card">
+    <!-- Cột trái -->
+    <div class="left">
+      <div class="illustration">
+        <img src="./5b628ebc-71a8-4bec-871d-a7950c8621f7.png" alt="Phong cảnh minh họa">
       </div>
 
-      <!-- Cột phải: tiêu đề + nội dung -->
-      <div class="right">
-        <div>
-          <div class="title">Lời chúc 20-1111 từ lớp A16 (2024-2027)🌞</div>
-          <div class="subtitle">Kính gửi thầy – Xin thay mặt lớp 11A16, chúng em xin gửi đến thầy lời chúc chân thành nhất</div>
-        </div>
+      <button class="gift-btn">Kính tặng Thầy</button>
 
-        <div class="message-wrap">
-          <div class="message" role="article" aria-label="Nội dung lời chúc">
-            <p>
-              Kính chúc thầy luôn giữ mãi phong độ, tinh thần nhiệt huyết và nụ cười vui vẻ mỗi ngày. Cảm ơn thầy vì những bài học quý giá và sự tận tâm, nghiêm khắc mà thầy dành cho chúng em. Chúc thầy luôn mạnh khỏe, thành công và hạnh phúc trong cuộc sống!
-            <div class="signature">-A16-</div>
-          </div>
-        </div>
+      <div class="meta-left">
+        <div class="subtitle">Thầy – Giáo viên</div>
+        <div>Ngày Nhà giáo Việt Nam 20-11</div>
+      </div>
+    </div>
 
-        <div class="footer-row" aria-hidden="false">
-          <div class="date-chip">20-10</div>
-          <div class="school">Trường THPT Trần Khai Nguyên - Thành Phố Hồ Chí Minh</div>
-        </div>
+    <!-- Cột phải -->
+    <div class="right">
+      <div class="title">Lời chúc 20-10 từ lớp A16 (2024-2027)</div>
+      <div class="subtitle">Kính gửi thầy – Xin thay mặt lớp 11A16, chúng em xin gửi đến thầy lời chúc chân thành nhất</div>
 
-        <div class="firework-wrap">
-          <button class="firework-btn" id="fireworkBtn">Bật Pháo Bông</button>
-        </div>
+      <div class="message">
+        Nhân ngày 20/11, em xin gửi đến cô lời cảm ơn chân thành nhất. 
+        Chúc cô luôn xinh đẹp, dịu dàng, tràn đầy năng lượng và tình yêu với nghề. 
+        Cảm ơn cô vì những kiến thức, sự quan tâm và yêu thương đã dành cho chúng em. 
+        Mong cô luôn rạng rỡ như những đóa hoa trên bục giảng!
+        <div class="signature">-A16-</div>
+      </div>
+
+      <div class="footer-row">
+        <div class="date-chip">20-10</div>
+        <div class="school">Trường THPT Trần Khai Nguyên - Thành Phố Hồ Chí Minh</div>
+      </div>
+
+      <div class="firework-wrap">
+        <button id="fireworkBtn" class="firework-btn">Bật Pháo Bông</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- JS nhỏ: hiệu ứng phóng to/animation khi nhấn nút -->
-  <script>
-    const btn = document.getElementById('fireworkBtn');
-    btn.addEventListener('click', () => {
-      // Hiệu ứng đơn giản: nhấp chuột làm nút "nhảy" và tạo confetti CSS tạm thời
-      btn.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-8px)' }, { transform: 'translateY(0)' }], { duration: 400 });
-      // Tạo confetti đơn giản bằng lớp DOM
-      const colors = ['#ff7f2a','#ffd166','#6ad7ff','#ff6fb5'];
-      for (let i=0;i<24;i++){
-        const s = document.createElement('div');
-        s.style.position='fixed';
-        s.style.left = (50 + (Math.random()-0.5)*60) + 'vw';
-        s.style.top  = (40 + Math.random()*30) + 'vh';
-        s.style.width = s.style.height = (6 + Math.random()*8) + 'px';
-        s.style.background = colors[Math.floor(Math.random()*colors.length)];
-        s.style.borderRadius='2px';
-        s.style.opacity = '0.95';
-        s.style.transform = 'translateY(-40px) rotate('+ (Math.random()*360) +'deg)';
-        s.style.zIndex = 9999;
-        s.style.pointerEvents='none';
-        document.body.appendChild(s);
-        // animation
-        const dx = (Math.random()-0.5)*300;
-        const dy = 400 + Math.random()*200;
-        s.animate([
-          { transform: `translate(0,0) rotate(0)`, opacity:1 },
-          { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random()*720}deg)`, opacity:0 }
-        ], { duration: 1200 + Math.random()*800, easing: 'cubic-bezier(.2,.8,.2,1)'});
-        // remove after
-        setTimeout(()=> s.remove(), 2200);
-      }
-    });
-  </script>
+<script>
+const btn = document.getElementById('fireworkBtn');
+btn.addEventListener('click', () => {
+  btn.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}],{duration:400});
+  const colors=['#f67626','#ffd166','#6ad7ff','#ff6fb5'];
+  for(let i=0;i<24;i++){
+    const s=document.createElement('div');
+    s.style.position='fixed';
+    s.style.left=(50+(Math.random()-0.5)*60)+'vw';
+    s.style.top=(40+Math.random()*30)+'vh';
+    s.style.width=s.style.height=(6+Math.random()*8)+'px';
+    s.style.background=colors[Math.floor(Math.random()*colors.length)];
+    s.style.borderRadius='2px';
+    s.style.zIndex=9999;
+    s.style.opacity='0.95';
+    document.body.appendChild(s);
+    const dx=(Math.random()-0.5)*300;
+    const dy=400+Math.random()*200;
+    s.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*720}deg)`,opacity:0}],
+      {duration:1200+Math.random()*800,easing:'cubic-bezier(.2,.8,.2,1)'});
+    setTimeout(()=>s.remove(),2200);
+  }
+});
+</script>
 </body>
 </html>
