@@ -1,230 +1,599 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Lời chúc 20-10 lớp A16</title>
-<style>
-/* --- Cài đặt cơ bản --- */
-*,*::before,*::after{box-sizing:border-box;}
-body{
-  margin:0;
-  background:#f2f2f5;
-  font-family:"Times New Roman",serif;
-  color:#222;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cơ sở Lý thuyết: Chỉ số Biến đổi Hóa học (CCI)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-/* --- Khung ngoài màu đen nhẹ bóng đổ --- */
-.frame{
-  background:#000;
-  border-radius:20px;
-  padding:12px;
-  width:96%;
-  max-width:1220px;
-  margin:30px auto;
-  box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
+    <!-- Font: Noto Sans for scientific clarity -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-/* --- Nền chính hơi hồng be giống hình --- */
-.card{
-  background:#ede4e1;
-  border-radius:18px;
-  padding:30px;
-  display:grid;
-  grid-template-columns:320px 1fr;
-  gap:28px;
-  align-items:start;
-}
+    <!-- MathJax for rendering formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-/* --- Cột trái: ảnh, nút, chú thích --- */
-.left{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:18px;
-}
-.illustration{
-  width:100%;
-  max-width:320px;
-  height:320px;
-  border-radius:12px;
-  overflow:hidden;
-  background:#d5e8f4;
-}
-.illustration img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    <style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #334155; /* Slate 700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            height: 400px;
+            max-height: 400px;
+        }
+        .interactive-card {
+            transition: all 0.3s ease;
+        }
+        .interactive-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .formula-box {
+            background-color: #fff;
+            border-left: 4px solid #0f766e; /* Teal 700 */
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
 
-/* --- Nút cam “Kính tặng Thầy” --- */
-.gift-btn{
-  background:#f67626;
-  color:#fff;
-  font-weight:600;
-  padding:12px 26px;
-  border-radius:26px;
-  border:none;
-  cursor:pointer;
-  box-shadow:0 6px 0 rgba(0,0,0,0.15);
-  transition:transform .08s ease;
-}
-.gift-btn:active{transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,0.15);}
+    <!-- Chosen Palette: Scientific Calm -->
+    <!-- Primary: Teal (#0f766e) for core concepts and stability -->
+    <!-- Secondary: Blue (#2563eb) for standard measurements (HCl) -->
+    <!-- Accent: Rose (#e11d48) for reaction/corrosion alerts -->
+    <!-- Neutral: Slate (#f8fafc) for background to reduce eye strain -->
 
-/* --- Dòng chú thích dưới nút --- */
-.meta-left{
-  text-align:center;
-  font-size:14px;
-  color:#1c1c1c;
-  line-height:1.3;
-}
-.meta-left .subtitle{font-weight:700;margin-bottom:4px;}
+    <!-- Application Structure Plan: 
+         The app is designed as a "Virtual Theoretical Lab" to guide the user (or judge) through the logical flow of the research argument.
+         1. "Dashboard Home": High-level overview of the problem statement (Intensity vs. Capacity).
+         2. "The Concept Lab": Interactive visualization comparing Strong Acid (HCl) vs. Weak Acid (CH3COOH) reservoirs. This clarifies the "Core Concepts" section.
+         3. "Mechanism Viewer": Explains Le Chatelier's principle using a step-by-step interactive flow, showing WHY weak acids are dangerous.
+         4. "Kinetics Simulator & CCI": The core mathematical model. A dynamic chart lets users visualize the reaction rate over time and seeing the "Area Under Curve" (Integral) which defines the CCI.
+         5. "Hypothesis & Conclusion": Summarizes the expected outcomes based on the theory.
+         Navigation is sticky to allow jumping between concepts during a presentation. 
+    -->
 
-/* --- Cột phải: tiêu đề + nội dung --- */
-.title{
-  text-align:center;
-  font-size:34px;
-  font-weight:700;
-  color:#000;
-  margin:0;
-}
-.subtitle{
-  text-align:center;
-  font-size:18px;
-  font-style:italic;
-  color:#403333;
-  margin-top:8px;
-}
+    <!-- Visualization & Content Choices:
+         1. Comparison of pH vs Capacity:
+            - Goal: Distinguish between free H+ and total acid.
+            - Method: Stacked Bar Chart (Chart.js). One stack is H+, the rest is HA.
+            - Interaction: Toggle between HCl and CH3COOH to see the massive difference in "Reserve".
+            - Justification: Bar charts effectively show part-to-whole relationships (Free vs. Reserve).
+         2. Reaction Kinetics:
+            - Goal: Visualize the "buffering effect" on reaction rate.
+            - Method: Line Chart (Chart.js).
+            - Interaction: Animation of time passing. A toggle to "Show Integral area" visually explains the calculus formula.
+            - Justification: Line charts are standard for kinetics (Rate vs. Time). Filling the area under the curve visually teaches the integral concept without needing deep math knowledge.
+         3. Formulas:
+            - Goal: Display the math rigorously but beautifully.
+            - Method: MathJax.
+            - Justification: Standard for scientific notation.
+         Confirming NO SVG graphics used. NO Mermaid JS used.
+    -->
 
-/* --- Khung lời chúc màu trắng sữa --- */
-.message{
-  background:#fff;
-  border-radius:18px;
-  padding:28px 30px;
-  margin:22px auto 0 auto;
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
-  line-height:1.7;
-  font-size:18px;
-  max-width:760px;
-  text-align:justify;
-  color:#222;
-}
-.signature{
-  text-align:center;
-  font-weight:700;
-  margin-top:14px;
-}
-
-/* --- Chân trang --- */
-.footer-row{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:14px;
-  margin-top:20px;
-}
-.date-chip{
-  background:#000;
-  color:#fff;
-  padding:10px 18px;
-  border-radius:12px;
-  font-weight:700;
-}
-.school{
-  color:#555;
-  font-size:15px;
-}
-
-/* --- Nút Bật pháo bông --- */
-.firework-wrap{display:flex;justify-content:center;margin-top:20px;}
-.firework-btn{
-  background:#f67626;
-  color:#fff;
-  font-weight:700;
-  border:none;
-  padding:14px 26px;
-  border-radius:18px;
-  cursor:pointer;
-  box-shadow:0 10px 0 rgba(0,0,0,0.12);
-  transition:transform .08s ease;
-}
-.firework-btn:active{transform:translateY(3px);box-shadow:0 6px 0 rgba(0,0,0,0.12);}
-
-/* --- Responsive --- */
-@media(max-width:900px){
-  .card{grid-template-columns:1fr;padding:18px;}
-  .illustration{height:260px;}
-  .title{font-size:26px;}
-  .message{font-size:16px;padding:18px;}
-}
-</style>
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased">
 
-<div class="frame">
-  <div class="card">
-    <!-- Cột trái -->
-    <div class="left">
-      <div class="illustration">
-        <img src="./5b628ebc-71a8-4bec-871d-a7950c8621f7.png" alt="Phong cảnh minh họa">
-      </div>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-teal-800 tracking-tight">CCI <span class="text-slate-500 font-light text-sm hidden sm:inline">| Theoretical Framework</span></span>
+                </div>
+                <div class="flex space-x-4 items-center overflow-x-auto">
+                    <button onclick="scrollToSection('intro')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Tổng Quan</button>
+                    <button onclick="scrollToSection('concepts')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Cường độ & Dung lượng</button>
+                    <button onclick="scrollToSection('mechanism')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Cơ chế</button>
+                    <button onclick="scrollToSection('cci-model')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Mô hình CCI</button>
+                    <button onclick="scrollToSection('hypothesis')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Giả thuyết</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-      <button class="gift-btn">Kính tặng Thầy</button>
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
 
-      <div class="meta-left">
-        <div class="subtitle">Cô Bùi Thị Mai Nhi – Giáo viên Y Tế</div>
-        <div>Ngày Nhà giáo Việt Nam 20-11</div>
-      </div>
-    </div>
+        <!-- 1. Introduction Section -->
+        <section id="intro" class="text-center space-y-6 animate-fade-in-up">
+            <div class="inline-block bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Dự án Quốc gia</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Cơ sở Lý thuyết: Chỉ số Biến đổi Hóa học</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
+                Khám phá bản chất của quá trình ăn mòn axit thông qua lăng kính của Động học và Cân bằng hóa học. 
+                Tại sao <strong>axit yếu</strong> lại có thể gây ra tổn thất khối lượng lớn hơn <strong>axit mạnh</strong> ở cùng một pH?
+            </p>
+            <div class="flex justify-center gap-4 mt-8">
+                <button onclick="scrollToSection('concepts')" class="bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-800 transition shadow-lg hover:shadow-xl">Bắt đầu Khám phá</button>
+            </div>
+        </section>
 
-    <!-- Cột phải -->
-    <div class="right">
-      <div class="title">Lời chúc 20-11 từ lớp A16 (2024-2027)</div>
-      <div class="subtitle">Kính gửi thầy – Xin thay mặt lớp 11A16, chúng em xin gửi đến thầy lời chúc chân thành nhất</div>
+        <!-- 2. Core Concepts: Intensity vs Capacity -->
+        <section id="concepts" class="scroll-mt-24">
+            <div class="border-l-4 border-teal-500 pl-6 mb-8">
+                <h2 class="text-3xl font-bold text-slate-900">1. Cường độ (Intensity) vs. Dung lượng (Capacity)</h2>
+                <p class="mt-2 text-slate-600">
+                    Đây là luận điểm nền tảng. Hiểu sự khác biệt giữa "cái chúng ta đo được ngay" (pH) và "tiềm năng thực sự" (Total Acidity) là chìa khóa để xây dựng chỉ số CCI.
+                </p>
+            </div>
 
-      <div class="message">
-        Nhân ngày 20/11, em xin gửi đến cô lời cảm ơn chân thành nhất. 
-        Chúc cô luôn xinh đẹp, dịu dàng, tràn đầy năng lượng và tình yêu với nghề. 
-        Cảm ơn cô vì những kiến thức, sự quan tâm và yêu thương đã dành cho chúng em. 
-        Mong cô luôn rạng rỡ như những đóa hoa trên bục giảng!
-        <div class="signature">-A16-</div>
-      </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Explanation -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-bold text-teal-700 mb-2">pH (Cường độ)</h3>
+                        <p class="text-slate-600 text-sm mb-3">Là thước đo hoạt độ của ion \(H^+\) tự do tại trạng thái cân bằng. Nó phản ánh độ "gắt" tức thời.</p>
+                        <div class="font-mono bg-slate-100 p-2 rounded text-center text-slate-800">$$pH = -\log[H^+]$$</div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-bold text-blue-700 mb-2">Độ axit toàn phần (Dung lượng)</h3>
+                        <p class="text-slate-600 text-sm mb-3">Tổng nồng độ của tất cả các dạng axit tồn tại (bao gồm \(H^+\) tự do và axit chưa phân ly \(HA\)). Đây là "kho dự trữ" năng lượng.</p>
+                        <div class="font-mono bg-slate-100 p-2 rounded text-center text-slate-800">$$[Axit]_{total} = [H^+] + [HA]$$</div>
+                    </div>
 
-      <div class="footer-row">
-        <div class="date-chip">20-11</div>
-        <div class="school">Trường THPT Trần Khai Nguyên - Thành Phố Hồ Chí Minh</div>
-      </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                        <h4 class="font-bold text-yellow-800 text-sm uppercase">Điểm mấu chốt</h4>
+                        <p class="text-sm text-yellow-900 mt-1">
+                            Với Axit Axetic (\(K_a = 1.8 \times 10^{-5}\)), để có cùng pH với HCl, nồng độ \([HA]\) cần thiết phải cực lớn.
+                        </p>
+                    </div>
+                </div>
 
-      <div class="firework-wrap">
-        <button id="fireworkBtn" class="firework-btn">Bật Pháo Bông</button>
-      </div>
-    </div>
-  </div>
-</div>
+                <!-- Interactive Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-700">Mô phỏng Kho dự trữ Axit (Tại cùng pH = 3)</h3>
+                        <div class="flex space-x-2 text-xs">
+                            <span class="flex items-center"><span class="w-3 h-3 bg-teal-500 rounded-full mr-1"></span> Axit yếu (HA)</span>
+                            <span class="flex items-center"><span class="w-3 h-3 bg-rose-500 rounded-full mr-1"></span> H+ Tự do</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Container for Responsiveness -->
+                    <div class="chart-container h-80 max-h-80">
+                        <canvas id="capacityChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button id="toggleAcidBtn" class="bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-700 text-sm transition">Chuyển đổi Dữ liệu</button>
+                        <p class="text-xs text-slate-400 mt-2 italic">Biểu đồ thể hiện tỷ lệ tương đối. Axit yếu có "phần chìm của tảng băng trôi" ([HA]) lớn hơn rất nhiều so với Axit mạnh.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<script>
-const btn = document.getElementById('fireworkBtn');
-btn.addEventListener('click', () => {
-  btn.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}],{duration:400});
-  const colors=['#f67626','#ffd166','#6ad7ff','#ff6fb5'];
-  for(let i=0;i<24;i++){
-    const s=document.createElement('div');
-    s.style.position='fixed';
-    s.style.left=(50+(Math.random()-0.5)*60)+'vw';
-    s.style.top=(40+Math.random()*30)+'vh';
-    s.style.width=s.style.height=(6+Math.random()*8)+'px';
-    s.style.background=colors[Math.floor(Math.random()*colors.length)];
-    s.style.borderRadius='2px';
-    s.style.zIndex=9999;
-    s.style.opacity='0.95';
-    document.body.appendChild(s);
-    const dx=(Math.random()-0.5)*300;
-    const dy=400+Math.random()*200;
-    s.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*720}deg)`,opacity:0}],
-      {duration:1200+Math.random()*800,easing:'cubic-bezier(.2,.8,.2,1)'});
-    setTimeout(()=>s.remove(),2200);
-  }
-});
-</script>
+        <!-- 3. Mechanism & Kinetics -->
+        <section id="mechanism" class="scroll-mt-24">
+            <div class="border-l-4 border-teal-500 pl-6 mb-8">
+                <h2 class="text-3xl font-bold text-slate-900">2. Cơ chế & Động học</h2>
+                <p class="mt-2 text-slate-600">
+                    Tại sao axit yếu nguy hiểm? Câu trả lời nằm ở Nguyên lý Le Chatelier và khả năng tự bổ sung \(H^+\) của hệ cân bằng.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-card border-t-4 border-blue-500">
+                    <div class="text-4xl mb-4">1️⃣</div>
+                    <h3 class="font-bold text-lg text-slate-800">Phản ứng bề mặt</h3>
+                    <p class="text-slate-600 text-sm mt-2">
+                        \(CaCO_3\) phản ứng với \(H^+\) trên bề mặt đá.
+                        <br><br>
+                        <span class="font-mono bg-slate-100 px-1 text-xs">CaCO_3 + 2H^+ \rightarrow Ca^{2+} + H_2O + CO_2</span>
+                    </p>
+                    <p class="text-rose-600 font-bold text-sm mt-2">\([H^+]\) bị tiêu thụ giảm xuống.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-card border-t-4 border-teal-500">
+                    <div class="text-4xl mb-4">2️⃣</div>
+                    <h3 class="font-bold text-lg text-slate-800">Mất cân bằng</h3>
+                    <p class="text-slate-600 text-sm mt-2">
+                        Theo Le Chatelier, khi \([H^+]\) giảm, cân bằng \(HA \rightleftharpoons H^+ + A^-\) bị phá vỡ.
+                    </p>
+                    <div class="mt-4 flex justify-center">
+                        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                            <div class="bg-teal-500 h-full w-1/2 animate-pulse"></div>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-slate-500 mt-1">Hệ thống đang "căng thẳng"</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-card border-t-4 border-rose-500">
+                    <div class="text-4xl mb-4">3️⃣</div>
+                    <h3 class="font-bold text-lg text-slate-800">Tái nạp (Buffering)</h3>
+                    <p class="text-slate-600 text-sm mt-2">
+                        Các phân tử \(HA\) "ngủ đông" lập tức phân ly để bù đắp lượng \(H^+\) đã mất.
+                    </p>
+                    <p class="text-teal-700 font-bold text-sm mt-2">
+                        \(\rightarrow\) Duy trì tốc độ ăn mòn ổn định (không giảm nhanh như axit mạnh).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CCI Mathematical Model -->
+        <section id="cci-model" class="scroll-mt-24">
+            <div class="bg-slate-900 text-white rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
+                <!-- Background decoration -->
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-teal-500 rounded-full opacity-10 blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-6">3. Xây dựng Mô hình Toán học (CCI)</h2>
+                    <p class="text-slate-300 mb-8 max-w-2xl">
+                        Đây là phần quan trọng nhất của dự án ("Make or Break"). CCI được định nghĩa là đại lượng biểu thị tổng năng lực biến đổi hóa học, tính bằng tích phân tốc độ phản ứng theo thời gian.
+                    </p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Chart Section -->
+                        <div class="bg-white/5 p-4 rounded-xl backdrop-blur-sm border border-white/10">
+                            <h3 class="text-teal-400 font-bold text-sm uppercase mb-4 tracking-wider">Mô phỏng Động học (Kinetics Model)</h3>
+                            
+                            <!-- Chart Container -->
+                            <div class="chart-container" style="height: 350px;">
+                                <canvas id="kineticsChart"></canvas>
+                            </div>
+                            
+                            <div class="flex justify-between items-center mt-4">
+                                <div class="flex space-x-4">
+                                    <button id="runSimBtn" class="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded text-sm font-bold transition flex items-center">
+                                        <span class="mr-2">▶</span> Chạy Mô phỏng
+                                    </button>
+                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" id="showIntegral" class="form-checkbox text-teal-500 h-5 w-5 rounded border-slate-600 bg-slate-800" checked>
+                                        <span class="text-slate-300 text-sm">Hiện vùng tích phân (Integral Area)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formula Section -->
+                        <div class="flex flex-col justify-center space-y-6">
+                            <div class="formula-box text-slate-800 rounded shadow-lg">
+                                <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">Công thức Tích phân (Dạng tổng quát)</h4>
+                                <div class="text-lg overflow-x-auto py-2">
+                                    $$CCI = \frac{\int_{0}^{t} v_{sample}(t) dt}{\int_{0}^{t} v_{standard}(t) dt}$$
+                                </div>
+                            </div>
+
+                            <div class="space-y-4 text-sm text-slate-300">
+                                <div class="flex items-start">
+                                    <span class="text-teal-400 font-bold mr-2 w-24">\(v_{sample}(t)\):</span>
+                                    <span>Tốc độ phản ứng của mẫu thử (Axit yếu) tại thời điểm t. Đồ thị giảm chậm (màu xanh).</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-rose-400 font-bold mr-2 w-24">\(v_{standard}(t)\):</span>
+                                    <span>Tốc độ phản ứng của mẫu chuẩn (HCl) cùng pH. Đồ thị giảm nhanh theo hàm mũ (màu đỏ).</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-yellow-400 font-bold mr-2 w-24">Ý nghĩa:</span>
+                                    <span>CCI chính là tỷ lệ diện tích dưới đường cong của mẫu thử so với mẫu chuẩn. Nếu CCI > 1, axit yếu gây hại nhiều hơn axit mạnh.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Literature Review & Hypothesis -->
+        <section id="hypothesis" class="scroll-mt-24 pb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Lit Review -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span class="bg-slate-100 p-2 rounded-lg mr-3">📚</span> Tổng quan nghiên cứu
+                    </h3>
+                    <ul class="space-y-4 text-slate-600">
+                        <li class="flex items-start">
+                            <span class="text-red-500 mr-2">✖</span>
+                            <div>
+                                <span class="font-bold text-slate-800">Chỉ số pH:</span>
+                                <p class="text-sm">Chỉ đo nồng độ tức thời, bỏ qua khả năng đệm.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 mr-2">✖</span>
+                            <div>
+                                <span class="font-bold text-slate-800">Độ kiềm (Alkalinity):</span>
+                                <p class="text-sm">Thường dùng cho nước, ít dùng đánh giá tốc độ ăn mòn nhanh.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 mr-2">✖</span>
+                            <div>
+                                <span class="font-bold text-slate-800">Chỉ số Langelier (LSI):</span>
+                                <p class="text-sm">Phức tạp, phụ thuộc nhiệt độ/TDS, dùng cho dự đoán đóng cặn hơn là ăn mòn axit.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start mt-4 pt-4 border-t border-slate-100">
+                            <span class="text-teal-500 mr-2">✔</span>
+                            <div>
+                                <span class="font-bold text-teal-700">Chỉ số CCI:</span>
+                                <p class="text-sm">Tiếp cận mới dựa trên động học, trực quan hóa tổng tổn thất.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Hypothesis -->
+                <div class="bg-teal-50 p-8 rounded-2xl border border-teal-100">
+                    <h3 class="text-xl font-bold text-teal-900 mb-4 flex items-center">
+                        <span class="bg-teal-100 p-2 rounded-lg mr-3">🧪</span> Giả thuyết Khoa học
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-slate-700 text-sm font-semibold">Giả thuyết 1</p>
+                            <p class="text-slate-600 text-sm">Tại cùng pH và nhiệt độ, Axit yếu (\(CH_3COOH\)) sẽ gây tổn thất khối lượng (\(\Delta m\)) lớn hơn đáng kể so với Axit mạnh (\(HCl\)).</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-slate-700 text-sm font-semibold">Giả thuyết 2</p>
+                            <p class="text-slate-600 text-sm">Đồ thị động học của \(CH_3COOH\) sẽ có dạng tuyến tính/giảm chậm (linear decay), trong khi \(HCl\) giảm nhanh theo hàm mũ (exponential decay).</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-slate-700 text-sm font-semibold">Giả thuyết 3</p>
+                            <p class="text-slate-600 text-sm">Chỉ số CCI tỷ lệ thuận với nồng độ tổng (\(Total\ Acidity\)) của dung dịch.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h3 class="text-white font-bold text-lg mb-2">Dự án Nghiên cứu Khoa học Kỹ thuật</h3>
+            <p class="text-sm mb-6">Xây dựng Cơ sở Lý thuyết cho Chỉ số Biến đổi Hóa học (CCI)</p>
+            <div class="text-xs text-slate-500 space-y-2">
+                <p>Khuyến nghị nghiên cứu tiếp theo:</p>
+                <p>"Acid rain corrosion mechanism on limestone" & "Dissolution kinetics of calcite in acetic acid"</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- State Management ---
+        const state = {
+            capacityChart: null,
+            kineticsChart: null,
+            isSimulationRunning: false,
+            animationFrame: null,
+            simulationProgress: 0, // 0 to 100
+        };
+
+        // --- Navigation ---
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // --- Chart 1: Capacity (Intensity vs Capacity) ---
+        function initCapacityChart() {
+            const ctx = document.getElementById('capacityChart').getContext('2d');
+            
+            // Data for pH = 3
+            // [H+] = 10^-3 M
+            // HCl: [HA] approx 0
+            // CH3COOH (Ka=1.8e-5): [H+]^2 / [HA] = Ka => [HA] = [H+]^2 / Ka = (10^-6)/(1.8e-5) = 0.055 M
+            // Ratio: 0.055 / 0.001 = 55 times more reserve
+            
+            // For visualization, we use log scale or simplified ratios to make it readable
+            const data = {
+                labels: ['Axit Mạnh (HCl)', 'Axit Yếu (CH3COOH)'],
+                datasets: [
+                    {
+                        label: 'H+ Tự do (Cường độ)',
+                        data: [1, 1], // Same pH means same H+
+                        backgroundColor: '#f43f5e', // Rose 500
+                        barPercentage: 0.6,
+                    },
+                    {
+                        label: 'Axit chưa phân ly (Dung lượng dự trữ)',
+                        data: [0.01, 55], // Conceptual difference
+                        backgroundColor: '#14b8a6', // Teal 500
+                        barPercentage: 0.6,
+                    }
+                ]
+            };
+
+            state.capacityChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { 
+                            stacked: true,
+                            title: { display: true, text: 'Nồng độ tương đối (Đơn vị quy ước)' },
+                            type: 'logarithmic', // Using log scale to show the massive difference
+                            display: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if(context.dataset.label.includes('chưa phân ly') && context.raw > 1) {
+                                        return 'Dung lượng dự trữ: Cực lớn (Gấp ~55 lần H+)';
+                                    }
+                                    return context.dataset.label + ': ' + context.formattedValue;
+                                }
+                            }
+                        },
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Interaction: Toggle Data
+            document.getElementById('toggleAcidBtn').addEventListener('click', () => {
+                const chart = state.capacityChart;
+                // Simple toggle animation effect by randomizing slightly or resetting
+                chart.update(); 
+                // In a real app, this might switch between different acid pairs
+                alert("Trong thực tế, tỷ lệ dự trữ [HA] phụ thuộc vào pKa của axit. Với axit càng yếu, cột màu xanh càng cao!");
+            });
+        }
+
+        // --- Chart 2: Kinetics (Reaction Rate vs Time) ---
+        function initKineticsChart() {
+            const ctx = document.getElementById('kineticsChart').getContext('2d');
+
+            // Generating initial theoretical data curves
+            const timePoints = Array.from({length: 101}, (_, i) => i); // 0 to 100 minutes
+            
+            // HCl: Exponential decay: Rate = k * [H+]
+            // As H+ is consumed, rate drops fast.
+            const hclRate = timePoints.map(t => 100 * Math.exp(-0.1 * t)); 
+
+            // Weak Acid: Buffered decay
+            // Rate drops much slower because H+ is replenished.
+            const weakAcidRate = timePoints.map(t => 90 * Math.exp(-0.015 * t)); // Starts slightly lower but sustains
+
+            state.kineticsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timePoints,
+                    datasets: [
+                        {
+                            label: 'Axit Yếu (Duy trì phản ứng)',
+                            data: weakAcidRate,
+                            borderColor: '#14b8a6', // Teal 500
+                            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Axit Mạnh (Cạn kiệt nhanh)',
+                            data: hclRate,
+                            borderColor: '#f43f5e', // Rose 500
+                            backgroundColor: 'rgba(244, 63, 94, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 0 // We handle animation manually for the "Simulation"
+                    },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Thời gian (phút)' },
+                            grid: { display: false }
+                        },
+                        y: { 
+                            title: { display: true, text: 'Tốc độ phản ứng (mg/phút)' },
+                            beginAtZero: true
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                footer: (tooltipItems) => {
+                                    let weak = tooltipItems.find(i => i.datasetIndex === 0)?.raw || 0;
+                                    let strong = tooltipItems.find(i => i.datasetIndex === 1)?.raw || 0;
+                                    return weak > strong ? `Axit yếu đang ăn mòn nhanh hơn!` : '';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Simulation Logic
+            document.getElementById('runSimBtn').addEventListener('click', () => {
+                if (state.isSimulationRunning) return;
+                state.isSimulationRunning = true;
+                state.simulationProgress = 0;
+                
+                const originalWeakData = [...state.kineticsChart.data.datasets[0].data];
+                const originalStrongData = [...state.kineticsChart.data.datasets[1].data];
+
+                // Reset data to empty
+                state.kineticsChart.data.datasets[0].data = [];
+                state.kineticsChart.data.datasets[1].data = [];
+                state.kineticsChart.update();
+
+                const totalSteps = 100;
+                let currentStep = 0;
+
+                function step() {
+                    if (currentStep >= totalSteps) {
+                        state.isSimulationRunning = false;
+                        return;
+                    }
+
+                    // Reveal next data point
+                    state.kineticsChart.data.datasets[0].data.push(originalWeakData[currentStep]);
+                    state.kineticsChart.data.datasets[1].data.push(originalStrongData[currentStep]);
+                    
+                    state.kineticsChart.update();
+                    currentStep += 2; // Speed up animation
+                    requestAnimationFrame(step);
+                }
+
+                step();
+            });
+
+            // Integral Toggle
+            document.getElementById('showIntegral').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                state.kineticsChart.data.datasets[0].fill = isChecked;
+                state.kineticsChart.data.datasets[1].fill = isChecked;
+                state.kineticsChart.update();
+            });
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initCapacityChart();
+            initKineticsChart();
+        });
+
+    </script>
 </body>
 </html>
