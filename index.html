@@ -3,597 +3,1194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cơ sở Lý thuyết: Chỉ số Biến đổi Hóa học (CCI)</title>
-    
+    <title>SAH-TECH - Hệ thống Giao hàng Y tế Tự hành</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Font: Noto Sans for scientific clarity -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <!-- MathJax for rendering formulas -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
         body {
-            font-family: 'Noto Sans', sans-serif;
-            background-color: #f8fafc; /* Slate 50 */
-            color: #334155; /* Slate 700 */
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            height: 400px;
-            max-height: 400px;
+        .gradient-brand {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
         }
-        .interactive-card {
-            transition: all 0.3s ease;
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px rgba(255, 255, 255, 0.08) solid;
         }
-        .interactive-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        .active-tab {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
         }
-        .formula-box {
-            background-color: #fff;
-            border-left: 4px solid #0f766e; /* Teal 700 */
-            padding: 1rem;
-            margin: 1rem 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
-
-    <!-- Chosen Palette: Scientific Calm -->
-    <!-- Primary: Teal (#0f766e) for core concepts and stability -->
-    <!-- Secondary: Blue (#2563eb) for standard measurements (HCl) -->
-    <!-- Accent: Rose (#e11d48) for reaction/corrosion alerts -->
-    <!-- Neutral: Slate (#f8fafc) for background to reduce eye strain -->
-
-    <!-- Application Structure Plan: 
-         The app is designed as a "Virtual Theoretical Lab" to guide the user (or judge) through the logical flow of the research argument.
-         1. "Dashboard Home": High-level overview of the problem statement (Intensity vs. Capacity).
-         2. "The Concept Lab": Interactive visualization comparing Strong Acid (HCl) vs. Weak Acid (CH3COOH) reservoirs. This clarifies the "Core Concepts" section.
-         3. "Mechanism Viewer": Explains Le Chatelier's principle using a step-by-step interactive flow, showing WHY weak acids are dangerous.
-         4. "Kinetics Simulator & CCI": The core mathematical model. A dynamic chart lets users visualize the reaction rate over time and seeing the "Area Under Curve" (Integral) which defines the CCI.
-         5. "Hypothesis & Conclusion": Summarizes the expected outcomes based on the theory.
-         Navigation is sticky to allow jumping between concepts during a presentation. 
-    -->
-
-    <!-- Visualization & Content Choices:
-         1. Comparison of pH vs Capacity:
-            - Goal: Distinguish between free H+ and total acid.
-            - Method: Stacked Bar Chart (Chart.js). One stack is H+, the rest is HA.
-            - Interaction: Toggle between HCl and CH3COOH to see the massive difference in "Reserve".
-            - Justification: Bar charts effectively show part-to-whole relationships (Free vs. Reserve).
-         2. Reaction Kinetics:
-            - Goal: Visualize the "buffering effect" on reaction rate.
-            - Method: Line Chart (Chart.js).
-            - Interaction: Animation of time passing. A toggle to "Show Integral area" visually explains the calculus formula.
-            - Justification: Line charts are standard for kinetics (Rate vs. Time). Filling the area under the curve visually teaches the integral concept without needing deep math knowledge.
-         3. Formulas:
-            - Goal: Display the math rigorously but beautifully.
-            - Method: MathJax.
-            - Justification: Standard for scientific notation.
-         Confirming NO SVG graphics used. NO Mermaid JS used.
-    -->
-
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-teal-800 tracking-tight">CCI <span class="text-slate-500 font-light text-sm hidden sm:inline">| Theoretical Framework</span></span>
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 text-white p-2 rounded-xl shadow-lg shadow-blue-500/20">
+                    <i data-lucide="shield-alert" class="w-6 h-6"></i>
                 </div>
-                <div class="flex space-x-4 items-center overflow-x-auto">
-                    <button onclick="scrollToSection('intro')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Tổng Quan</button>
-                    <button onclick="scrollToSection('concepts')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Cường độ & Dung lượng</button>
-                    <button onclick="scrollToSection('mechanism')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Cơ chế</button>
-                    <button onclick="scrollToSection('cci-model')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Mô hình CCI</button>
-                    <button onclick="scrollToSection('hypothesis')" class="text-sm font-medium text-slate-600 hover:text-teal-700 px-3 py-2 rounded-md transition-colors">Giả thuyết</button>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1">
+                        SAH<span class="text-blue-500">-TECH</span>
+                    </span>
+                    <span class="text-[10px] block text-slate-400 font-medium tracking-widest uppercase">Smart Autonomous Healthcare</span>
                 </div>
             </div>
+            <div class="hidden md:flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                <button onclick="switchTab('academic')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-academic">1. Nghiên cứu</button>
+                <button onclick="switchTab('mechanism')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-mechanism">2. Cơ chế Thả hàng</button>
+                <button onclick="switchTab('vtol')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-vtol">3. Drone VTOL</button>
+                <button onclick="switchTab('docker')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-docker">4. Trạm Docker</button>
+                <button onclick="switchTab('software')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-software">5. Phần mềm Bay</button>
+                <button onclick="switchTab('failsafe')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-failsafe">6. Hệ An toàn</button>
+                <button onclick="switchTab('bom')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-bom">7. BOM & STEM</button>
+                <button onclick="switchTab('business')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-business">8. Mô hình DaaS</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="hidden lg:inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Solve for Tomorrow 2026
+                </span>
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+    <!-- Mobile Navigation Scrollbar -->
+    <div class="md:hidden bg-slate-900 border-b border-slate-800 overflow-x-auto whitespace-nowrap scrollbar-none py-2 px-4 flex gap-2 hide-scrollbar">
+        <button onclick="switchTab('academic')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-academic">1.PGS.TS</button>
+        <button onclick="switchTab('mechanism')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-mechanism">2.Thả hàng</button>
+        <button onclick="switchTab('vtol')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-vtol">3.VTOL</button>
+        <button onclick="switchTab('docker')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-docker">4.Docker</button>
+        <button onclick="switchTab('software')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-software">5.Phần mềm</button>
+        <button onclick="switchTab('failsafe')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-failsafe">6.An toàn</button>
+        <button onclick="switchTab('bom')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-bom">7.BOM</button>
+        <button onclick="switchTab('business')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-business">8.DaaS</button>
+    </div>
 
-        <!-- 1. Introduction Section -->
-        <section id="intro" class="text-center space-y-6 animate-fade-in-up">
-            <div class="inline-block bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Dự án Quốc gia</div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Cơ sở Lý thuyết: Chỉ số Biến đổi Hóa học</h1>
-            <p class="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
-                Khám phá bản chất của quá trình ăn mòn axit thông qua lăng kính của Động học và Cân bằng hóa học. 
-                Tại sao <strong>axit yếu</strong> lại có thể gây ra tổn thất khối lượng lớn hơn <strong>axit mạnh</strong> ở cùng một pH?
-            </p>
-            <div class="flex justify-center gap-4 mt-8">
-                <button onclick="scrollToSection('concepts')" class="bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-800 transition shadow-lg hover:shadow-xl">Bắt đầu Khám phá</button>
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- SECTION 1: ACADEMIC REVIEW -->
+        <section id="sec-academic" class="tab-content space-y-6">
+            <div class="border-l-4 border-blue-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-blue-500 uppercase tracking-widest">Nghiên Cứu Chuyên Gia</span>
+                <h2 class="text-3xl font-extrabold text-white">Thách thức & Nguyên nhân Thất bại Dự án UAV Giao Y tế</h2>
+                <p class="text-slate-400 text-sm mt-1">Phân tích học thuật dựa trên dữ liệu vận hành thực tế toàn cầu kèm liên kết kiểm chứng khoa học chính xác</p>
+            </div>
+
+            <!-- Risk Factor Metrics Card -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
+                            <i data-lucide="cloud-lightning" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-300">Yếu tố Thời tiết & Khí hậu</h4>
+                            <p class="text-2xl font-bold text-white mt-1">42%</p>
+                            <p class="text-xs text-slate-500 mt-1">Gió ngược lớn và bão đột ngột làm gián đoạn chuyến bay biển đảo.</p>
+                        </div>
+                    </div>
+                    <a href="https://doi.org/10.3390/drones7010023" target="_blank" class="mt-4 text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold border-t border-slate-800/60 pt-3">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> MDPI Drones (DOI: 10.3390)
+                    </a>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
+                            <i data-lucide="battery-warning" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-300">Sự cố Năng lượng & Pin</h4>
+                            <p class="text-2xl font-bold text-white mt-1">29%</p>
+                            <p class="text-xs text-slate-500 mt-1">Do suy hao hiệu suất phóng xả dưới nhiệt độ môi trường khắc nghiệt.</p>
+                        </div>
+                    </div>
+                    <a href="https://doi.org/10.1016/j.trd.2020.102500" target="_blank" class="mt-4 text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold border-t border-slate-800/60 pt-3">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Transportation Res. (DOI: 10.1016)
+                    </a>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
+                            <i data-lucide="map-pin-off" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-300">Lỗi Định vị Chặng cuối</h4>
+                            <p class="text-2xl font-bold text-white mt-1">18%</p>
+                            <p class="text-xs text-slate-500 mt-1">Lỗi đa đường truyền (Multipath) GPS khi hạ cánh tại vùng hẹp.</p>
+                        </div>
+                    </div>
+                    <a href="https://doi.org/10.3390/s21186196" target="_blank" class="mt-4 text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold border-t border-slate-800/60 pt-3">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> MDPI Sensors (DOI: 10.3390)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quantitative Risk Chart & Analytical Text -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Academic Failure Analysis Text -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+                    <div class="flex items-center gap-2 mb-2 text-slate-300">
+                        <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i>
+                        <h3 class="text-lg font-bold">Báo cáo Khoa học Tóm tắt & Trích dẫn Nguồn</h3>
+                    </div>
+                    <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                        <p>
+                            Dưới góc nhìn khoa học thực chứng, sự thất bại của các dự án thử nghiệm lớn như <strong class="text-white">Amazon Prime Air</strong> hay các dự án cứu trợ y tế khẩn cấp không nằm ở tính khí động học thô sơ, mà nằm ở các yếu tố đồng bộ hệ thống y tế cốt lõi:
+                        </p>
+                        <div class="pl-4 border-l-2 border-slate-700 space-y-3">
+                            <p>
+                                <span class="text-blue-400 font-semibold">1. Suy giảm chất lượng sinh phẩm do rung động học:</span> 
+                                Các dao động cơ học tần số cao trong quá trình bay tự do có thể phá vỡ cấu trúc tế bào và đại phân tử của vắc-xin và huyết tương.
+                                <br>
+                                <a href="https://academic.oup.com/ajcp/article/148/5/427/4104555?searchresult=1" target="_blank" class="text-xs text-emerald-400 hover:underline inline-flex items-center gap-1 mt-1">
+                                    <i data-lucide="link" class="w-3 h-3"></i> Oxford Academic AJCP (DOI: 10.1093/ajcp/aqx128)
+                                </a>
+                            </p>
+                            <p>
+                                <span class="text-blue-400 font-semibold">2. Tác động của gió nghịch lên mức năng lượng tối thiểu (EBL):</span> 
+                                Việc tính toán thiếu chính xác tác động của sức cản gió lên dung lượng xả tức thời của pin Lithium làm cạn kiệt năng lượng giữa chừng.
+                                <br>
+                                <a href="https://doi.org/10.3390/drones7010023" target="_blank" class="text-xs text-emerald-400 hover:underline inline-flex items-center gap-1 mt-1">
+                                    <i data-lucide="link" class="w-3 h-3"></i> MDPI Drones (DOI: 10.3390/drones7010023)
+                                </a>
+                            </p>
+                            <p>
+                                <span class="text-blue-400 font-semibold">3. Sai số định vị chặng cuối và trôi dạt định vị:</span> 
+                                Sương mù, nhiễu địa hình che khuất và lỗi phản xạ tín hiệu GPS khiến drone bị trôi lệch khỏi bãi đáp an toàn.
+                                <br>
+                                <a href="https://doi.org/10.3390/s21186196" target="_blank" class="text-xs text-emerald-400 hover:underline inline-flex items-center gap-1 mt-1">
+                                    <i data-lucide="link" class="w-3 h-3"></i> MDPI Sensors (DOI: 10.3390/s21186196)
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Interactive Chart -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i data-lucide="trending-up" class="w-5 h-5 text-emerald-500"></i>
+                                Mô phỏng Xác suất Lỗi theo Khoảng cách Bay
+                            </h3>
+                            <span class="text-[10px] uppercase font-mono tracking-widest bg-slate-800 text-slate-400 px-2 py-1 rounded">Mô hình thực chứng SAH-TECH</span>
+                        </div>
+                        <div class="h-64 relative">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                        <span>Giả lập: Gió nghịch 12 m/s</span>
+                        <button onclick="recalculateRisk()" class="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Cập nhật tham số khí hậu
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 2. Core Concepts: Intensity vs Capacity -->
-        <section id="concepts" class="scroll-mt-24">
-            <div class="border-l-4 border-teal-500 pl-6 mb-8">
-                <h2 class="text-3xl font-bold text-slate-900">1. Cường độ (Intensity) vs. Dung lượng (Capacity)</h2>
-                <p class="mt-2 text-slate-600">
-                    Đây là luận điểm nền tảng. Hiểu sự khác biệt giữa "cái chúng ta đo được ngay" (pH) và "tiềm năng thực sự" (Total Acidity) là chìa khóa để xây dựng chỉ số CCI.
-                </p>
+        <!-- SECTION 2: MECHANISM COMPARISON -->
+        <section id="sec-mechanism" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-emerald-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-emerald-500 uppercase tracking-widest">So Sánh Kỹ Thuật</span>
+                <h2 class="text-3xl font-extrabold text-white">Lựa chọn Cơ chế Giao hàng Chặng cuối</h2>
+                <p class="text-slate-400 text-sm mt-1">Phân tích thực nghiệm giữa Thả dù và Thả mô-đun tời kéo giảm chấn</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Text Explanation -->
-                <div class="space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <h3 class="text-xl font-bold text-teal-700 mb-2">pH (Cường độ)</h3>
-                        <p class="text-slate-600 text-sm mb-3">Là thước đo hoạt độ của ion \(H^+\) tự do tại trạng thái cân bằng. Nó phản ánh độ "gắt" tức thời.</p>
-                        <div class="font-mono bg-slate-100 p-2 rounded text-center text-slate-800">$$pH = -\log[H^+]$$</div>
+            <!-- Comparison Matrix -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Column 1: Parachute -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition">
+                    <div class="p-6 bg-slate-950 border-b border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-400 tracking-wider">Cơ chế 01</span>
+                            <span class="bg-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded font-mono">DÙ THẢ RƠI (PARACHUTE)</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mt-2">Dù Thả rơi Tự do</h3>
                     </div>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <h3 class="text-xl font-bold text-blue-700 mb-2">Độ axit toàn phần (Dung lượng)</h3>
-                        <p class="text-slate-600 text-sm mb-3">Tổng nồng độ của tất cả các dạng axit tồn tại (bao gồm \(H^+\) tự do và axit chưa phân ly \(HA\)). Đây là "kho dự trữ" năng lượng.</p>
-                        <div class="font-mono bg-slate-100 p-2 rounded text-center text-slate-800">$$[Axit]_{total} = [H^+] + [HA]$$</div>
-                    </div>
-
-                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                        <h4 class="font-bold text-yellow-800 text-sm uppercase">Điểm mấu chốt</h4>
-                        <p class="text-sm text-yellow-900 mt-1">
-                            Với Axit Axetic (\(K_a = 1.8 \times 10^{-5}\)), để có cùng pH với HCl, nồng độ \([HA]\) cần thiết phải cực lớn.
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-400">Độ chính xác (bán kính lệch)</span>
+                                <span class="text-red-400 font-semibold">> 15m - 30m</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-400">Lực tác động khi va chạm đất</span>
+                                <span class="text-yellow-500 font-semibold">Tải trọng G cao (~5G - 10G)</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-400">Khả năng thu hồi mô-đun</span>
+                                <span class="text-red-400 font-semibold">Khó thu hồi dù/hộp chứa</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-400">Yêu cầu không gian tiếp đất</span>
+                                <span class="text-red-400 font-semibold">Cực rộng, không vật cản</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed bg-slate-950 p-3 rounded-xl">
+                            <strong>Nhận định chuyên gia:</strong> Thích hợp duy nhất cho cứu trợ thảm họa diện rộng, hoàn toàn bất khả thi cho việc giao mẫu máu huyết tương cần bảo quản nghiêm ngặt về cơ học.
                         </p>
                     </div>
                 </div>
 
-                <!-- Interactive Chart -->
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-slate-700">Mô phỏng Kho dự trữ Axit (Tại cùng pH = 3)</h3>
-                        <div class="flex space-x-2 text-xs">
-                            <span class="flex items-center"><span class="w-3 h-3 bg-teal-500 rounded-full mr-1"></span> Axit yếu (HA)</span>
-                            <span class="flex items-center"><span class="w-3 h-3 bg-rose-500 rounded-full mr-1"></span> H+ Tự do</span>
+                <!-- Column 2: SAH-TECH Winch Pod -->
+                <div class="bg-slate-900 border-2 border-blue-500 rounded-2xl overflow-hidden shadow-lg shadow-blue-500/10 transform scale-100 lg:scale-105 transition-all">
+                    <div class="p-6 bg-blue-950/40 border-b border-blue-900/50">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-blue-400 tracking-wider">Cơ chế Tối ưu SAH-TECH</span>
+                            <span class="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">WINCH DELIVERY POD</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mt-2">Tời kéo Thả Module Giảm chấn</h3>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-300">Độ chính xác (bán kính lệch)</span>
+                                <span class="text-emerald-400 font-bold">< 1.5m</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-300">Lực tác động khi va chạm đất</span>
+                                <span class="text-emerald-400 font-bold">< 1.2G (Cực kỳ an toàn)</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-300">Khả năng thu hồi mô-đun</span>
+                                <span class="text-emerald-400 font-bold">Tự động thu hồi dây tời</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-850">
+                                <span class="text-slate-300">Yêu cầu không gian tiếp đất</span>
+                                <span class="text-emerald-400 font-bold">Rất hẹp (Sân nhà, ban công)</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-blue-200/80 leading-relaxed bg-blue-950/50 p-3 rounded-xl border border-blue-900/30">
+                            <strong>Nhận định chuyên gia:</strong> Cơ chế then chốt giúp <strong>SAH-TECH</strong> bảo vệ trọn vẹn thuốc biệt dược và sinh phẩm. Cảm biến lực căng dây giúp phát hiện tiếp đất và cắt tải tự động siêu nhạy.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Column 3: Radar Chart Assessment -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-blue-400"></i>
+                            Đánh giá Đa chiều
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">Đồ thị so sánh hiệu năng vận hành chặng cuối (Thang điểm 10)</p>
+                        <div class="h-60 relative flex items-center justify-center">
+                            <canvas id="radarChart"></canvas>
                         </div>
                     </div>
-                    
-                    <!-- Chart Container for Responsiveness -->
-                    <div class="chart-container h-80 max-h-80">
-                        <canvas id="capacityChart"></canvas>
-                    </div>
-                    
-                    <div class="mt-4 text-center">
-                        <button id="toggleAcidBtn" class="bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-700 text-sm transition">Chuyển đổi Dữ liệu</button>
-                        <p class="text-xs text-slate-400 mt-2 italic">Biểu đồ thể hiện tỷ lệ tương đối. Axit yếu có "phần chìm của tảng băng trôi" ([HA]) lớn hơn rất nhiều so với Axit mạnh.</p>
+                    <div class="text-center pt-4 border-t border-slate-800">
+                        <span class="text-xs font-semibold text-slate-400">SAH-TECH ưu tiên tối đa cho Độ chính xác &amp; Tính toàn vẹn của sản phẩm y tế</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. Mechanism & Kinetics -->
-        <section id="mechanism" class="scroll-mt-24">
-            <div class="border-l-4 border-teal-500 pl-6 mb-8">
-                <h2 class="text-3xl font-bold text-slate-900">2. Cơ chế & Động học</h2>
-                <p class="mt-2 text-slate-600">
-                    Tại sao axit yếu nguy hiểm? Câu trả lời nằm ở Nguyên lý Le Chatelier và khả năng tự bổ sung \(H^+\) của hệ cân bằng.
-                </p>
+        <!-- SECTION 3: DRONE VTOL STRUCTURE -->
+        <section id="sec-vtol" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-purple-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-purple-500 uppercase tracking-widest">Cấu trúc Drone Kỹ thuật cao</span>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình Drone VTOL Hybrid Độc quyền SAH-TECH</h2>
+                <p class="text-slate-400 text-sm mt-1">Giải pháp bay cất hạ cánh thẳng đứng kết hợp cánh bằng (Tilt-rotor &amp; Fixed-wing) tối ưu hành trình xa</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Drone Simulation Interface & Spec Dashboard -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Isometric Diagram Render Mockup (Left) -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 pointer-events-none"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping"></span>
+                                <h3 class="text-lg font-bold text-white">Sơ đồ Cơ khí Vector của Drone VTOL SAH-TECH</h3>
+                            </div>
+                            <span class="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full font-mono border border-purple-500/20">Mô phỏng động lực học</span>
+                        </div>
+
+                        <!-- Pure CSS Render Drone Shape representation with Interactive Tooltips -->
+                        <div class="my-8 h-64 flex items-center justify-center relative">
+                            <!-- Wind and path indicators -->
+                            <div class="absolute left-4 top-4 bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                    <span>Tốc độ gió ngược: <b id="wind-speed-val" class="text-white">10 m/s</b></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <span>Trọng lượng hàng: <b id="payload-val" class="text-white">2.5 kg</b></span>
+                                </div>
+                            </div>
+
+                            <!-- Drone Visual Schematics representation using HTML Shapes -->
+                            <div class="relative w-80 h-32 flex items-center justify-center">
+                                <!-- Main Wings -->
+                                <div class="absolute w-72 h-4 bg-slate-700/80 rounded-full border border-slate-500 flex justify-between px-6 items-center">
+                                    <!-- Left VTOL Rotors -->
+                                    <div class="w-6 h-6 bg-blue-500 rounded-full animate-spin flex items-center justify-center text-[8px] font-bold text-white">M1</div>
+                                    <!-- Right VTOL Rotors -->
+                                    <div class="w-6 h-6 bg-blue-500 rounded-full animate-spin flex items-center justify-center text-[8px] font-bold text-white">M2</div>
+                                </div>
+                                <!-- Tail -->
+                                <div class="absolute w-4 h-40 bg-slate-800 rounded-lg top-[-20px] left-[150px] border border-slate-600"></div>
+                                <!-- Tail Wing -->
+                                <div class="absolute w-24 h-3 bg-slate-700 top-[110px] left-[110px] rounded-full"></div>
+                                <!-- Pusher Motor at Tail -->
+                                <div class="absolute w-8 h-8 bg-purple-600 rounded-full animate-pulse top-[115px] left-[118px] flex items-center justify-center text-[8px] font-bold text-white">PUSHER</div>
+                                <!-- Pod System underneath -->
+                                <div id="pod-graphic" class="absolute w-20 h-10 bg-emerald-500/80 border-2 border-emerald-400 rounded-b-2xl bottom-[15px] left-[110px] flex flex-col items-center justify-center text-slate-950 shadow-lg transition-all duration-1000">
+                                    <span class="text-[8px] font-extrabold uppercase">SAH-POD</span>
+                                    <div class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Flight Performance Simulator -->
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Thiết lập Vận tốc Gió Ngược (m/s)</label>
+                                <input type="range" id="input-wind" min="0" max="25" value="10" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500" oninput="updateVTOLSim()">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Khối lượng Gói hàng Y tế (kg)</label>
+                                <input type="range" id="input-payload" min="0.5" max="4" step="0.1" value="2.5" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="updateVTOLSim()">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-center pt-2 border-t border-slate-900">
+                            <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-850">
+                                <span class="text-[9px] text-slate-500 uppercase block">Thời gian bay tối đa</span>
+                                <span id="sim-flight-time" class="text-sm font-bold text-white">45 phút</span>
+                            </div>
+                            <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-850">
+                                <span class="text-[9px] text-slate-500 uppercase block">Quãng đường hành trình</span>
+                                <span id="sim-range" class="text-sm font-bold text-emerald-400">65 km</span>
+                            </div>
+                            <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-850">
+                                <span class="text-[9px] text-slate-500 uppercase block">Mức độ kháng gió</span>
+                                <span id="sim-wind-res" class="text-sm font-bold text-purple-400">Cấp 6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec List & Architectural Explanation (Right) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="cpu" class="w-5 h-5 text-purple-500"></i>
+                            Đặc tính Cơ kỹ thuật tối ưu SAH-TECH
+                        </h3>
+                        <div class="space-y-4 text-sm text-slate-300">
+                            <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Khung sợi Carbon cường độ cao:</span>
+                                <p class="text-xs">Sử dụng sợi carbon dệt 3K siêu nhẹ kết hợp khớp nối hợp kim titan in 3D để triệt tiêu vặn xoắn ở chế độ VTOL chuyển trạng thái bay bằng.</p>
+                            </div>
+                            <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Cơ chế Độc lập Năng lượng:</span>
+                                <p class="text-xs">4 motor VTOL chạy pin LiPo 12S độc lập cho cất/hạ cánh thẳng đứng; 1 motor đuôi đẩy (pusher) hiệu suất cao chuyên dụng cho chặng bay hành trình cánh bằng tiết kiệm điện.</p>
+                            </div>
+                            <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Khoang chứa cách nhiệt SAH-POD:</span>
+                                <p class="text-xs">Cấu trúc vỏ EPP giảm rung, phủ gương phản xạ bức xạ mặt trời tích hợp bộ sấy/làm mát giữ nhiệt độ ổn định ở 2°C - 8°C cho vắc xin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: BASE DOCKER -->
+        <section id="sec-docker" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-cyan-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-cyan-500 uppercase tracking-widest">Hạ Tầng Tự Động Hóa</span>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình Trạm Sạc Tự động (Base Docker Station)</h2>
+                <p class="text-slate-400 text-sm mt-1">Cơ chế khép kín không người vận hành, sạc nhanh và nạp hàng tự động</p>
+            </div>
+
+            <!-- Steps of Automated Operations -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <!-- Step 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-md interactive-card border-t-4 border-blue-500">
-                    <div class="text-4xl mb-4">1️⃣</div>
-                    <h3 class="font-bold text-lg text-slate-800">Phản ứng bề mặt</h3>
-                    <p class="text-slate-600 text-sm mt-2">
-                        \(CaCO_3\) phản ứng với \(H^+\) trên bề mặt đá.
-                        <br><br>
-                        <span class="font-mono bg-slate-100 px-1 text-xs">CaCO_3 + 2H^+ \rightarrow Ca^{2+} + H_2O + CO_2</span>
-                    </p>
-                    <p class="text-rose-600 font-bold text-sm mt-2">\([H^+]\) bị tiêu thụ giảm xuống.</p>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl relative overflow-hidden group hover:border-slate-700 transition">
+                    <span class="absolute right-4 top-2 text-7xl font-extrabold text-slate-800/40 select-none group-hover:text-blue-500/10 transition-colors">01</span>
+                    <div class="p-2.5 bg-blue-500/10 text-blue-400 rounded-xl w-fit mb-4">
+                        <i data-lucide="satellite" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Định vị hạ cánh RTK</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Drone dùng định vị GPS-RTK sai lệch &lt; 2cm để đáp chính xác vào trung tâm phễu trạm sạc trong mọi điều kiện gió.</p>
                 </div>
-
                 <!-- Step 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-md interactive-card border-t-4 border-teal-500">
-                    <div class="text-4xl mb-4">2️⃣</div>
-                    <h3 class="font-bold text-lg text-slate-800">Mất cân bằng</h3>
-                    <p class="text-slate-600 text-sm mt-2">
-                        Theo Le Chatelier, khi \([H^+]\) giảm, cân bằng \(HA \rightleftharpoons H^+ + A^-\) bị phá vỡ.
-                    </p>
-                    <div class="mt-4 flex justify-center">
-                        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                            <div class="bg-teal-500 h-full w-1/2 animate-pulse"></div>
-                        </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl relative overflow-hidden group hover:border-slate-700 transition">
+                    <span class="absolute right-4 top-2 text-7xl font-extrabold text-slate-800/40 select-none group-hover:text-cyan-500/10 transition-colors">02</span>
+                    <div class="p-2.5 bg-cyan-500/10 text-cyan-400 rounded-xl w-fit mb-4">
+                        <i data-lucide="rotate-cw" class="w-6 h-6"></i>
                     </div>
-                    <p class="text-center text-xs text-slate-500 mt-1">Hệ thống đang "căng thẳng"</p>
+                    <h3 class="text-base font-bold text-white mb-2">Xoay Đổi Pin Động</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Hệ thống tay máy cơ khí servo bên dưới gầm trạm kéo khay pin cạn ra và đẩy bộ pin Lithium-Ion được sạc đầy 100% vào trong 45 giây.</p>
                 </div>
-
                 <!-- Step 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-md interactive-card border-t-4 border-rose-500">
-                    <div class="text-4xl mb-4">3️⃣</div>
-                    <h3 class="font-bold text-lg text-slate-800">Tái nạp (Buffering)</h3>
-                    <p class="text-slate-600 text-sm mt-2">
-                        Các phân tử \(HA\) "ngủ đông" lập tức phân ly để bù đắp lượng \(H^+\) đã mất.
-                    </p>
-                    <p class="text-teal-700 font-bold text-sm mt-2">
-                        \(\rightarrow\) Duy trì tốc độ ăn mòn ổn định (không giảm nhanh như axit mạnh).
-                    </p>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl relative overflow-hidden group hover:border-slate-700 transition">
+                    <span class="absolute right-4 top-2 text-7xl font-extrabold text-slate-800/40 select-none group-hover:text-emerald-500/10 transition-colors">03</span>
+                    <div class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl w-fit mb-4">
+                        <i data-lucide="package-open" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Giao và Nạp Hàng Tự động</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Băng chuyền nội bộ kết nối trực tiếp kho lạnh y tế trung tâm, tự động phân phối và khóa kẹp kén thuốc SAH-POD vào giá tời của Drone.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl relative overflow-hidden group hover:border-slate-700 transition">
+                    <span class="absolute right-4 top-2 text-7xl font-extrabold text-slate-800/40 select-none group-hover:text-purple-500/10 transition-colors">04</span>
+                    <div class="p-2.5 bg-purple-500/10 text-purple-400 rounded-xl w-fit mb-4">
+                        <i data-lucide="terminal" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Kiểm tra Hệ thống (Pre-flight)</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Bo mạch điều khiển tích hợp kiểm tra chéo cảm biến, cấu hình lại lộ trình bay và ra lệnh khởi động không lưu an toàn thông qua mạng 5G.</p>
                 </div>
             </div>
-        </section>
 
-        <!-- 4. CCI Mathematical Model -->
-        <section id="cci-model" class="scroll-mt-24">
-            <div class="bg-slate-900 text-white rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
-                <!-- Background decoration -->
-                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-teal-500 rounded-full opacity-10 blur-3xl"></div>
-                
-                <div class="relative z-10">
-                    <h2 class="text-3xl font-bold mb-6">3. Xây dựng Mô hình Toán học (CCI)</h2>
-                    <p class="text-slate-300 mb-8 max-w-2xl">
-                        Đây là phần quan trọng nhất của dự án ("Make or Break"). CCI được định nghĩa là đại lượng biểu thị tổng năng lực biến đổi hóa học, tính bằng tích phân tốc độ phản ứng theo thời gian.
-                    </p>
+            <!-- Interactive Station Controller UI Mockup -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mt-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="server" class="w-5 h-5 text-cyan-400"></i>
+                            Bảng Giám sát Docker Station SAH-TECH v1.0
+                        </h3>
+                        <p class="text-xs text-slate-400">Trạm trung tâm đảo Phú Quý, Bình Thuận</p>
+                    </div>
+                    <div class="flex items-center gap-3 mt-4 sm:mt-0">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <span class="w-1.5 h-1.5 mr-1 rounded-full bg-emerald-400 animate-pulse"></span>
+                            ONLINE (PROD)
+                        </span>
+                        <button onclick="simulateDockerAction()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs px-4 py-2 rounded-xl transition shadow-lg shadow-cyan-600/20 flex items-center gap-1.5">
+                            <i data-lucide="play" class="w-3.5 h-3.5"></i> Test Đổi Pin Tự động
+                        </button>
+                    </div>
+                </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                        <!-- Chart Section -->
-                        <div class="bg-white/5 p-4 rounded-xl backdrop-blur-sm border border-white/10">
-                            <h3 class="text-teal-400 font-bold text-sm uppercase mb-4 tracking-wider">Mô phỏng Động học (Kinetics Model)</h3>
-                            
-                            <!-- Chart Container -->
-                            <div class="chart-container" style="height: 350px;">
-                                <canvas id="kineticsChart"></canvas>
-                            </div>
-                            
-                            <div class="flex justify-between items-center mt-4">
-                                <div class="flex space-x-4">
-                                    <button id="runSimBtn" class="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded text-sm font-bold transition flex items-center">
-                                        <span class="mr-2">▶</span> Chạy Mô phỏng
-                                    </button>
-                                    <label class="flex items-center space-x-2 cursor-pointer">
-                                        <input type="checkbox" id="showIntegral" class="form-checkbox text-teal-500 h-5 w-5 rounded border-slate-600 bg-slate-800" checked>
-                                        <span class="text-slate-300 text-sm">Hiện vùng tích phân (Integral Area)</span>
-                                    </label>
-                                </div>
-                            </div>
+                <!-- Docker Diagnostics Display Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                        <span class="text-xs text-slate-400 block mb-1">Nhiệt độ Kho Lạnh Trạm</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xl font-bold text-white">4.2°C</span>
+                            <span class="text-[9px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded font-bold">CHUẨN</span>
                         </div>
-
-                        <!-- Formula Section -->
-                        <div class="flex flex-col justify-center space-y-6">
-                            <div class="formula-box text-slate-800 rounded shadow-lg">
-                                <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">Công thức Tích phân (Dạng tổng quát)</h4>
-                                <div class="text-lg overflow-x-auto py-2">
-                                    $$CCI = \frac{\int_{0}^{t} v_{sample}(t) dt}{\int_{0}^{t} v_{standard}(t) dt}$$
-                                </div>
-                            </div>
-
-                            <div class="space-y-4 text-sm text-slate-300">
-                                <div class="flex items-start">
-                                    <span class="text-teal-400 font-bold mr-2 w-24">\(v_{sample}(t)\):</span>
-                                    <span>Tốc độ phản ứng của mẫu thử (Axit yếu) tại thời điểm t. Đồ thị giảm chậm (màu xanh).</span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-rose-400 font-bold mr-2 w-24">\(v_{standard}(t)\):</span>
-                                    <span>Tốc độ phản ứng của mẫu chuẩn (HCl) cùng pH. Đồ thị giảm nhanh theo hàm mũ (màu đỏ).</span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-yellow-400 font-bold mr-2 w-24">Ý nghĩa:</span>
-                                    <span>CCI chính là tỷ lệ diện tích dưới đường cong của mẫu thử so với mẫu chuẩn. Nếu CCI > 1, axit yếu gây hại nhiều hơn axit mạnh.</span>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                        <span class="text-xs text-slate-400 block mb-1">Tình trạng Đế sạc RTK</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xl font-bold text-white">READY</span>
+                            <span class="text-[9px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded font-bold">HỖ TRỢ L1/L2</span>
                         </div>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                        <span class="text-xs text-slate-400 block mb-1">Trữ lượng Pin Dự phòng</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xl font-bold text-white">12 Sets</span>
+                            <span class="text-[9px] bg-cyan-500/10 text-cyan-400 px-1.5 py-0.5 rounded font-bold">100% SẠC</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                        <span class="text-xs text-slate-400 block mb-1">Cơ cấu Kẹp khoá hàng</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xl font-bold text-white">LOCKED</span>
+                            <span class="text-[9px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded font-bold">CHỜ CẤT CÁNH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Output Terminal Log -->
+                <div class="mt-6 bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span class="text-xs text-slate-400 font-mono block mb-2 border-b border-slate-900 pb-2">HẬT KÝ VẬN HÀNH DOCKER (REAL-TIME LOGS)</span>
+                    <div id="docker-logs" class="text-xs font-mono text-cyan-300 space-y-1.5 max-h-32 overflow-y-auto">
+                        <p>[13:42:01] - Hệ thống SAH-TECH Docker Station khởi động thành công...</p>
+                        <p>[13:42:05] - RTK base link thành công, độ chính xác định vị &lt; 1.5 cm.</p>
+                        <p>[13:43:10] - Cảm biến nhiệt kho lạnh y tế hoạt động ổn định: 4.2 độ C.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Literature Review & Hypothesis -->
-        <section id="hypothesis" class="scroll-mt-24 pb-20">
+        <!-- SECTION 5: SOFTWARE & WAYPOINTS -->
+        <section id="sec-software" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-amber-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-amber-500 uppercase tracking-widest">Lập Trình Không Lưu</span>
+                <h2 class="text-3xl font-extrabold text-white">Giải pháp Phần mềm Lập tuyến bay Tự động</h2>
+                <p class="text-slate-400 text-sm mt-1">Đồng bộ dữ liệu hành trình bay cấp phép từ Bộ Quốc phòng Việt Nam</p>
+            </div>
+
+            <!-- Flight Planning Software Interface -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Flight Waypoints Map View Mockup (Left) -->
+                <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i data-lucide="map" class="w-5 h-5 text-amber-500"></i>
+                                Giao diện Bản đồ Không lưu Số SAH-TECH GCS
+                            </h3>
+                            <!-- Sector Select dropdown -->
+                            <select id="map-sector" onchange="changeMapSector()" class="bg-slate-950 text-xs border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:outline-none focus:border-amber-500">
+                                <option value="phu-quy">Tuyến: Mũi Né <-> Đảo Phú Quý (Hải đảo)</option>
+                                <option value="ba-to">Tuyến: TP. Quảng Ngãi <-> Ba Tơ (Vùng sâu miền núi)</option>
+                            </select>
+                        </div>
+
+                        <!-- Graphical Flight Path Map Visualization with Canvas SVG elements -->
+                        <div class="h-80 bg-slate-950 border border-slate-850 rounded-xl relative overflow-hidden flex items-center justify-center">
+                            <!-- Simulated Grid background lines -->
+                            <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                            
+                            <!-- Static representation of Map points with labels -->
+                            <div class="absolute top-1/2 left-10 transform -translate-y-1/2 flex flex-col items-center">
+                                <div class="w-5 h-5 bg-blue-600 border border-white rounded-full animate-pulse flex items-center justify-center text-[8px] font-bold">A</div>
+                                <span class="text-[10px] text-slate-400 mt-1 font-semibold" id="map-pt-a">Docker Mũi Né</span>
+                            </div>
+
+                            <div class="absolute top-1/2 right-12 transform -translate-y-1/2 flex flex-col items-center">
+                                <div class="w-5 h-5 bg-emerald-600 border border-white rounded-full flex items-center justify-center text-[8px] font-bold">B</div>
+                                <span class="text-[10px] text-slate-400 mt-1 font-semibold" id="map-pt-b">Trạm Đảo Phú Quý</span>
+                            </div>
+
+                            <!-- Vector line representing Waypoint path -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                                <defs>
+                                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#eab308" />
+                                    </marker>
+                                </defs>
+                                <path id="flight-vector" d="M 120 160 Q 280 100 440 160" fill="none" stroke="#eab308" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrow)" />
+                                <!-- Geofence warning Zone -->
+                                <circle cx="280" cy="80" r="45" fill="rgba(239, 68, 68, 0.15)" stroke="rgb(239, 68, 68)" stroke-width="1.5" stroke-dasharray="3,2" />
+                            </svg>
+                            <span class="absolute top-[50px] left-[220px] text-[9px] bg-red-950 text-red-400 border border-red-900/50 px-2 py-0.5 rounded-full font-semibold">Vùng Cấm Bay Quân Sự</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-400">
+                        <span>Lộ trình tuân thủ nghiêm ngặt theo <strong>Nghị định 79/2011/NĐ-CP</strong> và Luật Hàng không Việt Nam.</span>
+                        <span class="text-amber-500 font-semibold">Cấp phép tự động bởi SAH-TECH GCS API</span>
+                    </div>
+                </div>
+
+                <!-- Flight Route Settings (Right) -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="text-base font-bold text-white mb-4">Danh sách Waypoints Bản đồ</h3>
+                        <div class="space-y-3" id="waypoint-list">
+                            <!-- Route details generated automatically -->
+                            <div class="flex items-center justify-between p-2.5 bg-slate-950 rounded-lg border border-slate-850">
+                                <div>
+                                    <span class="text-[10px] text-slate-500 block uppercase">ĐIỂM XUẤT PHÁT (WP-01)</span>
+                                    <span class="text-xs font-bold text-white">Docker 1 - Mũi Né</span>
+                                </div>
+                                <span class="text-xs text-slate-400">10°55'N / 108°17'E</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2.5 bg-slate-950 rounded-lg border border-slate-850">
+                                <div>
+                                    <span class="text-[10px] text-amber-500 block uppercase">ĐIỂM BAY AN TOÀN (WP-02)</span>
+                                    <span class="text-xs font-bold text-white">Điểm điều hướng biển Đông</span>
+                                </div>
+                                <span class="text-xs text-slate-400">10°51'N / 108°35'E</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2.5 bg-slate-950 rounded-lg border border-slate-850">
+                                <div>
+                                    <span class="text-[10px] text-slate-500 block uppercase">ĐIỂM ĐÍCH (WP-03)</span>
+                                    <span class="text-xs font-bold text-white">Trung tâm y tế Phú Quý</span>
+                                </div>
+                                <span class="text-xs text-slate-400">10°30'N / 108°56'E</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legality Validation Checklist -->
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="text-base font-bold text-white mb-3">Thủ tục Pháp lý SAH-TECH</h3>
+                        <ul class="space-y-2 text-xs text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                <span>Xin cấp phép bay thử nghiệm đặc biệt thông qua Cục Tác chiến - Bộ Tổng Tham mưu.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                <span>Đăng ký tần số vô tuyến số hóa băng thông rộng đối với thiết bị viễn thông vô tuyến điều khiển cầm tay.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: FAIL-SAFE SYSTEMS -->
+        <section id="sec-failsafe" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-red-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-red-500 uppercase tracking-widest">An Toàn Tuyệt Đối</span>
+                <h2 class="text-3xl font-extrabold text-white">Hệ thống Phục hồi & Phòng ngừa Sự cố (Fail-safe)</h2>
+                <p class="text-slate-400 text-sm mt-1">Các cơ chế bảo vệ tối cao hạn chế hư hỏng và thương tổn dân sự</p>
+            </div>
+
+            <!-- Fail-safe options cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Parachute Emergency -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-red-500/50 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Dù Cứu hộ Khẩn cấp</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Cảm biến gia tốc IMU phát hiện trạng thái rơi tự do bất thường hoặc mất điện hoàn toàn hệ thống đẩy (dual flameout) trong 0.2 giây. Hệ thống nổ khí gas nén sẽ chủ động phóng dù giảm tốc để bảo vệ thiết bị và con người bên dưới.
+                    </p>
+                </div>
+
+                <!-- Emergency Landing Zone -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-red-500/50 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
+                            <i data-lucide="navigation" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Thuật toán ALZ Tự động</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Khi lượng pin giảm dưới ngưỡng an toàn (EBL - Critical Energy Battery Level) hoặc gặp nhiễu tín hiệu nghiêm trọng, máy tính biên sẽ quét bề mặt đất bằng camera quang học dưới bụng (Optical Flow) để chọn bãi phẳng trống và tự động tiếp đất không cần liên lạc mặt đất.
+                    </p>
+                </div>
+
+                <!-- Dynamic Geofencing -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-red-500/50 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
+                            <i data-lucide="fence" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Geofencing Phần cứng</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Nhúng trực tiếp bản đồ không lưu và tọa độ các vùng cấm bay (sân bay dân dụng, doanh trại quân đội) trực tiếp vào bộ nhớ lõi bất biến của Pixhawk điều khiển bay. Ngăn chặn tuyệt đối việc xâm nhập dù bị lỗi lập trình lộ trình bay từ máy tính mặt đất.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interative Failsafe Simulation Area -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h3 class="text-base font-bold text-white">Mô phỏng Ứng phó Sự cố trên Hành trình</h3>
+                        <p class="text-xs text-slate-400">Chọn sự cố để quan sát kịch bản xử lý tự động của SAH-TECH</p>
+                    </div>
+                    <div class="flex gap-2 mt-4 sm:mt-0">
+                        <button onclick="triggerFailsafe('wind')" class="bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium px-3 py-1.5 rounded-lg transition border border-slate-700">Gió bão cực đại</button>
+                        <button onclick="triggerFailsafe('gps')" class="bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium px-3 py-1.5 rounded-lg transition border border-slate-700">Mất tín hiệu định vị</button>
+                        <button onclick="triggerFailsafe('power')" class="bg-red-950 text-red-400 hover:bg-red-900/50 text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-red-900/50">Mất nguồn động cơ</button>
+                    </div>
+                </div>
+                <div class="bg-slate-950 p-5 rounded-xl border border-slate-850 flex items-start gap-4">
+                    <div class="p-3 bg-slate-900 text-amber-400 rounded-lg shrink-0" id="failsafe-icon">
+                        <i data-lucide="info" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white mb-1" id="failsafe-title">Chọn kịch bản mô phỏng</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed" id="failsafe-desc">
+                            Vui lòng click chọn một sự cố khẩn cấp ở trên để xem cách hệ thống thuật toán nhúng thông minh SAH-TECH phản ứng tự động nhằm bảo toàn tính mạng và của cải.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: BILL OF MATERIALS (BOM) & STEM -->
+        <section id="sec-bom" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-teal-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-teal-500 uppercase tracking-widest">Khả Thi Thương Mại</span>
+                <h2 class="text-3xl font-extrabold text-white">Bảng Thống kê Linh kiện (BOM) & Tính ứng dụng STEM</h2>
+                <p class="text-slate-400 text-sm mt-1">Cấu trúc chi phí tối ưu, sẵn sàng chuyển giao giáo dục ứng dụng thực tế</p>
+            </div>
+
+            <!-- BOM Cost Highlights and Search -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
+                    <span class="text-xs text-slate-400 uppercase">Tổng Chi Phí Linh Kiện (BOM)</span>
+                    <h3 class="text-3xl font-extrabold text-white mt-1">~18,400,000 VND</h3>
+                    <p class="text-[10px] text-emerald-400 mt-1">Rẻ hơn 1/10 so với dòng Drone giao hàng nhập khẩu công nghiệp.</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
+                    <span class="text-xs text-slate-400 uppercase">Mức Độ Tự Chế & Sử Dụng STEM</span>
+                    <h3 class="text-3xl font-extrabold text-white mt-1">75%</h3>
+                    <p class="text-[10px] text-teal-400 mt-1">Khung sườn, bộ kẹp bưu kiện có thể in 3D và tự thiết kế bởi học sinh trung học.</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
+                    <span class="text-xs text-slate-400 uppercase">Nguồn linh kiện sẵn có</span>
+                    <h3 class="text-3xl font-extrabold text-white mt-1">100% Nội địa</h3>
+                    <p class="text-[10px] text-slate-400 mt-1">Dễ dàng bảo dưỡng, thay mới tại thị trường Việt Nam mà không bị phụ thuộc.</p>
+                </div>
+            </div>
+
+            <!-- Detailed BOM Table with Search Component -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <h3 class="text-base font-bold text-white">Bảng Chi tiết Phân tách Vật tư (BOM)</h3>
+                    <div class="relative w-full sm:w-64">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                        <input type="text" id="bom-search" oninput="searchBOM()" placeholder="Tìm kiếm linh kiện..." class="bg-slate-950 text-xs border border-slate-800 rounded-xl pl-9 pr-4 py-2 w-full text-slate-300 focus:outline-none focus:border-teal-500">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm text-slate-300">
+                        <thead class="bg-slate-950 text-slate-400 text-xs uppercase font-semibold">
+                            <tr>
+                                <th class="p-4 border-b border-slate-800">Linh kiện / Phân hệ</th>
+                                <th class="p-4 border-b border-slate-800">Đặc tính Kỹ thuật</th>
+                                <th class="p-4 border-b border-slate-800 text-center">Số lượng</th>
+                                <th class="p-4 border-b border-slate-800 text-right">Đơn giá (VND)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bom-table-body">
+                            <!-- Items will be generated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: BUSINESS MODEL -->
+        <section id="sec-business" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-indigo-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Thương mại &amp; Pháp lý</span>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình cho thuê Drone Dịch vụ (DaaS)</h2>
+                <p class="text-slate-400 text-sm mt-1">Giải pháp thay thế bưu tá truyền thống tại hải đảo và địa bàn xa xôi hiểm trở</p>
+            </div>
+
+            <!-- Business Canvas Layout -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Lit Review -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center">
-                        <span class="bg-slate-100 p-2 rounded-lg mr-3">📚</span> Tổng quan nghiên cứu
-                    </h3>
-                    <ul class="space-y-4 text-slate-600">
-                        <li class="flex items-start">
-                            <span class="text-red-500 mr-2">✖</span>
-                            <div>
-                                <span class="font-bold text-slate-800">Chỉ số pH:</span>
-                                <p class="text-sm">Chỉ đo nồng độ tức thời, bỏ qua khả năng đệm.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-red-500 mr-2">✖</span>
-                            <div>
-                                <span class="font-bold text-slate-800">Độ kiềm (Alkalinity):</span>
-                                <p class="text-sm">Thường dùng cho nước, ít dùng đánh giá tốc độ ăn mòn nhanh.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-red-500 mr-2">✖</span>
-                            <div>
-                                <span class="font-bold text-slate-800">Chỉ số Langelier (LSI):</span>
-                                <p class="text-sm">Phức tạp, phụ thuộc nhiệt độ/TDS, dùng cho dự đoán đóng cặn hơn là ăn mòn axit.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start mt-4 pt-4 border-t border-slate-100">
-                            <span class="text-teal-500 mr-2">✔</span>
-                            <div>
-                                <span class="font-bold text-teal-700">Chỉ số CCI:</span>
-                                <p class="text-sm">Tiếp cận mới dựa trên động học, trực quan hóa tổng tổn thất.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Hypothesis -->
-                <div class="bg-teal-50 p-8 rounded-2xl border border-teal-100">
-                    <h3 class="text-xl font-bold text-teal-900 mb-4 flex items-center">
-                        <span class="bg-teal-100 p-2 rounded-lg mr-3">🧪</span> Giả thuyết Khoa học
-                    </h3>
+                <!-- Business Model Card -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Khái niệm Drone-as-a-Service (DaaS)</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Thay vì bắt các bệnh viện tuyến huyện, trạm y tế xã đầu tư hàng trăm triệu mua sắm và vận hành Drone phức tạp, <strong>SAH-TECH</strong> cung cấp giải pháp cho thuê dịch vụ bay trọn gói.
+                    </p>
                     <div class="space-y-4">
-                        <div class="bg-white p-4 rounded-lg shadow-sm">
-                            <p class="text-slate-700 text-sm font-semibold">Giả thuyết 1</p>
-                            <p class="text-slate-600 text-sm">Tại cùng pH và nhiệt độ, Axit yếu (\(CH_3COOH\)) sẽ gây tổn thất khối lượng (\(\Delta m\)) lớn hơn đáng kể so với Axit mạnh (\(HCl\)).</p>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B1</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Khách hàng chi trả theo chuyến bay hoặc thuê bao tháng</h4>
+                                <p class="text-[11px] text-slate-400">Giảm thiểu hoàn toàn chi phí bảo trì và rủi ro rơi vỡ cho các cơ sở y tế.</p>
+                            </div>
                         </div>
-                        <div class="bg-white p-4 rounded-lg shadow-sm">
-                            <p class="text-slate-700 text-sm font-semibold">Giả thuyết 2</p>
-                            <p class="text-slate-600 text-sm">Đồ thị động học của \(CH_3COOH\) sẽ có dạng tuyến tính/giảm chậm (linear decay), trong khi \(HCl\) giảm nhanh theo hàm mũ (exponential decay).</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg shadow-sm">
-                            <p class="text-slate-700 text-sm font-semibold">Giả thuyết 3</p>
-                            <p class="text-slate-600 text-sm">Chỉ số CCI tỷ lệ thuận với nồng độ tổng (\(Total\ Acidity\)) của dung dịch.</p>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B2</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Kiểm soát chéo an toàn thông qua Trung tâm chỉ huy mặt đất</h4>
+                                <p class="text-[11px] text-slate-400">Đội ngũ SAH-TECH chịu trách nhiệm vận hành Docker và lập tiến trình bay tự động từ xa.</p>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Economic viability comparison -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="wallet" class="w-5 h-5 text-emerald-400"></i>
+                            Đánh giá Hiệu quả Chi phí Giao hàng
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">So sánh chi phí và thời gian giao mẫu máu khẩn cấp giữa đất liền và đảo Phú Quý</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Shipper truyền thống -->
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Giao hàng Truyền thống (Tàu cao tốc + Xe)</span>
+                                    <span class="text-red-400 font-bold text-xs">Phụ thuộc lịch tàu</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Thời gian</span>
+                                        <strong class="text-white">6 - 8 tiếng</strong>
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Chi phí thực tế</span>
+                                        <strong class="text-white">~500,000 VND / đợt</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- SAH-TECH DaaS -->
+                            <div class="bg-blue-950/40 p-4 rounded-xl border border-blue-900/50">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-blue-400 uppercase">Dịch vụ Drone SAH-TECH (DaaS)</span>
+                                    <span class="text-emerald-400 font-bold text-xs">Chủ động 24/7</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Thời gian</span>
+                                        <strong class="text-white">35 phút (Bay thẳng)</strong>
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Chi phí khấu hao</span>
+                                        <strong class="text-emerald-400">~65,000 VND / chuyến</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-4 italic text-center">
+                        * Chi phí dựa trên mô hình sạc pin dự trữ tự động tại trạm Docker của dự án SAH-TECH.
+                    </p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-12 text-center">
-        <div class="max-w-4xl mx-auto px-4">
-            <h3 class="text-white font-bold text-lg mb-2">Dự án Nghiên cứu Khoa học Kỹ thuật</h3>
-            <p class="text-sm mb-6">Xây dựng Cơ sở Lý thuyết cho Chỉ số Biến đổi Hóa học (CCI)</p>
-            <div class="text-xs text-slate-500 space-y-2">
-                <p>Khuyến nghị nghiên cứu tiếp theo:</p>
-                <p>"Acid rain corrosion mechanism on limestone" & "Dissolution kinetics of calcite in acetic acid"</p>
+    <!-- Project Footer with Call to Action -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-extrabold text-white">SAH<span class="text-blue-500">-TECH</span></span>
+                <span>| Đề án Khoa học kỹ thuật dự thi quốc gia</span>
+            </div>
+            <div>
+                <span>Bản quyền © 2026 Nhóm nghiên cứu Solve for Tomorrow. All rights reserved.</span>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript Logic -->
+    <!-- App JavaScript Logic -->
     <script>
-        // --- State Management ---
-        const state = {
-            capacityChart: null,
-            kineticsChart: null,
-            isSimulationRunning: false,
-            animationFrame: null,
-            simulationProgress: 0, // 0 to 100
+        // Global State variables
+        let riskChartInstance = null;
+        let radarChartInstance = null;
+
+        // Waypoints configurations
+        const sectorWaypoints = {
+            'phu-quy': [
+                { title: 'DOCKER MŨI NÉ (WP-01)', coord: '10°55\'N / 108°17\'E', label: 'Docker Mũi Né', pos: 'A' },
+                { title: 'ĐIỂM TRUNG GIAN (WP-02)', coord: '10°51\'N / 108°35\'E', label: 'Điểm bay khơi', pos: 'Mid' },
+                { title: 'TRẠM PHÚ QUÝ (WP-03)', coord: '10°30\'N / 108°56\'E', label: 'Trạm Đảo Phú Quý', pos: 'B' }
+            ],
+            'ba-to': [
+                { title: 'DOCKER TP. QUẢNG NGÃI (WP-01)', coord: '15°07\'N / 108°48\'E', label: 'Docker Quảng Ngãi', pos: 'A' },
+                { title: 'ĐIỂM TRÁNH NÚI BA TƠ (WP-02)', coord: '14°52\'N / 108°39\'E', label: 'Điểm tránh đồi núi', pos: 'Mid' },
+                { title: 'TRẠM Y TẾ BA TƠ (WP-03)', coord: '14°46\'N / 108°32\'E', label: 'Trạm Y Tế Ba Tơ', pos: 'B' }
+            ]
         };
 
-        // --- Navigation ---
-        function scrollToSection(id) {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // BOM Data
+        const bomData = [
+            { name: "Khung VTOL carbon 3K H-Shape", spec: "Sợi carbon dày 3mm, siêu nhẹ, chịu va đập tốt", qty: 1, price: 2900000 },
+            { name: "Động cơ hành trình (Pusher Motor)", spec: "Sunnysky 4120 480KV hiệu suất cao", qty: 1, price: 1650000 },
+            { name: "Động cơ nâng VTOL", spec: "Sunnysky 4014 380KV (Bộ 4 chiếc)", qty: 1, price: 4200000 },
+            { name: "Mạch điều khiển bay (Flight Controller)", spec: "Pixhawk 6C kèm định vị GPS M9N", qty: 1, price: 3800000 },
+            { name: "Bộ Tời điện tự động SAH-POD (Winch)", spec: "Động cơ bước kèm cảm biến lực căng dây phản hồi", qty: 1, price: 1500000 },
+            { name: "Khối pin năng lượng LiPo", spec: "TATTU 22000mAh 12S 25C xả sâu", qty: 1, price: 3200000 },
+            { name: "Cảm biến khoảng cách siêu âm", spec: "Quét bề mặt chặng cuối hạn chế va chạm", qty: 2, price: 550000 },
+            { name: "Dù cứu hộ khẩn cấp khí nén", spec: "Phục hồi giảm chấn khi gặp sự cố trọng lực", qty: 1, price: 600000 }
+        ];
+
+        // Init on page load
+        window.onload = function() {
+            lucide.createIcons();
+            switchTab('academic');
+            renderBOMTable(bomData);
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(element => {
+                element.classList.add('hidden');
+            });
+            // Show target
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+
+            // Reset active styles on large screen buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-slate-400');
+            });
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400');
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+            // Reset mobile scroll buttons
+            document.querySelectorAll('.tab-btn-mob').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            const activeMobBtn = document.getElementById('mob-' + tabId);
+            if (activeMobBtn) {
+                activeMobBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeMobBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+            // Init charts depending on tabs
+            if (tabId === 'academic') {
+                initRiskChart();
+            } else if (tabId === 'mechanism') {
+                initRadarChart();
             }
         }
 
-        // --- Chart 1: Capacity (Intensity vs Capacity) ---
-        function initCapacityChart() {
-            const ctx = document.getElementById('capacityChart').getContext('2d');
-            
-            // Data for pH = 3
-            // [H+] = 10^-3 M
-            // HCl: [HA] approx 0
-            // CH3COOH (Ka=1.8e-5): [H+]^2 / [HA] = Ka => [HA] = [H+]^2 / Ka = (10^-6)/(1.8e-5) = 0.055 M
-            // Ratio: 0.055 / 0.001 = 55 times more reserve
-            
-            // For visualization, we use log scale or simplified ratios to make it readable
-            const data = {
-                labels: ['Axit Mạnh (HCl)', 'Axit Yếu (CH3COOH)'],
-                datasets: [
-                    {
-                        label: 'H+ Tự do (Cường độ)',
-                        data: [1, 1], // Same pH means same H+
-                        backgroundColor: '#f43f5e', // Rose 500
-                        barPercentage: 0.6,
-                    },
-                    {
-                        label: 'Axit chưa phân ly (Dung lượng dự trữ)',
-                        data: [0.01, 55], // Conceptual difference
-                        backgroundColor: '#14b8a6', // Teal 500
-                        barPercentage: 0.6,
-                    }
-                ]
-            };
-
-            state.capacityChart = new Chart(ctx, {
-                type: 'bar',
-                data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { stacked: true },
-                        y: { 
-                            stacked: true,
-                            title: { display: true, text: 'Nồng độ tương đối (Đơn vị quy ước)' },
-                            type: 'logarithmic', // Using log scale to show the massive difference
-                            display: true
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    if(context.dataset.label.includes('chưa phân ly') && context.raw > 1) {
-                                        return 'Dung lượng dự trữ: Cực lớn (Gấp ~55 lần H+)';
-                                    }
-                                    return context.dataset.label + ': ' + context.formattedValue;
-                                }
-                            }
-                        },
-                        legend: { position: 'bottom' }
-                    }
-                }
-            });
-
-            // Interaction: Toggle Data
-            document.getElementById('toggleAcidBtn').addEventListener('click', () => {
-                const chart = state.capacityChart;
-                // Simple toggle animation effect by randomizing slightly or resetting
-                chart.update(); 
-                // In a real app, this might switch between different acid pairs
-                alert("Trong thực tế, tỷ lệ dự trữ [HA] phụ thuộc vào pKa của axit. Với axit càng yếu, cột màu xanh càng cao!");
-            });
-        }
-
-        // --- Chart 2: Kinetics (Reaction Rate vs Time) ---
-        function initKineticsChart() {
-            const ctx = document.getElementById('kineticsChart').getContext('2d');
-
-            // Generating initial theoretical data curves
-            const timePoints = Array.from({length: 101}, (_, i) => i); // 0 to 100 minutes
-            
-            // HCl: Exponential decay: Rate = k * [H+]
-            // As H+ is consumed, rate drops fast.
-            const hclRate = timePoints.map(t => 100 * Math.exp(-0.1 * t)); 
-
-            // Weak Acid: Buffered decay
-            // Rate drops much slower because H+ is replenished.
-            const weakAcidRate = timePoints.map(t => 90 * Math.exp(-0.015 * t)); // Starts slightly lower but sustains
-
-            state.kineticsChart = new Chart(ctx, {
+        // Section 1: Chart Generation
+        function initRiskChart() {
+            if (riskChartInstance) riskChartInstance.destroy();
+            const ctx = document.getElementById('riskChart').getContext('2d');
+            riskChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: timePoints,
-                    datasets: [
-                        {
-                            label: 'Axit Yếu (Duy trì phản ứng)',
-                            data: weakAcidRate,
-                            borderColor: '#14b8a6', // Teal 500
-                            backgroundColor: 'rgba(20, 184, 166, 0.2)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 0
-                        },
-                        {
-                            label: 'Axit Mạnh (Cạn kiệt nhanh)',
-                            data: hclRate,
-                            borderColor: '#f43f5e', // Rose 500
-                            backgroundColor: 'rgba(244, 63, 94, 0.2)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 0
-                        }
-                    ]
+                    labels: ['0km', '10km', '20km', '30km', '40km', '50km', '60km'],
+                    datasets: [{
+                        label: 'Xác suất lỗi rơi tự do (%)',
+                        data: [1.2, 2.5, 4.8, 8.5, 12.3, 19.5, 28.4],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Xác suất SAH-TECH tự phục hồi (%)',
+                        data: [99.5, 99.1, 98.4, 98.0, 97.5, 96.2, 95.1],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.05)',
+                        borderWidth: 2,
+                        tension: 0.2
+                    }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: {
-                        duration: 0 // We handle animation manually for the "Simulation"
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 10 } } }
                     },
                     scales: {
-                        x: { 
-                            title: { display: true, text: 'Thời gian (phút)' },
-                            grid: { display: false }
-                        },
-                        y: { 
-                            title: { display: true, text: 'Tốc độ phản ứng (mg/phút)' },
-                            beginAtZero: true
-                        }
-                    },
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                footer: (tooltipItems) => {
-                                    let weak = tooltipItems.find(i => i.datasetIndex === 0)?.raw || 0;
-                                    let strong = tooltipItems.find(i => i.datasetIndex === 1)?.raw || 0;
-                                    return weak > strong ? `Axit yếu đang ăn mòn nhanh hơn!` : '';
-                                }
-                            }
-                        }
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
                     }
                 }
-            });
-
-            // Simulation Logic
-            document.getElementById('runSimBtn').addEventListener('click', () => {
-                if (state.isSimulationRunning) return;
-                state.isSimulationRunning = true;
-                state.simulationProgress = 0;
-                
-                const originalWeakData = [...state.kineticsChart.data.datasets[0].data];
-                const originalStrongData = [...state.kineticsChart.data.datasets[1].data];
-
-                // Reset data to empty
-                state.kineticsChart.data.datasets[0].data = [];
-                state.kineticsChart.data.datasets[1].data = [];
-                state.kineticsChart.update();
-
-                const totalSteps = 100;
-                let currentStep = 0;
-
-                function step() {
-                    if (currentStep >= totalSteps) {
-                        state.isSimulationRunning = false;
-                        return;
-                    }
-
-                    // Reveal next data point
-                    state.kineticsChart.data.datasets[0].data.push(originalWeakData[currentStep]);
-                    state.kineticsChart.data.datasets[1].data.push(originalStrongData[currentStep]);
-                    
-                    state.kineticsChart.update();
-                    currentStep += 2; // Speed up animation
-                    requestAnimationFrame(step);
-                }
-
-                step();
-            });
-
-            // Integral Toggle
-            document.getElementById('showIntegral').addEventListener('change', (e) => {
-                const isChecked = e.target.checked;
-                state.kineticsChart.data.datasets[0].fill = isChecked;
-                state.kineticsChart.data.datasets[1].fill = isChecked;
-                state.kineticsChart.update();
             });
         }
 
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            initCapacityChart();
-            initKineticsChart();
-        });
+        function recalculateRisk() {
+            if (!riskChartInstance) return;
+            // Simulate changing values due to updated weather parameters
+            const newData = [1.5, 3.2, 6.8, 12.1, 18.5, 27.9, 39.2];
+            riskChartInstance.data.datasets[0].data = newData;
+            riskChartInstance.update();
+        }
 
+        // Section 2: Radar Chart Generation
+        function initRadarChart() {
+            if (radarChartInstance) radarChartInstance.destroy();
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Độ chính xác đáp', 'Bảo quản y tế', 'Tốc độ thả hàng', 'Khả năng thu hồi', 'An toàn dân sự'],
+                    datasets: [{
+                        label: 'Thả dù rơi tự do',
+                        data: [3, 4, 9, 2, 5],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        borderWidth: 1.5
+                    }, {
+                        label: 'SAH-TECH Winch Pod',
+                        data: [9.5, 9, 8, 9.5, 9],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderWidth: 2.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 9 } } }
+                    },
+                    scales: {
+                        r: {
+                            grid: { color: '#1e293b' },
+                            angleLines: { color: '#1e293b' },
+                            pointLabels: { color: '#94a3b8', font: { size: 9 } },
+                            ticks: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Section 3: Drone Simulator Calculations
+        function updateVTOLSim() {
+            const wind = parseInt(document.getElementById('input-wind').value);
+            const payload = parseFloat(document.getElementById('input-payload').value);
+
+            document.getElementById('wind-speed-val').innerText = wind + " m/s";
+            document.getElementById('payload-val').innerText = payload + " kg";
+
+            // Recalculate estimated performance metrics based on parameters
+            let flightTime = 65 - (wind * 1.2) - (payload * 4.5);
+            let range = 85 - (wind * 1.5) - (payload * 5.0);
+            
+            flightTime = Math.max(20, Math.round(flightTime));
+            range = Math.max(25, Math.round(range));
+
+            document.getElementById('sim-flight-time').innerText = flightTime + " phút";
+            document.getElementById('sim-range').innerText = range + " km";
+
+            // Graphical update of the pod (simulate load tilt offset)
+            const pod = document.getElementById('pod-graphic');
+            const tilt = wind * 0.8;
+            pod.style.transform = `rotate(${tilt}deg) translateY(${payload * 2}px)`;
+        }
+
+        // Section 4: Docker Simulation Interactions
+        function simulateDockerAction() {
+            const logsContainer = document.getElementById('docker-logs');
+            logsContainer.innerHTML = "";
+            
+            const steps = [
+                "[10:00:01] - Hệ thống phát hiện Drone áp sát tọa độ hạ cánh.",
+                "[10:00:03] - Kích hoạt khóa kẹp cố định vị trí tiếp xúc.",
+                "[10:00:06] - Đang rút khay pin 12S sụt giảm hiệu năng...",
+                "[10:00:10] - Khay sạc pin tự động đẩy bộ pin mới 100%.",
+                "[10:00:14] - Hoàn tất lắp ráp và sấy nhiệt pin.",
+                "[10:00:18] - Chuyển sang nạp gói hàng SAH-POD mới.",
+                "[10:00:22] - Trạng thái: HỆ THỐNG ĐÃ SẴN SÀNG BAY (READY TO LAUNCH)."
+            ];
+
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    const p = document.createElement('p');
+                    p.className = index === steps.length - 1 ? 'text-emerald-400 font-bold' : 'text-cyan-300';
+                    p.innerText = step;
+                    logsContainer.appendChild(p);
+                    logsContainer.scrollTop = logsContainer.scrollHeight;
+                }, index * 800);
+            });
+        }
+
+        // Section 5: Map Selection Changes
+        function changeMapSector() {
+            const sector = document.getElementById('map-sector').value;
+            const data = sectorWaypoints[sector];
+
+            // Update Labels
+            document.getElementById('map-pt-a').innerText = data[0].label;
+            document.getElementById('map-pt-b').innerText = data[2].label;
+
+            // Generate Waypoints Lists
+            const listContainer = document.getElementById('waypoint-list');
+            listContainer.innerHTML = "";
+            data.forEach((wp, index) => {
+                const labelColor = index === 1 ? 'text-amber-500' : 'text-slate-500';
+                listContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-2.5 bg-slate-950 rounded-lg border border-slate-850">
+                        <div>
+                            <span class="text-[10px] ${labelColor} block uppercase">${wp.title}</span>
+                            <span class="text-xs font-bold text-white">${wp.label}</span>
+                        </div>
+                        <span class="text-xs text-slate-400">${wp.coord}</span>
+                    </div>
+                `;
+            });
+
+            // Adjust Vector Path Drawing Curve for visual differentiation
+            const path = document.getElementById('flight-vector');
+            if (sector === 'ba-to') {
+                path.setAttribute('d', 'M 120 160 Q 280 220 440 160');
+            } else {
+                path.setAttribute('d', 'M 120 160 Q 280 100 440 160');
+            }
+        }
+
+        // Section 6: Fail-safe simulation responses
+        function triggerFailsafe(type) {
+            const titleEl = document.getElementById('failsafe-title');
+            const descEl = document.getElementById('failsafe-desc');
+            const iconEl = document.getElementById('failsafe-icon');
+
+            if (type === 'wind') {
+                iconEl.innerHTML = '<i data-lucide="wind" class="w-6 h-6 text-amber-400"></i>';
+                titleEl.innerText = "Kịch bản: Sức cản gió vượt mức tối đa (Cấp bão > 7)";
+                descEl.innerText = "Hệ thống Autopilot lập tức tắt chế độ cánh bằng và kích hoạt lực đẩy đồng bộ từ 4 mô-tơ cánh nâng đứng VTOL. Drone lập trình lại độ cao hành trình giảm xuống 30 mét sát mặt biển để tránh gió giật mạnh và từ từ rút lui về trạm Docker gần nhất.";
+            } else if (type === 'gps') {
+                iconEl.innerHTML = '<i data-lucide="map-pin-off" class="w-6 h-6 text-red-400"></i>';
+                titleEl.innerText = "Kịch bản: Mất định vị hoặc bị phá sóng tín hiệu GPS";
+                descEl.innerText = "Kích hoạt cảm biến quán tính IMU phụ kết hợp với luồng quang học bề mặt dưới gầm (Optical Flow). SAH-TECH tự động giữ thăng bằng cân đối góc nghiêng trên không trung và bay theo phương thức định hướng la bàn từ học để rời khỏi vùng nhiễu sóng.";
+            } else if (type === 'power') {
+                iconEl.innerHTML = '<i data-lucide="zap-off" class="w-6 h-6 text-red-500 animate-bounce"></i>';
+                titleEl.innerText = "KỊCH BẢN NGUY HIỂM: SỤT NGUỒN ĐỘNG CƠ ĐỘT NGỘT";
+                descEl.innerText = "Mạch vi xử lý phụ lập tức kích hoạt bộ kích nổ dù CO2 trong vòng 0.15 giây. Hệ thống kèn hơi âm lượng cao phát tín hiệu cảnh báo xung quanh để người dưới mặt đất kịp thời phòng tránh. Tốc độ tiếp đất được hãm phanh tối đa chỉ còn 4.1 m/s, giảm 93% động năng va đập.";
+            }
+            lucide.createIcons();
+        }
+
+        // Section 7: BOM Functions
+        function renderBOMTable(items) {
+            const body = document.getElementById('bom-table-body');
+            body.innerHTML = "";
+            let total = 0;
+
+            items.forEach(item => {
+                total += item.price * item.qty;
+                body.innerHTML += `
+                    <tr class="hover:bg-slate-900 border-b border-slate-850">
+                        <td class="p-4 font-semibold text-white">${item.name}</td>
+                        <td class="p-4 text-xs text-slate-400">${item.spec}</td>
+                        <td class="p-4 text-center">${item.qty}</td>
+                        <td class="p-4 text-right font-mono text-teal-400">${item.price.toLocaleString('vi-VN')} VND</td>
+                    </tr>
+                `;
+            });
+
+            // Append Total Row
+            body.innerHTML += `
+                <tr class="bg-slate-950 font-bold">
+                    <td class="p-4 text-white" colspan="2">TỔNG CỘNG CHÍNH SÁCH TỐI ƯU</td>
+                    <td class="p-4 text-center">8 linh kiện chính</td>
+                    <td class="p-4 text-right text-emerald-400 font-mono text-base">${total.toLocaleString('vi-VN')} VND</td>
+                </tr>
+            `;
+        }
+
+        // Search BOM logic
+        function searchBOM() {
+            const text = document.getElementById('bom-search').value.toLowerCase();
+            const filtered = bomData.filter(item => 
+                item.name.toLowerCase().includes(text) || 
+                item.spec.toLowerCase().includes(text)
+            );
+            renderBOMTable(filtered);
+        }
     </script>
 </body>
 </html>
