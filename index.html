@@ -309,28 +309,24 @@
         <section id="sec-vtol" class="tab-content space-y-6 hidden">
             <div class="border-l-4 border-purple-500 pl-4 mb-4">
                 <span class="text-xs font-bold text-purple-500 uppercase tracking-widest">Cấu trúc Drone Kỹ thuật cao</span>
-                <h2 class="text-3xl font-extrabold text-white">Mô hình Drone VTOL Hybrid Độc quyền SAH-TECH</h2>
-                <p class="text-slate-400 text-sm mt-1">Giải pháp bay cất hạ cánh thẳng đứng kết hợp cánh bằng (Tilt-rotor &amp; Fixed-wing) tối ưu hành trình xa</p>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình Drone VTOL Nền tảng Drone Volt Heliplane</h2>
+                <p class="text-slate-400 text-sm mt-1">Giải pháp bay cất hạ cánh thẳng đứng kết hợp cánh bằng (Fixed-wing) tối ưu hành trình xa</p>
             </div>
 
-            <!-- Drone Simulation Interface & Spec Dashboard -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Isometric Diagram Render Mockup (Left) -->
                 <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 pointer-events-none"></div>
                     <div>
-                        <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping"></span>
-                                <h3 class="text-lg font-bold text-white">Sơ đồ Cơ khí Vector của Drone VTOL SAH-TECH</h3>
+                                <h3 class="text-lg font-bold text-white">Bản dựng 3D / Render Kỹ thuật Drone Volt</h3>
                             </div>
-                            <span class="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full font-mono border border-purple-500/20">Mô phỏng động lực học</span>
+                            <span class="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full font-mono border border-purple-500/20">Mô hình tích hợp thực tế</span>
                         </div>
 
-                        <!-- Pure CSS Render Drone Shape representation with Interactive Tooltips -->
-                        <div class="my-8 h-64 flex items-center justify-center relative">
-                            <!-- Wind and path indicators -->
-                            <div class="absolute left-4 top-4 bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+                        <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1 mb-4 relative z-10">
+                            <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                                     <span>Tốc độ gió ngược: <b id="wind-speed-val" class="text-white">10 m/s</b></span>
@@ -340,33 +336,28 @@
                                     <span>Trọng lượng hàng: <b id="payload-val" class="text-white">2.5 kg</b></span>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Drone Visual Schematics representation using HTML Shapes -->
-                            <div class="relative w-80 h-32 flex items-center justify-center">
-                                <!-- Main Wings -->
-                                <div class="absolute w-72 h-4 bg-slate-700/80 rounded-full border border-slate-500 flex justify-between px-6 items-center">
-                                    <!-- Left VTOL Rotors -->
-                                    <div class="w-6 h-6 bg-blue-500 rounded-full animate-spin flex items-center justify-center text-[8px] font-bold text-white">M1</div>
-                                    <!-- Right VTOL Rotors -->
-                                    <div class="w-6 h-6 bg-blue-500 rounded-full animate-spin flex items-center justify-center text-[8px] font-bold text-white">M2</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10 mb-6">
+                            <div class="bg-slate-950 border border-slate-850 rounded-2xl p-4 flex flex-col items-center group hover:border-purple-500/40 transition">
+                                <span class="text-[10px] text-purple-400 font-mono mb-2 uppercase tracking-wider font-semibold">Phối cảnh Trục đo (Isometric View)</span>
+                                <div class="h-40 w-full flex items-center justify-center overflow-hidden rounded-xl bg-slate-900/40 p-2 border border-slate-800/50">
+                                    <img src="heliplane_v4-01-1024x724.png" alt="Heliplane Isometric" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105">
                                 </div>
-                                <!-- Tail -->
-                                <div class="absolute w-4 h-40 bg-slate-800 rounded-lg top-[-20px] left-[150px] border border-slate-600"></div>
-                                <!-- Tail Wing -->
-                                <div class="absolute w-24 h-3 bg-slate-700 top-[110px] left-[110px] rounded-full"></div>
-                                <!-- Pusher Motor at Tail -->
-                                <div class="absolute w-8 h-8 bg-purple-600 rounded-full animate-pulse top-[115px] left-[118px] flex items-center justify-center text-[8px] font-bold text-white">PUSHER</div>
-                                <!-- Pod System underneath -->
-                                <div id="pod-graphic" class="absolute w-20 h-10 bg-emerald-500/80 border-2 border-emerald-400 rounded-b-2xl bottom-[15px] left-[110px] flex flex-col items-center justify-center text-slate-950 shadow-lg transition-all duration-1000">
-                                    <span class="text-[8px] font-extrabold uppercase">SAH-POD</span>
-                                    <div class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
+                                <span class="text-[10px] text-slate-500 mt-2 font-mono">heliplane_v4-01-1024x724.png</span>
+                            </div>
+
+                            <div class="bg-slate-950 border border-slate-850 rounded-2xl p-4 flex flex-col items-center group hover:border-purple-500/40 transition">
+                                <span class="text-[10px] text-purple-400 font-mono mb-2 uppercase tracking-wider font-semibold">Góc nhìn Ngang cạnh bên (Side View)</span>
+                                <div class="h-40 w-full flex items-center justify-center overflow-hidden rounded-xl bg-slate-900/40 p-2 border border-slate-800/50">
+                                    <img src="heliplane-dronevolt-vue-côté-500x300.png" alt="Heliplane Side View" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105">
                                 </div>
+                                <span class="text-[10px] text-slate-500 mt-2 font-mono">heliplane-dronevolt-vue-côté-500x300.png</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Dynamic Flight Performance Simulator -->
-                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4 z-10 relative">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="text-xs text-slate-400 block mb-1">Thiết lập Vận tốc Gió Ngược (m/s)</label>
@@ -394,25 +385,24 @@
                     </div>
                 </div>
 
-                <!-- Spec List & Architectural Explanation (Right) -->
                 <div class="lg:col-span-5 space-y-6">
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                             <i data-lucide="cpu" class="w-5 h-5 text-purple-500"></i>
-                            Đặc tính Cơ kỹ thuật tối ưu SAH-TECH
+                            Đặc tính Cơ kỹ thuật tối ưu Drone Volt
                         </h3>
                         <div class="space-y-4 text-sm text-slate-300">
                             <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
-                                <span class="text-xs font-bold text-purple-400 block mb-1">Khung sợi Carbon cường độ cao:</span>
-                                <p class="text-xs">Sử dụng sợi carbon dệt 3K siêu nhẹ kết hợp khớp nối hợp kim titan in 3D để triệt tiêu vặn xoắn ở chế độ VTOL chuyển trạng thái bay bằng.</p>
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Cấu hình Động cơ Hybrid VTOL:</span>
+                                <p class="text-xs">Tận dụng chuỗi chuyển trạng thái thông minh với 4 động cơ nâng thẳng đứng hỗ trợ cất hạ cánh trong không gian hẹp và 1 động cơ đẩy (pusher motor) phía đuôi bứt tốc hành trình cánh bằng.</p>
                             </div>
                             <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
-                                <span class="text-xs font-bold text-purple-400 block mb-1">Cơ chế Độc lập Năng lượng:</span>
-                                <p class="text-xs">4 motor VTOL chạy pin LiPo 12S độc lập cho cất/hạ cánh thẳng đứng; 1 motor đuôi đẩy (pusher) hiệu suất cao chuyên dụng cho chặng bay hành trình cánh bằng tiết kiệm điện.</p>
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Khung vỏ Sợi thủy tinh & Carbon:</span>
+                                <p class="text-xs">Vỏ khung chế tác từ composite siêu nhẹ chịu bền áp lực gió cao, triệt tiêu đáng kể rung động cơ học tần số cao giúp bảo vệ cấu trúc sinh phẩm tế bào bên trong hộp hàng.</p>
                             </div>
                             <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
-                                <span class="text-xs font-bold text-purple-400 block mb-1">Khoang chứa cách nhiệt SAH-POD:</span>
-                                <p class="text-xs">Cấu trúc vỏ EPP giảm rung, phủ gương phản xạ bức xạ mặt trời tích hợp bộ sấy/làm mát giữ nhiệt độ ổn định ở 2°C - 8°C cho vắc xin.</p>
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Cơ cấu Mô-đun Cánh tháo rời:</span>
+                                <p class="text-xs">Hệ thống cánh và đuôi khí động học có khả năng tháo lắp linh hoạt cực nhanh mà không cần công cụ, tối ưu hóa kích thước vận chuyển trong các thùng chứa chuyên dụng.</p>
                             </div>
                         </div>
                     </div>
