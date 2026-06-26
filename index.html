@@ -674,49 +674,93 @@
         </section>
 
         <section id="sec-business" class="tab-content space-y-6 hidden">
-            <div class="border-l-4 border-emerald-500 pl-4 mb-4">
-                <span class="text-xs font-bold text-emerald-500 uppercase tracking-widest">Giải pháp thương mại</span>
-                <h2 class="text-3xl font-extrabold text-white">Mô Hình Vận Hành DaaS (Drone-as-a-Service)</h2>
-                <p class="text-slate-400 text-sm mt-1">Phân tích hiệu quả kinh tế so sánh giữa phương thức vận chuyển y tế truyền thống và giải pháp tự động hóa của SAH-TECH</p>
+            <div class="border-l-4 border-indigo-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Thương mại &amp; Pháp lý</span>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình cho thuê Drone Dịch vụ (DaaS)</h2>
+                <p class="text-slate-400 text-sm mt-1">Giải pháp thay thế bưu tá truyền thống tại hải đảo và địa bàn xa xôi hiểm trở</p>
             </div>
 
+            <!-- Business Canvas Layout -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-base font-bold text-slate-300 flex items-center gap-2">
-                            <i data-lucide="truck" class="text-red-400 w-5 h-5"></i>
-                            Phương thức vận tải truyền thống (Đường bộ/Tàu biển)
-                        </h3>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div class="bg-slate-950 p-2 rounded">
-                            <span class="text-[9px] text-slate-500 block">Thời gian chặng bay biển đảo</span>
-                            <strong class="text-white">6 - 8 tiếng</strong>
+                <!-- Business Model Card -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
                         </div>
-                        <div class="bg-slate-900 p-2 rounded">
-                            <span class="text-[9px] text-slate-500 block">Chi phí thực tế</span>
-                            <strong class="text-white">~500,000 VND / đợt</strong>
+                        <h3 class="text-lg font-bold text-white">Khái niệm Drone-as-a-Service (DaaS)</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Thay vì bắt các bệnh viện tuyến huyện, trạm y tế xã đầu tư hàng trăm triệu mua sắm và vận hành Drone phức tạp, <strong>SAH-TECH</strong> cung cấp giải pháp cho thuê dịch vụ bay trọn gói.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B1</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Khách hàng chi trả theo chuyến bay hoặc thuê bao tháng</h4>
+                                <p class="text-[11px] text-slate-400">Giảm thiểu hoàn toàn chi phí bảo trì và rủi ro rơi vỡ cho các cơ sở y tế.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B2</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Kiểm soát chéo an toàn thông qua Trung tâm chỉ huy mặt đất</h4>
+                                <p class="text-[11px] text-slate-400">Đội ngũ SAH-TECH chịu trách nhiệm vận hành Docker và lập tiến trình bay tự động từ xa.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-blue-950/40 p-4 rounded-xl border border-blue-900/50">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i data-lucide="zap" class="text-amber-400 w-5 h-5"></i>
-                            Hệ thống tự động hóa SAH-TECH (DaaS)
+                <!-- Economic viability comparison -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="wallet" class="w-5 h-5 text-emerald-400"></i>
+                            Đánh giá Hiệu quả Chi phí Giao hàng
                         </h3>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div class="bg-slate-950 p-2 rounded">
-                            <span class="text-[9px] text-slate-500 block">Thời gian vận chuyển</span>
-                            <strong class="text-emerald-400">Chỉ 45 phút</strong>
+                        <p class="text-xs text-slate-400 mb-4">So sánh chi phí và thời gian giao mẫu máu khẩn cấp giữa đất liền và đảo Phú Quý</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Shipper truyền thống -->
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Giao hàng Truyền thống (Tàu cao tốc + Xe)</span>
+                                    <span class="text-red-400 font-bold text-xs">Phụ thuộc lịch tàu</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Thời gian</span>
+                                        <strong class="text-white">6 - 8 tiếng</strong>
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Chi phí thực tế</span>
+                                        <strong class="text-white">~500,000 VND / đợt</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- SAH-TECH DaaS -->
+                            <div class="bg-blue-950/40 p-4 rounded-xl border border-blue-900/50">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-blue-400 uppercase">Dịch vụ Drone SAH-TECH (DaaS)</span>
+                                    <span class="text-emerald-400 font-bold text-xs">Chủ động 24/7</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Thời gian</span>
+                                        <strong class="text-white">35 phút (Bay thẳng)</strong>
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Chi phí khấu hao</span>
+                                        <strong class="text-emerald-400">~65,000 VND / chuyến</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bg-slate-900 p-2 rounded">
-                            <span class="text-[9px] text-slate-500 block">Chi phí điện năng khấu hao</span>
-                            <strong class="text-emerald-400">~45,000 VND / đợt</strong>
-                        </div>
                     </div>
+                    <p class="text-[10px] text-slate-500 mt-4 italic text-center">
+                        * Chi phí dựa trên mô hình sạc pin dự trữ tự động tại trạm Docker của dự án SAH-TECH.
+                    </p>
                 </div>
             </div>
         </section>
