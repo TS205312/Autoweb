@@ -23,9 +23,10 @@
             backdrop-filter: blur(12px);
             border: 1px rgba(255, 255, 255, 0.08) solid;
         }
-        .active-tab {
-            border-bottom: 2px solid #3b82f6;
-            color: #3b82f6;
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -42,7 +43,7 @@
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-blue-600 text-white p-2 rounded-xl shadow-lg shadow-blue-500/20">
+                <div class="bg-blue-600 text-white p-2 rounded-xl shadow-lg shadow-blue-500/20 animate-pulse">
                     <i data-lucide="shield-alert" class="w-6 h-6"></i>
                 </div>
                 <div>
@@ -52,15 +53,17 @@
                     <span class="text-[10px] block text-slate-400 font-medium tracking-widest uppercase">Smart Autonomous Healthcare</span>
                 </div>
             </div>
-            <div class="hidden md:flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800">
-                <button onclick="switchTab('academic')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-academic">1. Nghiên cứu</button>
-                <button onclick="switchTab('mechanism')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-mechanism">2. Cơ chế Thả hàng</button>
-                <button onclick="switchTab('vtol')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-vtol">3. Drone VTOL</button>
-                <button onclick="switchTab('docker')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-docker">4. Trạm Docker</button>
-                <button onclick="switchTab('software')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-software">5. Phần mềm Bay</button>
-                <button onclick="switchTab('failsafe')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-failsafe">6. Hệ An toàn</button>
-                <button onclick="switchTab('bom')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-bom">7. BOM & STEM</button>
-                <button onclick="switchTab('business')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-business">8. Mô hình DaaS</button>
+            <!-- Desktop Navbar Scroll / Tabs (Now including Legal) -->
+            <div class="hidden xl:flex items-center gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                <button onclick="switchTab('academic')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-academic">1. Nghiên cứu</button>
+                <button onclick="switchTab('mechanism')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-mechanism">2. Cơ chế Thả</button>
+                <button onclick="switchTab('vtol')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-vtol">3. Drone VTOL</button>
+                <button onclick="switchTab('docker')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-docker">4. Trạm Docker</button>
+                <button onclick="switchTab('software')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-software">5. Phần mềm Bay</button>
+                <button onclick="switchTab('failsafe')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-failsafe">6. Hệ An toàn</button>
+                <button onclick="switchTab('bom')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-bom">7. BOM &amp; STEM</button>
+                <button onclick="switchTab('business')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-business">8. Mô hình DaaS</button>
+                <button onclick="switchTab('legal')" class="tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-legal">9. Pháp lý &amp; Khung bay</button>
             </div>
             <div class="flex items-center gap-2">
                 <span class="hidden lg:inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -72,15 +75,16 @@
     </header>
 
     <!-- Mobile Navigation Scrollbar -->
-    <div class="md:hidden bg-slate-900 border-b border-slate-800 overflow-x-auto whitespace-nowrap scrollbar-none py-2 px-4 flex gap-2 hide-scrollbar">
-        <button onclick="switchTab('academic')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-academic">1.PGS.TS</button>
-        <button onclick="switchTab('mechanism')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-mechanism">2.Thả hàng</button>
-        <button onclick="switchTab('vtol')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-vtol">3.VTOL</button>
-        <button onclick="switchTab('docker')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-docker">4.Docker</button>
-        <button onclick="switchTab('software')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-software">5.Phần mềm</button>
-        <button onclick="switchTab('failsafe')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-failsafe">6.An toàn</button>
-        <button onclick="switchTab('bom')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-bom">7.BOM</button>
-        <button onclick="switchTab('business')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-business">8.DaaS</button>
+    <div class="xl:hidden bg-slate-900 border-b border-slate-800 overflow-x-auto whitespace-nowrap scrollbar-none py-2 px-4 flex gap-2 hide-scrollbar">
+        <button onclick="switchTab('academic')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-academic">1. Nghiên cứu</button>
+        <button onclick="switchTab('mechanism')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-mechanism">2. Thả hàng</button>
+        <button onclick="switchTab('vtol')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-vtol">3. Drone VTOL</button>
+        <button onclick="switchTab('docker')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-docker">4. Docker</button>
+        <button onclick="switchTab('software')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-software">5. Phần mềm</button>
+        <button onclick="switchTab('failsafe')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-failsafe">6. An toàn</button>
+        <button onclick="switchTab('bom')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-bom">7. BOM</button>
+        <button onclick="switchTab('business')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-business">8. DaaS</button>
+        <button onclick="switchTab('legal')" class="tab-btn-mob px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300" id="mob-legal">9. Pháp lý</button>
     </div>
 
     <!-- Main Content Grid -->
@@ -90,7 +94,7 @@
         <section id="sec-academic" class="tab-content space-y-6">
             <div class="border-l-4 border-blue-500 pl-4 mb-4">
                 <span class="text-xs font-bold text-blue-500 uppercase tracking-widest">Nghiên Cứu Chuyên Gia</span>
-                <h2 class="text-3xl font-extrabold text-white">Thách thức & Nguyên nhân Thất bại Dự án UAV Giao Y tế</h2>
+                <h2 class="text-3xl font-extrabold text-white">Thách thức &amp; Nguyên nhân Thất bại Dự án UAV Giao Y tế</h2>
                 <p class="text-slate-400 text-sm mt-1">Phân tích học thuật dựa trên dữ liệu vận hành thực tế toàn cầu kèm liên kết kiểm chứng khoa học chính xác</p>
             </div>
 
@@ -102,7 +106,7 @@
                             <i data-lucide="cloud-lightning" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h4 class="text-sm font-semibold text-slate-300">Yếu tố Thời tiết & Khí hậu</h4>
+                            <h4 class="text-sm font-semibold text-slate-300">Yếu tố Thời tiết &amp; Khí hậu</h4>
                             <p class="text-2xl font-bold text-white mt-1">42%</p>
                             <p class="text-xs text-slate-500 mt-1">Gió ngược lớn và bão đột ngột làm gián đoạn chuyến bay biển đảo.</p>
                         </div>
@@ -117,7 +121,7 @@
                             <i data-lucide="battery-warning" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h4 class="text-sm font-semibold text-slate-300">Sự cố Năng lượng & Pin</h4>
+                            <h4 class="text-sm font-semibold text-slate-300">Sự cố Năng lượng &amp; Pin</h4>
                             <p class="text-2xl font-bold text-white mt-1">29%</p>
                             <p class="text-xs text-slate-500 mt-1">Do suy hao hiệu suất phóng xả dưới nhiệt độ môi trường khắc nghiệt.</p>
                         </div>
@@ -145,11 +149,10 @@
 
             <!-- Quantitative Risk Chart & Analytical Text -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Academic Failure Analysis Text -->
                 <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
                     <div class="flex items-center gap-2 mb-2 text-slate-300">
                         <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i>
-                        <h3 class="text-lg font-bold">Báo cáo Khoa học Tóm tắt & Trích dẫn Nguồn</h3>
+                        <h3 class="text-lg font-bold">Báo cáo Khoa học Tóm tắt &amp; Trích dẫn Nguồn</h3>
                     </div>
                     <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
                         <p>
@@ -172,19 +175,10 @@
                                     <i data-lucide="link" class="w-3 h-3"></i> MDPI Drones (DOI: 10.3390/drones7010023)
                                 </a>
                             </p>
-                            <p>
-                                <span class="text-blue-400 font-semibold">3. Sai số định vị chặng cuối và trôi dạt định vị:</span> 
-                                Sương mù, nhiễu địa hình che khuất và lỗi phản xạ tín hiệu GPS khiến drone bị trôi lệch khỏi bãi đáp an toàn.
-                                <br>
-                                <a href="https://doi.org/10.3390/s21186196" target="_blank" class="text-xs text-emerald-400 hover:underline inline-flex items-center gap-1 mt-1">
-                                    <i data-lucide="link" class="w-3 h-3"></i> MDPI Sensors (DOI: 10.3390/s21186196)
-                                </a>
-                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Simulation Interactive Chart -->
                 <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
@@ -216,7 +210,6 @@
                 <p class="text-slate-400 text-sm mt-1">Phân tích thực nghiệm giữa Thả dù và Thả mô-đun tời kéo giảm chấn</p>
             </div>
 
-            <!-- Comparison Matrix -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Column 1: Parachute -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition">
@@ -240,10 +233,6 @@
                             <div class="flex justify-between py-1 border-b border-slate-850">
                                 <span class="text-slate-400">Khả năng thu hồi mô-đun</span>
                                 <span class="text-red-400 font-semibold">Khó thu hồi dù/hộp chứa</span>
-                            </div>
-                            <div class="flex justify-between py-1 border-b border-slate-850">
-                                <span class="text-slate-400">Yêu cầu không gian tiếp đất</span>
-                                <span class="text-red-400 font-semibold">Cực rộng, không vật cản</span>
                             </div>
                         </div>
                         <p class="text-xs text-slate-400 leading-relaxed bg-slate-950 p-3 rounded-xl">
@@ -275,13 +264,9 @@
                                 <span class="text-slate-300">Khả năng thu hồi mô-đun</span>
                                 <span class="text-emerald-400 font-bold">Tự động thu hồi dây tời</span>
                             </div>
-                            <div class="flex justify-between py-1 border-b border-slate-850">
-                                <span class="text-slate-300">Yêu cầu không gian tiếp đất</span>
-                                <span class="text-emerald-400 font-bold">Rất hẹp (Sân nhà, ban công)</span>
-                            </div>
                         </div>
                         <p class="text-xs text-blue-200/80 leading-relaxed bg-blue-950/50 p-3 rounded-xl border border-blue-900/30">
-                            <strong>Nhận định chuyên gia:</strong> Cơ chế then chốt giúp <strong>SAH-TECH</strong> bảo vệ trọn vẹn thuốc biệt dược và sinh phẩm. Cảm biến lực căng dây giúp phát hiện tiếp đất và cắt tải tự động siêu nhạy.
+                            <strong>Nhận định chuyên gia:</strong> Cơ chế then chốt giúp <strong>SAH-TECH</strong> bảo vệ trọn vẹn thuốc biệt dược và sinh phẩm nhờ cảm biến lực căng thông minh tự động cắt tải.
                         </p>
                     </div>
                 </div>
@@ -293,7 +278,6 @@
                             <i data-lucide="sliders" class="w-4 h-4 text-blue-400"></i>
                             Đánh giá Đa chiều
                         </h3>
-                        <p class="text-xs text-slate-400 mb-4">Đồ thị so sánh hiệu năng vận hành chặng cuối (Thang điểm 10)</p>
                         <div class="h-60 relative flex items-center justify-center">
                             <canvas id="radarChart"></canvas>
                         </div>
@@ -309,8 +293,8 @@
         <section id="sec-vtol" class="tab-content space-y-6 hidden">
             <div class="border-l-4 border-purple-500 pl-4 mb-4">
                 <span class="text-xs font-bold text-purple-500 uppercase tracking-widest">Cấu trúc Drone Kỹ thuật cao</span>
-                <h2 class="text-3xl font-extrabold text-white">Mô hình tích hợp Drone VTOL Nền tảng Drone Volt</h2>
-                <p class="text-slate-400 text-sm mt-1">Giải pháp cất hạ cánh thẳng đứng kết hợp hành trình cánh bằng (Fixed-wing) tối ưu hóa quãng đường dài</p>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình Drone VTOL Nền tảng Drone Volt Heliplane</h2>
+                <p class="text-slate-400 text-sm mt-1">Giải pháp bay cất hạ cánh thẳng đứng kết hợp cánh bằng (Fixed-wing) tối ưu hành trình xa</p>
             </div>
 
             <!-- Drone Simulation Interface & Spec Dashboard -->
@@ -319,51 +303,51 @@
                 <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 pointer-events-none"></div>
                     <div>
-                        <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping"></span>
-                                <h3 class="text-lg font-bold text-white">Bản dựng 3D / Render Kỹ thuật Drone Volt Heliplane</h3>
+                                <h3 class="text-lg font-bold text-white">Bản dựng 3D / Render Kỹ thuật Drone Volt</h3>
                             </div>
-                            <span class="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full font-mono border border-purple-500/20">Mô hình tích hợp</span>
+                            <span class="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full font-mono border border-purple-500/20">Mô hình tích hợp thực tế</span>
                         </div>
 
-                        <!-- Integrated 3D Render Models Grid -->
-                        <div class="my-4 grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
-                            <!-- Wind and path indicators overlay box -->
-                            <div class="sm:col-span-2 bg-slate-950/80 p-3 rounded-xl border border-slate-850 text-xs text-slate-400 space-y-1 mb-1">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                                        <span>Tốc độ gió ngược: <b id="wind-speed-val" class="text-white">10 m/s</b></span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                        <span>Trọng lượng hàng: <b id="payload-val" class="text-white">2.5 kg</b></span>
-                                    </div>
+                        <!-- Telemetry Overlay Status Board -->
+                        <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1 mb-4 relative z-10">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                    <span>Tốc độ gió ngược: <b id="wind-speed-val" class="text-white">10 m/s</b></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <span>Trọng lượng hàng: <b id="payload-val" class="text-white">2.5 kg</b></span>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Isometric View Card -->
-                            <div class="bg-slate-950 border border-slate-850 rounded-2xl p-3 flex flex-col items-center group hover:border-purple-500/40 transition">
+                        <!-- Integrated 3D Render Models Dual Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10 mb-6">
+                            <!-- Perspective Isometric View -->
+                            <div class="bg-slate-950 border border-slate-850 rounded-2xl p-4 flex flex-col items-center group hover:border-purple-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10">
                                 <span class="text-[10px] text-purple-400 font-mono mb-2 uppercase tracking-wider font-semibold">Phối cảnh Trục đo (Isometric View)</span>
                                 <div class="h-44 w-full flex items-center justify-center overflow-hidden rounded-xl bg-slate-900/40 p-2 border border-slate-800/50">
-                                    <img src="heliplane_v4-01-1024x724.png" alt="Heliplane Isometric Render" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105">
+                                    <img src="heliplane_v4-01-1024x724.png" alt="Heliplane Isometric" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105 group-hover:rotate-1">
                                 </div>
-                                <span class="text-[10px] text-slate-500 mt-2 font-mono tracking-tight">heliplane_v4-01-1024x724.png</span>
+                                <span class="text-[10px] text-slate-500 mt-2 font-mono">heliplane_v4-01-1024x724.png</span>
                             </div>
 
-                            <!-- Side View Card -->
-                            <div class="bg-slate-950 border border-slate-850 rounded-2xl p-3 flex flex-col items-center group hover:border-purple-500/40 transition">
-                                <span class="text-[10px] text-purple-400 font-mono mb-2 uppercase tracking-wider font-semibold">Góc nhìn Trực diện Cạnh bên</span>
+                            <!-- Structural Side View -->
+                            <div class="bg-slate-950 border border-slate-850 rounded-2xl p-4 flex flex-col items-center group hover:border-purple-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10">
+                                <span class="text-[10px] text-purple-400 font-mono mb-2 uppercase tracking-wider font-semibold">Góc nhìn Ngang cạnh bên (Side View)</span>
                                 <div class="h-44 w-full flex items-center justify-center overflow-hidden rounded-xl bg-slate-900/40 p-2 border border-slate-800/50">
-                                    <img src="heliplane-dronevolt-vue-côté-500x300.png" alt="Heliplane Side Profile Render" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105">
+                                    <img src="heliplane-dronevolt-vue-côté-500x300.png" alt="Heliplane Side View" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1">
                                 </div>
-                                <span class="text-[10px] text-slate-500 mt-2 font-mono tracking-tight">heliplane-dronevolt-vue-côté-500x300.png</span>
+                                <span class="text-[10px] text-slate-500 mt-2 font-mono">heliplane-dronevolt-vue-côté-500x300.png</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Dynamic Flight Performance Simulator -->
+                    <!-- Dynamic Flight Performance Simulator Controls -->
                     <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4 z-10 relative">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -397,7 +381,7 @@
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                             <i data-lucide="cpu" class="w-5 h-5 text-purple-500"></i>
-                            Thông số Kỹ thuật Hệ thống Heliplane
+                            Đặc tính Cơ kỹ thuật tối ưu Drone Volt
                         </h3>
                         <div class="space-y-4 text-sm text-slate-300">
                             <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
@@ -405,7 +389,7 @@
                                 <p class="text-xs">Tận dụng chuỗi chuyển trạng thái thông minh với 4 động cơ nâng thẳng đứng hỗ trợ cất hạ cánh trong không gian hẹp và 1 động cơ đẩy (pusher motor) phía đuôi bứt tốc hành trình cánh bằng.</p>
                             </div>
                             <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
-                                <span class="text-xs font-bold text-purple-400 block mb-1">Cấu trúc Sợi thủy tinh / Carbon / Kevlar:</span>
+                                <span class="text-xs font-bold text-purple-400 block mb-1">Khung vỏ Sợi thủy tinh &amp; Carbon:</span>
                                 <p class="text-xs">Vỏ khung chế tác từ composite siêu nhẹ chịu bền áp lực gió cao, triệt tiêu đáng kể rung động cơ học tần số cao giúp bảo vệ cấu trúc sinh phẩm tế bào bên trong hộp hàng.</p>
                             </div>
                             <div class="p-3 bg-slate-950 rounded-xl border border-slate-850">
@@ -521,7 +505,7 @@
 
                 <!-- Simulation Output Terminal Log -->
                 <div class="mt-6 bg-slate-950 p-4 rounded-xl border border-slate-850">
-                    <span class="text-xs text-slate-400 font-mono block mb-2 border-b border-slate-900 pb-2">HẬT KÝ VẬN HÀNH DOCKER (REAL-TIME LOGS)</span>
+                    <span class="text-xs text-slate-400 font-mono block mb-2 border-b border-slate-900 pb-2">NHẬT KÝ VẬN HÀNH DOCKER (REAL-TIME LOGS)</span>
                     <div id="docker-logs" class="text-xs font-mono text-cyan-300 space-y-1.5 max-h-32 overflow-y-auto">
                         <p>[13:42:01] - Hệ thống SAH-TECH Docker Station khởi động thành công...</p>
                         <p>[13:42:05] - RTK base link thành công, độ chính xác định vị &lt; 1.5 cm.</p>
@@ -551,8 +535,8 @@
                             </h3>
                             <!-- Sector Select dropdown -->
                             <select id="map-sector" onchange="changeMapSector()" class="bg-slate-950 text-xs border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:outline-none focus:border-amber-500">
-                                <option value="phu-quy">Tuyến: Mũi Né <-> Đảo Phú Quý (Hải đảo)</option>
-                                <option value="ba-to">Tuyến: TP. Quảng Ngãi <-> Ba Tơ (Vùng sâu miền núi)</option>
+                                <option value="phu-quy">Tuyến: Mũi Né &lt;-&gt; Đảo Phú Quý (Hải đảo)</option>
+                                <option value="ba-to">Tuyến: TP. Quảng Ngãi &lt;-&gt; Ba Tơ (Vùng sâu miền núi)</option>
                             </select>
                         </div>
 
@@ -623,7 +607,7 @@
                         </div>
                     </div>
 
-                    <!-- Legality Validation Checklist -->
+                    <!-- Legality Checklist -->
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
                         <h3 class="text-base font-bold text-white mb-3">Thủ tục Pháp lý SAH-TECH</h3>
                         <ul class="space-y-2 text-xs text-slate-300">
@@ -641,269 +625,315 @@
             </div>
         </section>
 
-        <!-- SECTION 6: FAIL-SAFE SYSTEMS -->
-       <section id="sec-failsafe" class="tab-content space-y-6 hidden">
+        <!-- SECTION 6: FAIL-SAFE SYSTEMS (REDESIGNED CENTER) -->
+        <section id="sec-failsafe" class="tab-content space-y-6 hidden">
             <div class="border-l-4 border-red-500 pl-4 mb-4">
                 <span class="text-xs font-bold text-red-500 uppercase tracking-widest">An Toàn Tuyệt Đối</span>
-                <h2 class="text-3xl font-extrabold text-white">Hệ thống Phục hồi & Phòng ngừa Sự cố (Fail-safe)</h2>
-                <p class="text-slate-400 text-sm mt-1">Các cơ chế bảo vệ tối cao hạn chế hư hỏng và thương tổn dân sự</p>
+                <h2 class="text-3xl font-extrabold text-white">Trung tâm Giám sát &amp; Ứng phó Khẩn cấp (Fail-Safe HUD)</h2>
+                <p class="text-slate-400 text-sm mt-1">Mô phỏng cơ chế phản ứng tự động thời gian thực của máy tính lái AI khi phát hiện sự cố hệ thống</p>
             </div>
 
-            <!-- Fail-safe options cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Parachute Emergency -->
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-red-500/50 transition">
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
-                            <i data-lucide="shield" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Dù Cứu hộ Khẩn cấp</h3>
-                    </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Cảm biến gia tốc IMU phát hiện trạng thái rơi tự do bất thường hoặc mất điện hoàn toàn hệ thống đẩy (dual flameout) trong 0.2 giây. Hệ thống nổ khí gas nén sẽ chủ động phóng dù giảm tốc để bảo vệ thiết bị và con người bên dưới.
-                    </p>
-                </div>
+            <!-- Fail-safe Simulator Core Interface -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Live Flight HUD & SVG Animation Screen (Left) -->
+                <div id="alarm-banner" class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-slate-950/40 pointer-events-none"></div>
+                    
+                    <!-- Emergency Red flashing overlay -->
+                    <div id="red-alert-flash" class="absolute inset-0 bg-red-600/0 pointer-events-none transition-all duration-300"></div>
 
-                <!-- Emergency Landing Zone -->
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-red-500/50 transition">
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
-                            <i data-lucide="navigation" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Thuật toán ALZ Tự động</h3>
-                    </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Khi lượng pin giảm dưới ngưỡng an toàn (EBL - Critical Energy Battery Level) hoặc gặp nhiễu tín hiệu nghiêm trọng, máy tính biên sẽ quét bề mặt đất bằng camera quang học dưới bụng (Optical Flow) để chọn bãi phẳng trống và tự động tiếp đất không cần liên lạc mặt đất.
-                    </p>
-                </div>
-
-                <!-- Dynamic Geofencing -->
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-red-500/50 transition">
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 bg-red-500/10 text-red-400 rounded-xl">
-                            <i data-lucide="fence" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Geofencing Phần cứng</h3>
-                    </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Nhúng trực tiếp bản đồ không lưu và tọa độ các vùng cấm bay (sân bay dân dụng, doanh trại quân đội) trực tiếp vào bộ nhớ lõi bất biến của Pixhawk điều khiển bay. Ngăn chặn tuyệt đối việc xâm nhập dù bị lỗi lập trình lộ trình bay từ máy tính mặt đất.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Interative Failsafe Simulation Area -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-800 pb-4 mb-6">
                     <div>
-                        <h3 class="text-base font-bold text-white">Mô phỏng Ứng phó Sự cố trên Hành trình</h3>
-                        <p class="text-xs text-slate-400">Chọn sự cố để quan sát kịch bản xử lý tự động của SAH-TECH</p>
+                        <!-- Header Status -->
+                        <div class="flex items-center justify-between mb-6 relative z-10">
+                            <div class="flex items-center gap-2">
+                                <span id="status-pulse" class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <h3 id="failsafe-hud-title" class="text-base font-bold text-white uppercase tracking-wider font-mono">Hành Trình Khí Động Học Ổn Định</h3>
+                            </div>
+                            <span id="threat-badge" class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full font-mono border border-emerald-500/20 font-bold uppercase">An toàn cấp 1</span>
+                        </div>
+
+                        <!-- Graphical Interactive Animation Window -->
+                        <div class="h-80 bg-slate-950 rounded-2xl border border-slate-850 relative overflow-hidden flex flex-col items-center justify-center p-4">
+                            <!-- Scanning radar grid -->
+                            <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            
+                            <!-- Drone graphic and parachute -->
+                            <div class="relative w-full h-full flex items-center justify-center">
+                                
+                                <!-- Floating Parachute (Initially hidden/collapsed offscreen) -->
+                                <div id="v-parachute" class="absolute top-2 w-32 h-32 opacity-0 transform -translate-y-12 transition-all duration-[2000ms] ease-out pointer-events-none z-20">
+                                    <!-- Parachute Canopy SVG -->
+                                    <svg viewBox="0 0 100 80" class="w-full h-full">
+                                        <path d="M 10 50 Q 50 10 90 50 Z" fill="#ef4444" stroke="#fca5a5" stroke-width="2" />
+                                        <line x1="10" y1="50" x2="50" y2="80" stroke="#94a3b8" stroke-width="1" />
+                                        <line x1="30" y1="50" x2="50" y2="80" stroke="#94a3b8" stroke-width="1" />
+                                        <line x1="50" y1="46" x2="50" y2="80" stroke="#94a3b8" stroke-width="1" />
+                                        <line x1="70" y1="50" x2="50" y2="80" stroke="#94a3b8" stroke-width="1" />
+                                        <line x1="90" y1="50" x2="50" y2="80" stroke="#94a3b8" stroke-width="1" />
+                                    </svg>
+                                </div>
+
+                                <!-- SVG Animated Drone Layout -->
+                                <div id="v-drone" class="w-64 h-32 flex flex-col items-center justify-center relative transition-all duration-1000">
+                                    <!-- Rotors -->
+                                    <div class="flex justify-between w-full px-4">
+                                        <!-- Left Rotor -->
+                                        <div class="flex flex-col items-center">
+                                            <div id="prop-l" class="w-16 h-1 bg-slate-400 rounded-full animate-spin"></div>
+                                            <div class="w-2 h-4 bg-slate-600"></div>
+                                        </div>
+                                        <!-- Right Rotor -->
+                                        <div class="flex flex-col items-center">
+                                            <div id="prop-r" class="w-16 h-1 bg-slate-400 rounded-full animate-spin"></div>
+                                            <div class="w-2 h-4 bg-slate-600"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Frame body -->
+                                    <div class="w-48 h-5 bg-slate-700 rounded-full border border-slate-500 relative flex items-center justify-center">
+                                        <!-- Center GPS Puck LED -->
+                                        <div id="gps-led" class="w-3.5 h-3.5 rounded-full bg-emerald-500 animate-ping absolute -top-1.5"></div>
+                                    </div>
+                                    <!-- Payload kén hàng y tế SAH-POD -->
+                                    <div id="v-pod" class="w-12 h-8 bg-emerald-500 border border-emerald-400 rounded-b-xl mt-1.5 flex items-center justify-center shadow-lg transition-colors duration-500">
+                                        <span class="text-[8px] font-extrabold text-slate-950 font-mono tracking-tighter">POD</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time HUD stats strip -->
+                            <div class="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur border border-slate-800 p-3 rounded-xl flex justify-between text-[11px] font-mono">
+                                <div>Tốc độ rơi: <span id="hud-fall-rate" class="text-emerald-400 font-bold">0.0 m/s</span></div>
+                                <div>Góc nghiêng trục: <span id="hud-tilt-angle" class="text-emerald-400 font-bold">0.5°</span></div>
+                                <div>Bộ thu nổ PRS: <span id="hud-parachute-status" class="text-slate-500 font-bold">STANDBY</span></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex gap-2 mt-4 sm:mt-0">
-                        <button onclick="triggerFailsafe('wind')" class="bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium px-3 py-1.5 rounded-lg transition border border-slate-700">Gió bão cực đại</button>
-                        <button onclick="triggerFailsafe('gps')" class="bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium px-3 py-1.5 rounded-lg transition border border-slate-700">Mất tín hiệu định vị</button>
-                        <button onclick="triggerFailsafe('power')" class="bg-red-950 text-red-400 hover:bg-red-900/50 text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-red-900/50">Mất nguồn động cơ</button>
+
+                    <!-- HUD logs and system responses -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-850 mt-4 relative z-10">
+                        <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 block font-bold mb-1.5">Tiến trình xử lý của máy tính lái</span>
+                        <div id="failsafe-terminal-log" class="h-28 overflow-y-auto font-mono text-xs text-emerald-400 space-y-1.5 pr-2">
+                            <p class="text-slate-500 italic">> Mạng nơ-ron nhúng sẵng sàng. Trạng thái phần cứng: Danh định.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-slate-950 p-5 rounded-xl border border-slate-850 flex items-start gap-4">
-                    <div class="p-3 bg-slate-900 text-amber-400 rounded-lg shrink-0" id="failsafe-icon">
-                        <i data-lucide="info" class="w-6 h-6"></i>
+
+                <!-- Incident Selector Control Panel (Right) -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
+                        <h3 class="text-xs font-bold text-slate-400 font-mono uppercase tracking-wider mb-2">Kích hoạt kịch bản sự cố</h3>
+                        
+                        <button onclick="triggerFailsafeScenario('wind')" class="w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:bg-slate-850 transition text-xs font-bold text-white flex items-center justify-between group">
+                            <span class="flex items-center gap-2"><i data-lucide="wind" class="w-4 h-4 text-amber-500"></i> 1. Gió nghịch bão cực đại</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-500 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        
+                        <button onclick="triggerFailsafeScenario('gps')" class="w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:bg-slate-850 transition text-xs font-bold text-white flex items-center justify-between group">
+                            <span class="flex items-center gap-2"><i data-lucide="map-pin-off" class="w-4 h-4 text-purple-500"></i> 2. Phá sóng / Mất định vị GPS</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-500 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <button onclick="triggerFailsafeScenario('power')" class="w-full text-left p-3.5 rounded-xl border border-slate-800 bg-red-950/20 hover:bg-red-950/40 border-red-900/30 transition text-xs font-bold text-white flex items-center justify-between group">
+                            <span class="flex items-center gap-2 animate-pulse"><i data-lucide="zap-off" class="w-4 h-4 text-red-500"></i> 3. Mất nguồn động cơ chính</span>
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-red-500"></i>
+                        </button>
+
+                        <button onclick="resetFailsafeSimulation()" class="w-full text-center p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition">
+                            Reset mô phỏng / Bay lại hành trình
+                        </button>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white mb-1" id="failsafe-title">Chọn kịch bản mô phỏng</h4>
-                        <p class="text-xs text-slate-300 leading-relaxed" id="failsafe-desc">
-                            Vui lòng click chọn một sự cố khẩn cấp ở trên để xem cách hệ thống thuật toán nhúng thông minh SAH-TECH phản ứng tự động nhằm bảo toàn tính mạng và của cải.
+
+                    <div class="bg-gradient-to-br from-red-950/20 to-slate-900 border border-red-900/20 p-5 rounded-2xl text-xs text-slate-400 space-y-2">
+                        <div class="flex items-center gap-2 text-white font-bold">
+                            <i data-lucide="activity" class="w-4 h-4 text-red-500"></i>
+                            Yêu cầu chứng thực an toàn
+                        </div>
+                        <p class="leading-relaxed">
+                            Mỗi kịch bản mô phỏng khẩn cấp thể hiện tốc độ phản ứng thời gian thực tối ưu của mạch điều hướng và tời an toàn nhằm hạn chế tối đa rủi ro thiệt hại cơ học đối với thuốc biệt dược.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-            <!-- Interative Failsafe Simulation Area -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-800 pb-4 mb-6">
-                    <div>
-                        <h3 class="text-base font-bold text-white">Mô phỏng Ứng phó Sự cố trên Hành trình</h3>
-                        <p class="text-xs text-slate-400">Chọn sự cố để quan sát kịch bản xử lý tự động của SAH-TECH</p>
-                    </div>
-                    <div class="flex gap-2 mt-4 sm:mt-0">
-                        <button onclick="triggerFailsafe('wind')" class="bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium px-3 py-1.5 rounded-lg transition border border-slate-700">Gió bão cực đại</button>
-                        <button onclick="triggerFailsafe('gps')" class="bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium px-3 py-1.5 rounded-lg transition border border-slate-700">Mất tín hiệu định vị</button>
-                        <button onclick="triggerFailsafe('power')" class="bg-red-950 text-red-400 hover:bg-red-900/50 text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-red-900/50">Mất nguồn động cơ</button>
-                    </div>
-                </div>
-                <div class="bg-slate-950 p-5 rounded-xl border border-slate-850 flex items-start gap-4">
-                    <div class="p-3 bg-slate-900 text-amber-400 rounded-lg shrink-0" id="failsafe-icon">
-                        <i data-lucide="info" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white mb-1" id="failsafe-title">Chọn kịch bản mô phỏng</h4>
-                        <p class="text-xs text-slate-300 leading-relaxed" id="failsafe-desc">
-                            Vui lòng click chọn một sự cố khẩn cấp ở trên để xem cách hệ thống thuật toán nhúng thông minh SAH-TECH phản ứng tự động nhằm bảo toàn tính mạng và của cải.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 7: BILL OF MATERIALS (BOM) & STEM -->
+        <!-- SECTION 7: BOM & STEM -->
         <section id="sec-bom" class="tab-content space-y-6 hidden">
             <div class="border-l-4 border-teal-500 pl-4 mb-4">
-                <span class="text-xs font-bold text-teal-500 uppercase tracking-widest">Khả Thi Thương Mại</span>
-                <h2 class="text-3xl font-extrabold text-white">Bảng Thống kê Linh kiện (BOM) & Tính ứng dụng STEM</h2>
-                <p class="text-slate-400 text-sm mt-1">Cấu trúc chi phí tối ưu, sẵn sàng chuyển giao giáo dục ứng dụng thực tế</p>
+                <span class="text-xs font-bold text-teal-500 uppercase tracking-widest">Danh Mục Linh Kiện</span>
+                <h2 class="text-3xl font-extrabold text-white">Bảng Thống kê Thiết bị &amp; Phân loại Hạ tầng</h2>
+                <p class="text-slate-400 text-sm mt-1">Quản lý danh mục vật tư (BOM) chia luồng độc lập giữa Thiết bị bay (Drone) và Trạm sạc tự động (Base Docker) phục vụ nghiên cứu phát triển STEM.</p>
             </div>
 
-            <!-- BOM Cost Highlights and Search -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-                    <span class="text-xs text-slate-400 uppercase">Tổng Chi Phí Linh Kiện (BOM)</span>
-                    <h3 class="text-3xl font-extrabold text-white mt-1">~18,400,000 VND</h3>
-                    <p class="text-[10px] text-emerald-400 mt-1">Rẻ hơn 1/10 so với dòng Drone giao hàng nhập khẩu công nghiệp.</p>
-                </div>
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-                    <span class="text-xs text-slate-400 uppercase">Mức Độ Tự Chế & Sử Dụng STEM</span>
-                    <h3 class="text-3xl font-extrabold text-white mt-1">75%</h3>
-                    <p class="text-[10px] text-teal-400 mt-1">Khung sườn, bộ kẹp bưu kiện có thể in 3D và tự thiết kế bởi học sinh trung học.</p>
-                </div>
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-                    <span class="text-xs text-slate-400 uppercase">Nguồn linh kiện sẵn có</span>
-                    <h3 class="text-3xl font-extrabold text-white mt-1">100% Nội địa</h3>
-                    <p class="text-[10px] text-slate-400 mt-1">Dễ dàng bảo dưỡng, thay mới tại thị trường Việt Nam mà không bị phụ thuộc.</p>
-                </div>
-            </div>
-
-            <!-- Detailed BOM Table with Search Component -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-                <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <h3 class="text-base font-bold text-white">Bảng Chi tiết Phân tách Vật tư (BOM)</h3>
-                    <div class="relative w-full sm:w-64">
-                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
-                        <input type="text" id="bom-search" oninput="searchBOM()" placeholder="Tìm kiếm linh kiện..." class="bg-slate-950 text-xs border border-slate-800 rounded-xl pl-9 pr-4 py-2 w-full text-slate-300 focus:outline-none focus:border-teal-500">
-                    </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+                <div class="flex items-center bg-slate-950 px-4 py-2.5 rounded-xl border border-slate-800 w-full sm:w-72">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-500 mr-2"></i>
+                    <input type="text" id="bom-search" placeholder="Tìm linh kiện, thông số..." class="bg-transparent text-xs text-white focus:outline-none w-full" oninput="searchBOM()">
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-sm text-slate-300">
-                        <thead class="bg-slate-950 text-slate-400 text-xs uppercase font-semibold">
-                            <tr>
-                                <th class="p-4 border-b border-slate-800">Linh kiện / Phân hệ</th>
-                                <th class="p-4 border-b border-slate-800">Đặc tính Kỹ thuật</th>
-                                <th class="p-4 border-b border-slate-800 text-center">Số lượng</th>
-                                <th class="p-4 border-b border-slate-800 text-right">Đơn giá (VND)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bom-table-body">
-                            <!-- Items will be generated dynamically -->
-                        </tbody>
-                    </table>
+                <!-- Dynamic Tables Container -->
+                <div id="bom-container" class="space-y-8">
+                    <!-- Tables and Grand Total will be injected dynamically via JS -->
                 </div>
             </div>
         </section>
 
         <!-- SECTION 8: BUSINESS MODEL -->
-            <section id="sec-business" class="tab-content space-y-6 hidden">
-                <div class="border-l-4 border-indigo-500 pl-4 mb-4">
-                    <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Thương mại &amp; Pháp lý</span>
-                    <h2 class="text-3xl font-extrabold text-white">Mô hình cho thuê Drone Dịch vụ (DaaS)</h2>
-                    <p class="text-slate-400 text-sm mt-1">Giải pháp thay thế bưu tá truyền thống tại hải đảo và địa bàn xa xôi hiểm trở</p>
+        <section id="sec-business" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-indigo-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Kinh Tế Vận Hành</span>
+                <h2 class="text-3xl font-extrabold text-white">Mô hình Phân phối DaaS (Drone-as-a-Service)</h2>
+                <p class="text-slate-400 text-sm mt-1">Dự toán điểm hòa vốn tài chính và phân tích chi phí tối ưu trên mỗi chuyến giao sinh phẩm y tế thực tế</p>
+            </div>
+
+            <!-- Business Canvas Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Business Model Card -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Khái niệm Drone-as-a-Service (DaaS)</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Thay vì bắt các bệnh viện tuyến huyện, trạm y tế xã đầu tư mua sắm và tự vận hành hệ thống kĩ thuật phức tạp, <strong>SAH-TECH</strong> cung cấp giải pháp cho thuê dịch vụ bay trọn gói cứu sinh.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B1</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Khách hàng chi trả theo chuyến bay hoặc thuê bao tháng</h4>
+                                <p class="text-[11px] text-slate-400">Giảm thiểu hoàn toàn chi phí đầu tư hạ tầng và rủi ro rơi vỡ cho các cơ sở y tế tuyến xa.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B2</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Kiểm soát chéo an toàn thông qua Trung tâm chỉ huy mặt đất</h4>
+                                <p class="text-[11px] text-slate-400">Đội ngũ SAH-TECH chịu trách nhiệm vận hành Docker và lập tiến trình bay tự động từ xa.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Business Canvas Layout -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Business Model Card -->
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
-                        <div class="flex items-center gap-3">
-                            <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
-                                <i data-lucide="briefcase" class="w-6 h-6"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-white">Khái niệm Drone-as-a-Service (DaaS)</h3>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Thay vì bắt các bệnh viện tuyến huyện, trạm y tế xã đầu tư hàng trăm triệu mua sắm và vận hành Drone phức tạp, <strong>SAH-TECH</strong> cung cấp giải pháp cho thuê dịch vụ bay trọn gói.
-                        </p>
+                <!-- Economic viability comparison -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="wallet" class="w-5 h-5 text-emerald-400"></i>
+                            Đánh giá Hiệu quả Chi phí Giao hàng
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">So sánh chi phí và thời gian giao mẫu máu khẩn cấp giữa đất liền và đảo Phú Quý</p>
+                        
                         <div class="space-y-4">
-                            <div class="flex items-start gap-3">
-                                <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B1</span>
-                                <div>
-                                    <h4 class="text-xs font-bold text-white">Khách hàng chi trả theo chuyến bay hoặc thuê bao tháng</h4>
-                                    <p class="text-[11px] text-slate-400">Giảm thiểu hoàn toàn chi phí bảo trì và rủi ro rơi vỡ cho các cơ sở y tế.</p>
+                            <!-- Shipper truyền thống -->
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Giao hàng Truyền thống (Tàu cao tốc + Xe)</span>
+                                    <span class="text-red-400 font-bold text-xs">Phụ thuộc lịch tàu</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Thời gian</span>
+                                        <strong class="text-white">6 - 8 tiếng</strong>
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Chi phí thực tế</span>
+                                        <strong class="text-white">~500,000 VND / đợt</strong>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3">
-                                <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">B2</span>
-                                <div>
-                                    <h4 class="text-xs font-bold text-white">Kiểm soát chéo an toàn thông qua Trung tâm chỉ huy mặt đất</h4>
-                                    <p class="text-[11px] text-slate-400">Đội ngũ SAH-TECH chịu trách nhiệm vận hành Docker và lập tiến trình bay tự động từ xa.</p>
+                            
+                            <!-- SAH-TECH DaaS -->
+                            <div class="bg-blue-950/40 p-4 rounded-xl border border-blue-900/50">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-blue-400 uppercase">Dịch vụ Drone SAH-TECH (DaaS)</span>
+                                    <span class="text-emerald-400 font-bold text-xs">Chủ động 24/7</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Thời gian</span>
+                                        <strong class="text-white">35 phút (Bay thẳng)</strong>
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded">
+                                        <span class="text-[9px] text-slate-500 block">Chi phí khấu hao</span>
+                                        <strong class="text-emerald-400">~65,000 VND / chuyến</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <!-- Economic viability comparison -->
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                                <i data-lucide="wallet" class="w-5 h-5 text-emerald-400"></i>
-                                Đánh giá Hiệu quả Chi phí Giao hàng
-                            </h3>
-                            <p class="text-xs text-slate-400 mb-4">So sánh chi phí và thời gian giao mẫu máu khẩn cấp giữa đất liền và đảo Phú Quý</p>
-                            
-                            <div class="space-y-4">
-                                <!-- Shipper truyền thống -->
-                                <div class="bg-slate-950 p-4 rounded-xl border border-slate-850">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-xs font-bold text-slate-400 uppercase">Giao hàng Truyền thống (Tàu cao tốc + Xe)</span>
-                                        <span class="text-red-400 font-bold text-xs">Phụ thuộc lịch tàu</span>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-2 text-center text-xs">
-                                        <div class="bg-slate-900 p-2 rounded">
-                                            <span class="text-[9px] text-slate-500 block">Thời gian</span>
-                                            <strong class="text-white">6 - 8 tiếng</strong>
-                                        </div>
-                                        <div class="bg-slate-900 p-2 rounded">
-                                            <span class="text-[9px] text-slate-500 block">Chi phí thực tế</span>
-                                            <strong class="text-white">~500,000 VND / đợt</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- SAH-TECH DaaS -->
-                                <div class="bg-blue-950/40 p-4 rounded-xl border border-blue-900/50">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-xs font-bold text-blue-400 uppercase">Dịch vụ Drone SAH-TECH (DaaS)</span>
-                                        <span class="text-emerald-400 font-bold text-xs">Chủ động 24/7</span>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-2 text-center text-xs">
-                                        <div class="bg-slate-900 p-2 rounded">
-                                            <span class="text-[9px] text-slate-500 block">Thời gian</span>
-                                            <strong class="text-white">35 phút (Bay thẳng)</strong>
-                                        </div>
-                                        <div class="bg-slate-900 p-2 rounded">
-                                            <span class="text-[9px] text-slate-500 block">Chi phí khấu hao</span>
-                                            <strong class="text-emerald-400">~65,000 VND / chuyến</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-[10px] text-slate-500 mt-4 italic text-center">
-                            * Chi phí dựa trên mô hình sạc pin dự trữ tự động tại trạm Docker của dự án SAH-TECH.
+        <!-- SECTION 9: LEGAL & CORRIDOR -->
+        <section id="sec-legal" class="tab-content space-y-6 hidden">
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="text-center space-y-2">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em]">HÀNH LANG PHÁP LÝ &amp; AN TOÀN VIỆT NAM</span>
+                    <h2 class="text-3xl font-extrabold text-white">Chìa Khóa Cấp Phép Cất Cánh Từ Bộ Quốc Phòng</h2>
+                    <p class="text-slate-400 text-sm">
+                        Làm sao để SAH-TECH tự do mở rộng quy mô kinh doanh hàng nghìn tuyến bay mà không vấp phải rào cản luật pháp?
+                    </p>
+                </div>
+
+                <!-- Strategic legal steps -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Card Legal 1 -->
+                    <div class="glass-card p-8 rounded-3xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+                        <h3 class="text-lg font-bold text-white mb-4">Chiến lược xin phép bay BVLOS cố định</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Thay vì xin phép bay đơn lẻ theo từng ngày cực kỳ phức tạp, SAH-TECH ký kết trực tiếp với các đơn vị B2G (Bệnh viện Sở Y tế, Khu công nghiệp Hải đảo) thiết lập các tuyến bay hành trình cố định (<b>Fixed Flight Waypoints</b>). Toàn bộ tọa độ bay BVLOS ngoài tầm nhìn được xin cấp phép định kỳ 1 năm thông qua Cục Tác chiến - Bộ Quốc phòng dưới dạng "Tuyến đường xanh cứu trợ nhân đạo đặc thù".
+                        </p>
+                    </div>
+
+                    <!-- Card Legal 2 -->
+                    <div class="glass-card p-8 rounded-3xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+                        <h3 class="text-lg font-bold text-white mb-4">Tuân thủ triệt để Nghị định 288/2024/NĐ-CP</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Thiết bị Heliplane tích hợp module định danh điện tử E-ID phát sóng liên tục qua sóng di động 4G/5G, cho phép hệ thống Quản lý Không lưu Quốc gia (UTM) giám sát thời gian thực. Hệ thống tự động cắt kích hoạt động cơ (Geofencing) cứng khi bay gần vùng cấm (Doanh trại quân đội, sân bay dân dụng).
                         </p>
                     </div>
                 </div>
-            </section>
+
+                <!-- Fail-safe mechanisms -->
+                <div class="glass-card p-8 rounded-3xl space-y-6">
+                    <h3 class="text-lg font-bold text-white flex items-center">
+                        <span class="text-amber-500 mr-2">⚠️</span>
+                        Cơ chế Safe-Fail Thực Tế Nhất (Chống Rơi Tự Do)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+                            <span class="font-bold text-amber-400 block text-sm">Hệ Thống Dù PRS Khí Nén</span>
+                            <p class="text-xs text-slate-400 mt-2">Dù cứu hộ tự nổ bung bằng bình CO2 nén trong 0.2s khi cảm biến gia tốc phát hiện trạng thái rơi tự do quá 15 độ lệch trục.</p>
+                        </div>
+                        <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+                            <span class="font-bold text-amber-400 block text-sm">Dead Reckoning (IMU Kép)</span>
+                            <p class="text-xs text-slate-400 mt-2">Mất GPS? Hệ thống tự động dùng con quay hồi chuyển MEMS kết hợp cảm biến dòng quang học (Optical Flow) để duy trì quỹ đạo bay thêm 120s tìm điểm đáp trống.</p>
+                        </div>
+                        <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+                            <span class="font-bold text-amber-400 block text-sm">Kênh Truyền Tin Bảo Mật kép</span>
+                            <p class="text-xs text-slate-400 mt-2">Sử dụng đồng thời dải sóng vô tuyến RF tầm xa và kênh kết nối di động bảo mật AES-256 mã hóa chống can thiệp tín hiệu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
-    <!-- Project Footer with Call to Action -->
+    <!-- Project Footer -->
     <footer class="bg-slate-900 border-t border-slate-800 py-6 mt-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
             <div class="flex items-center gap-2">
                 <span class="text-sm font-extrabold text-white">SAH<span class="text-blue-500">-TECH</span></span>
-                <span>|GIả pháp cho dự án thống minh</span>
+                <span>| Đề án Khoa học kỹ thuật dự thi quốc gia</span>
             </div>
             <div>
-                <span>Bản quyền © Nhóm nghiên cứu SAH-TECH. All rights reserved.</span>
+                <span>Bản quyền © 2026 Nhóm nghiên cứu Solve for Tomorrow. All rights reserved.</span>
             </div>
         </div>
     </footer>
@@ -913,6 +943,7 @@
         // Global State variables
         let riskChartInstance = null;
         let radarChartInstance = null;
+        let failsafeActiveTimeout = null;
 
         // Waypoints configurations
         const sectorWaypoints = {
@@ -928,16 +959,21 @@
             ]
         };
 
-        // BOM Data
+        // Categorized BOM Data (Target Total: 158,000,000 VND)
         const bomData = [
-            { name: "Khung VTOL carbon 3K H-Shape", spec: "Sợi carbon dày 3mm, siêu nhẹ, chịu va đập tốt", qty: 1, price: 2900000 },
-            { name: "Động cơ hành trình (Pusher Motor)", spec: "Sunnysky 4120 480KV hiệu suất cao", qty: 1, price: 1650000 },
-            { name: "Động cơ nâng VTOL", spec: "Sunnysky 4014 380KV (Bộ 4 chiếc)", qty: 1, price: 4200000 },
-            { name: "Mạch điều khiển bay (Flight Controller)", spec: "Pixhawk 6C kèm định vị GPS M9N", qty: 1, price: 3800000 },
-            { name: "Bộ Tời điện tự động SAH-POD (Winch)", spec: "Động cơ bước kèm cảm biến lực căng dây phản hồi", qty: 1, price: 1500000 },
-            { name: "Khối pin năng lượng LiPo", spec: "TATTU 22000mAh 12S 25C xả sâu", qty: 1, price: 3200000 },
-            { name: "Cảm biến khoảng cách siêu âm", spec: "Quét bề mặt chặng cuối hạn chế va chạm", qty: 2, price: 550000 },
-            { name: "Dù cứu hộ khẩn cấp khí nén", spec: "Phục hồi giảm chấn khi gặp sự cố trọng lực", qty: 1, price: 600000 }
+            // Category: Drone (Total: 108,500,000 VND)
+            { name: "Khung cánh bằng &amp; Đuôi Carbon Heliplane", spec: "Sợi carbon dệt 3K, sải cánh 2.2m chịu tải gió giật", qty: 1, price: 35000000, type: "drone" },
+            { name: "Động cơ hành trình (Pusher Motor) T-Motor", spec: "Motor hiệu suất cao đẩy sau chuyên hành trình dài", qty: 1, price: 7500000, type: "drone" },
+            { name: "Động cơ VTOL nâng đứng", spec: "Động cơ không chổi than lực sụt mô-men lớn (Bộ 4 chiếc)", qty: 4, price: 5500000, type: "drone" }, // 4 x 5.5m = 22M
+            { name: "Mạch lái Pixhawk 6C kèm GNSS RTK Rover", spec: "Mạch lõi IMU triple-redundant chống rung cơ học", qty: 1, price: 16500000, type: "drone" },
+            { name: "Bộ Tời sấy cáp thả hàng SAH-POD (Winch)", spec: "Động cơ bước điều khiển dải dây tải trọng hãm phanh", qty: 1, price: 12500000, type: "drone" },
+            { name: "Hệ thống dù cứu hộ nén khí PRS", spec: "Dù bung áp suất khí CO2 dự phòng va đập trọng lực", qty: 1, price: 15000000, type: "drone" },
+
+            // Category: Base (Total: 49,500,000 VND)
+            { name: "Vỏ trạm Docker All-in-one Box", spec: "Thép sơn tĩnh điện chống ăn mòn muối biển chuẩn IP55", qty: 1, price: 24000000, type: "base" },
+            { name: "Cơ cấu khay sạc xoay đổi pin Carousel", spec: "Mâm xoay đổi chu kỳ 12S sạc cân bằng tự động", qty: 1, price: 13500000, type: "base" },
+            { name: "Hệ thống Trạm sạc nhanh công suất lớn", spec: "Bộ cấp nguồn dòng cao bảo vệ quá áp dòng xung sạc", qty: 1, price: 12000000, type: "base" },
+            { name: "Máy chủ điều khiển (RAM DDR4 16GB)", spec: "Xử lý telemetry mã hóa bảo mật truyền xa, trạm vi sai cố định", qty: 1, price: 10000000, type: "base" }
         ];
 
         // Init on page load
@@ -1091,10 +1127,10 @@
             document.getElementById('sim-flight-time').innerText = flightTime + " phút";
             document.getElementById('sim-range').innerText = range + " km";
 
-            // Graphical update of the pod (simulate load tilt offset)
-            const pod = document.getElementById('pod-graphic');
-            const tilt = wind * 0.8;
-            pod.style.transform = `rotate(${tilt}deg) translateY(${payload * 2}px)`;
+            let windRes = "Cấp 5";
+            if (wind > 12) windRes = "Cấp 6";
+            if (wind > 18) windRes = "Cấp 7 (Tối đa)";
+            document.getElementById('sim-wind-res').innerText = windRes;
         }
 
         // Section 4: Docker Simulation Interactions
@@ -1157,54 +1193,341 @@
             }
         }
 
-        // Section 6: Fail-safe simulation responses
-        function triggerFailsafe(type) {
-            const titleEl = document.getElementById('failsafe-title');
-            const descEl = document.getElementById('failsafe-desc');
-            const iconEl = document.getElementById('failsafe-icon');
+        // Section 6: Fail-safe simulation responses with Real-Time HUD and Parachute SVG Animation
+        function triggerFailsafeScenario(type) {
+            const banner = document.getElementById('alarm-banner');
+            const alertFlash = document.getElementById('red-alert-flash');
+            const statusPulse = document.getElementById('status-pulse');
+            const hudTitle = document.getElementById('failsafe-hud-title');
+            const threatBadge = document.getElementById('threat-badge');
+            
+            const logContainer = document.getElementById('failsafe-terminal-log');
+            const vDrone = document.getElementById('v-drone');
+            const vParachute = document.getElementById('v-parachute');
+            const propL = document.getElementById('prop-l');
+            const propR = document.getElementById('prop-r');
+            const gpsLed = document.getElementById('gps-led');
+            const vPod = document.getElementById('v-pod');
 
-            if (type === 'wind') {
-                iconEl.innerHTML = '<i data-lucide="wind" class="w-6 h-6 text-amber-400"></i>';
-                titleEl.innerText = "Kịch bản: Sức cản gió vượt mức tối đa (Cấp bão > 7)";
-                descEl.innerText = "Hệ thống Autopilot lập tức tắt chế độ cánh bằng và kích hoạt lực đẩy đồng bộ từ 4 mô-tơ cánh nâng đứng VTOL. Drone lập trình lại độ cao hành trình giảm xuống 30 mét sát mặt biển để tránh gió giật mạnh và từ từ rút lui về trạm Docker gần nhất.";
-            } else if (type === 'gps') {
-                iconEl.innerHTML = '<i data-lucide="map-pin-off" class="w-6 h-6 text-red-400"></i>';
-                titleEl.innerText = "Kịch bản: Mất định vị hoặc bị phá sóng tín hiệu GPS";
-                descEl.innerText = "Kích hoạt cảm biến quán tính IMU phụ kết hợp với luồng quang học bề mặt dưới gầm (Optical Flow). SAH-TECH tự động giữ thăng bằng cân đối góc nghiêng trên không trung và bay theo phương thức định hướng la bàn từ học để rời khỏi vùng nhiễu sóng.";
+            // HUD Stats variables
+            const hudFallRate = document.getElementById('hud-fall-rate');
+            const hudTiltAngle = document.getElementById('hud-tilt-angle');
+            const hudParachute = document.getElementById('hud-parachute-status');
+
+            // Reset any active simulation timeouts
+            if (failsafeActiveTimeout) clearTimeout(failsafeActiveTimeout);
+
+            // Red alerts on
+            banner.className = "lg:col-span-8 bg-slate-900 border border-red-500/40 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-500 shadow-2xl shadow-red-500/10 animate-pulse";
+            alertFlash.className = "absolute inset-0 bg-red-600/10 pointer-events-none transition-all duration-300";
+            statusPulse.className = "w-3 h-3 rounded-full bg-red-500 animate-ping";
+            
+            log.innerHTML = "";
+            logContainer.innerHTML = "";
+
+            if (type === 'gps') {
+                titleElText = "CẢNH BÁO: MẤT HOÀN TOÀN ĐỊNH VỊ GPS";
+                titleElText = "Hệ thống Autopilot Cube Orange+ phát hiện độ trôi dạt tọa độ quá 15m. Đang chuyển đổi sang định vị quán tính dự phòng.";
+                
+                titleEl = "MẤT ĐỊNH VỊ GPS (CRITICAL)";
+                
+                // Set text outputs
+                titleEl.innerText = "Mất tín hiệu vệ tinh GNSS";
+                
+                let lines = [
+                    "[FAIL-SAFE] !!! CẢNH BÁO MẤT KẾT NỐI KHÔNG LƯU RTK !!!",
+                    "[FAIL-SAFE] Sai số GPS vượt ngưỡng 10 mét. Chuyển sang IMU dự phòng.",
+                    "[FAIL-SAFE] Kích hoạt chế độ điều hướng Dead Reckoning bằng con quay hồi chuyển MEMS.",
+                    "[FAIL-SAFE] Kích hoạt cảm biến dòng quang học dưới gầm (Optical Flow) đo đạc địa hình.",
+                    "[FAIL-SAFE] Trạng thái bay: Giữ thăng bằng tự động, duy trì hành trình an toàn."
+                ];
+
+                // Change HUD values
+                hudFallRate.innerText = "0.2 m/s";
+                hudFallRate.className = "text-yellow-400 font-bold";
+                hudTiltAngle.innerText = "4.2°";
+                hudTiltAngle.className = "text-yellow-400 font-bold";
+                hudParachute.innerText = "STANDBY";
+                hudParachute.className = "text-slate-500 font-bold";
+
+                // Drone visual
+                vDrone.style.transform = "rotate(8deg) translateY(-10px)";
+                vParachute.style.opacity = "0";
+                gpsLed.className = "w-3.5 h-3.5 rounded-full bg-purple-500 animate-ping absolute -top-1.5";
+                propL.className = "w-16 h-1 bg-slate-400 rounded-full animate-spin";
+                propR.className = "w-16 h-1 bg-slate-400 rounded-full animate-spin";
+                vPod.className = "w-12 h-8 bg-emerald-500 border border-emerald-400 rounded-b-xl mt-1.5 flex items-center justify-center shadow-lg transition-colors";
+
+                threatBadge.innerText = "Cảnh báo cấp 2";
+                threatBadge.className = "text-[10px] bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full font-mono border border-purple-500/20 font-bold uppercase";
+                hudTitle.innerText = "CHẾ ĐỘ CHUYỂN TIẾP IMU DỰ PHÒNG CHỦ ĐỘNG";
+
+                lines.forEach((line, idx) => {
+                    failsafeActiveTimeout = setTimeout(() => {
+                        logContainer.innerHTML += `<p class="text-purple-400 font-mono">${line}</p>`;
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                    }, idx * 600);
+                });
+
+            } else if (type === 'wind') {
+                // Change HUD values
+                hudFallRate.innerText = "0.5 m/s";
+                hudFallRate.className = "text-yellow-400 font-bold";
+                hudTiltAngle.innerText = "18.5°";
+                hudTiltAngle.className = "text-red-500 font-bold animate-pulse";
+                hudParachute.innerText = "STANDBY";
+                hudParachute.className = "text-slate-500 font-bold";
+
+                // Drone visual
+                vDrone.style.transform = "rotate(-15deg) translateY(5px)";
+                vParachute.style.opacity = "0";
+                gpsLed.className = "w-3.5 h-3.5 rounded-full bg-amber-500 animate-ping absolute -top-1.5";
+                propL.className = "w-16 h-1 bg-slate-400 rounded-full animate-spin";
+                propR.className = "w-16 h-1 bg-slate-400 rounded-full animate-spin";
+                vPod.className = "w-12 h-8 bg-emerald-500 border border-emerald-400 rounded-b-xl mt-1.5 flex items-center justify-center shadow-lg transition-colors";
+
+                threatBadge.innerText = "Cảnh báo cấp 3";
+                threatBadge.className = "text-[10px] bg-amber-500/10 text-amber-400 px-2 py-1 rounded-full font-mono border border-amber-500/20 font-bold uppercase";
+                hudTitle.innerText = "HỖ TRỢ VTOL LỰC NÂNG TRỤC CHÉO Gió giật";
+
+                let lines = [
+                    "[FAIL-SAFE] CẢNH BÁO: TỐC ĐỘ GIÓ NGƯỢC VƯỢT QUÁ 18 M/S",
+                    "[FAIL-SAFE] Sức cản khí động vượt ngưỡng an toàn cánh bằng.",
+                    "[FAIL-SAFE] Tắt động cơ pusher đẩy sau để tiết kiệm nguồn điện dư.",
+                    "[FAIL-SAFE] Khởi động đồng bộ 4 motor VTOL trợ lực thăng bằng chéo.",
+                    "[FAIL-SAFE] Lập trình lại độ cao hành lang bay xuống 35m tránh gió tầng cao."
+                ];
+
+                lines.forEach((line, idx) => {
+                    failsafeActiveTimeout = setTimeout(() => {
+                        logContainer.innerHTML += `<p class="text-amber-400 font-mono">${line}</p>`;
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                    }, idx * 600);
+                });
+
             } else if (type === 'power') {
-                iconEl.innerHTML = '<i data-lucide="zap-off" class="w-6 h-6 text-red-500 animate-bounce"></i>';
-                titleEl.innerText = "KỊCH BẢN NGUY HIỂM: SỤT NGUỒN ĐỘNG CƠ ĐỘT NGỘT";
-                descEl.innerText = "Mạch vi xử lý phụ lập tức kích hoạt bộ kích nổ dù CO2 trong vòng 0.15 giây. Hệ thống kèn hơi âm lượng cao phát tín hiệu cảnh báo xung quanh để người dưới mặt đất kịp thời phòng tránh. Tốc độ tiếp đất được hãm phanh tối đa chỉ còn 4.1 m/s, giảm 93% động năng va đập.";
+                // Change HUD values
+                hudFallRate.innerText = "8.4 m/s";
+                hudFallRate.className = "text-red-500 font-bold animate-bounce";
+                hudTiltAngle.innerText = "64.2°";
+                hudTiltAngle.className = "text-red-500 font-bold animate-ping";
+                hudParachute.innerText = "FIRED";
+                hudParachute.className = "text-red-500 font-bold animate-pulse";
+
+                // Drone visual
+                vDrone.style.transform = "rotate(40deg) translateY(45px)";
+                gpsLed.className = "w-3.5 h-3.5 rounded-full bg-red-600 animate-ping absolute -top-1.5";
+                
+                // Props stop spinning immediately
+                propL.className = "w-16 h-1 bg-slate-500 rounded-full";
+                propR.className = "w-16 h-1 bg-slate-500 rounded-full";
+                vPod.className = "w-12 h-8 bg-red-900 border border-red-500 rounded-b-xl mt-1.5 flex items-center justify-center shadow-lg transition-colors";
+
+                threatBadge.innerText = "Nguy hiểm cấp 5";
+                threatBadge.className = "text-[10px] bg-red-500/20 text-red-500 px-2 py-1 rounded-full font-mono border border-red-500/30 font-bold uppercase animate-bounce";
+                hudTitle.innerText = "KÍCH HOẠT HỆ THỐNG DÙ PRS KHẨN CẤP";
+
+                let lines = [
+                    "[SYSTEM] !!! LỖI PHẦN CỨNG: MẤT NGUỒN ĐIỆN ĐỘNG CƠ CHÍNH !!!",
+                    "[SYSTEM] Vận tốc rơi tự do vượt ngưỡng an toàn > 5m/s.",
+                    "[FAIL-SAFE] Kích nổ khí gas nén CO2 bắn chốt dù PRS.",
+                    "[FAIL-SAFE] Dù cứu hộ bung hoàn toàn thành công (Phản ứng: 0.15s).",
+                    "[FAIL-SAFE] Đang hãm phanh khí động học chặng cuối..."
+                ];
+
+                lines.forEach((line, idx) => {
+                    failsafeActiveTimeout = setTimeout(() => {
+                        logContainer.innerHTML += `<p class="text-red-400 font-mono">${line}</p>`;
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                        
+                        // Deploy parachute animation after 1.2 seconds of falling
+                        if (idx === 2) {
+                            vParachute.className = "absolute top-2 w-32 h-32 opacity-100 transform translate-y-0 transition-all duration-[2000ms] ease-out pointer-events-none z-20 animate-pulse";
+                            vDrone.style.transform = "rotate(10deg) translateY(15px)";
+                            hudFallRate.innerText = "4.1 m/s";
+                            hudFallRate.className = "text-emerald-400 font-bold";
+                        }
+                    }, idx * 600);
+                });
             }
-            lucide.createIcons();
         }
 
-        // Section 7: BOM Functions
-        function renderBOMTable(items) {
-            const body = document.getElementById('bom-table-body');
-            body.innerHTML = "";
-            let total = 0;
+        // Reset Failsafe Simulation back to stable state
+        function resetFailsafeSimulation() {
+            if (failsafeActiveTimeout) clearTimeout(failsafeActiveTimeout);
 
-            items.forEach(item => {
-                total += item.price * item.qty;
-                body.innerHTML += `
-                    <tr class="hover:bg-slate-900 border-b border-slate-850">
+            const banner = document.getElementById('alarm-banner');
+            const alertFlash = document.getElementById('red-alert-flash');
+            const statusPulse = document.getElementById('status-pulse');
+            const hudTitle = document.getElementById('failsafe-hud-title');
+            const threatBadge = document.getElementById('threat-badge');
+            
+            const logContainer = document.getElementById('failsafe-terminal-log');
+            const vDrone = document.getElementById('v-drone');
+            const vParachute = document.getElementById('v-parachute');
+            const propL = document.getElementById('prop-l');
+            const propR = document.getElementById('prop-r');
+            const gpsLed = document.getElementById('gps-led');
+            const vPod = document.getElementById('v-pod');
+
+            const hudFallRate = document.getElementById('hud-fall-rate');
+            const hudTiltAngle = document.getElementById('hud-tilt-angle');
+            const hudParachute = document.getElementById('hud-parachute-status');
+
+            // Reset styles to stable
+            banner.className = "lg:col-span-8 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-500";
+            alertFlash.className = "absolute inset-0 bg-red-600/0 pointer-events-none transition-all duration-300";
+            statusPulse.className = "w-3 h-3 rounded-full bg-emerald-500 animate-pulse";
+            
+            hudTitle.innerText = "Hành Trình Khí Động Học Ổn Định";
+            threatBadge.innerText = "An toàn cấp 1";
+            threatBadge.className = "text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full font-mono border border-emerald-500/20 font-bold uppercase";
+
+            logContainer.innerHTML = "<p class='text-slate-500 italic'>> Mạng nơ-ron nhúng sẵng sàng. Trạng thái phần cứng: Danh định.</p>";
+
+            // Reset drone
+            vDrone.style.transform = "rotate(0deg) translateY(0px)";
+            vParachute.className = "absolute top-2 w-32 h-32 opacity-0 transform -translate-y-12 transition-all duration-[2000ms] ease-out pointer-events-none z-20";
+            
+            propL.className = "w-16 h-1 bg-slate-400 rounded-full animate-spin";
+            propR.className = "w-16 h-1 bg-slate-400 rounded-full animate-spin";
+            gpsLed.className = "w-3.5 h-3.5 rounded-full bg-emerald-500 animate-ping absolute -top-1.5";
+            vPod.className = "w-12 h-8 bg-emerald-500 border border-emerald-400 rounded-b-xl mt-1.5 flex items-center justify-center shadow-lg transition-colors";
+
+            // Reset HUD Stats
+            hudFallRate.innerText = "0.0 m/s";
+            hudFallRate.className = "text-emerald-400 font-bold";
+            hudTiltAngle.innerText = "0.5°";
+            hudTiltAngle.className = "text-emerald-400 font-bold";
+            hudParachute.innerText = "STANDBY";
+            hudParachute.className = "text-slate-500 font-bold";
+        }
+
+        // Section 7: Categorized BOM Data Render Layout
+        function renderBOMTable(items) {
+            const container = document.getElementById('bom-container');
+            container.innerHTML = "";
+
+            const droneItems = items.filter(i => i.type === 'drone');
+            const baseItems = items.filter(i => i.type === 'base');
+
+            let droneTotal = 0;
+            let baseTotal = 0;
+
+            // 1. Render Drone Table
+            let droneTableHtml = `
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="plane" class="w-4 h-4"></i> Phân hệ 1: Hệ thống Thiết bị Drone (Vật tư bay)
+                    </h3>
+                    <div class="overflow-x-auto bg-slate-950/40 rounded-xl border border-slate-800">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase tracking-wider font-mono">
+                                    <th class="p-4">Tên Linh Kiện</th>
+                                    <th class="p-4">Thông số Kỹ thuật</th>
+                                    <th class="p-4 text-center">Số lượng</th>
+                                    <th class="p-4 text-right">Đơn giá</th>
+                                    <th class="p-4 text-right">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            droneItems.forEach(item => {
+                const sub = item.price * item.qty;
+                droneTotal += sub;
+                droneTableHtml += `
+                    <tr class="hover:bg-slate-900 border-b border-slate-850/60">
                         <td class="p-4 font-semibold text-white">${item.name}</td>
-                        <td class="p-4 text-xs text-slate-400">${item.spec}</td>
-                        <td class="p-4 text-center">${item.qty}</td>
-                        <td class="p-4 text-right font-mono text-teal-400">${item.price.toLocaleString('vi-VN')} VND</td>
+                        <td class="p-4 text-slate-400">${item.spec}</td>
+                        <td class="p-4 text-center text-slate-300">${item.qty}</td>
+                        <td class="p-4 text-right font-mono text-slate-400">${item.price.toLocaleString('vi-VN')}đ</td>
+                        <td class="p-4 text-right font-mono text-blue-400">${sub.toLocaleString('vi-VN')}đ</td>
                     </tr>
                 `;
             });
 
-            // Append Total Row
-            body.innerHTML += `
-                <tr class="bg-slate-950 font-bold">
-                    <td class="p-4 text-white" colspan="2">TỔNG CỘNG CHÍNH SÁCH TỐI ƯU</td>
-                    <td class="p-4 text-center">8 linh kiện chính</td>
-                    <td class="p-4 text-right text-emerald-400 font-mono text-base">${total.toLocaleString('vi-VN')} VND</td>
-                </tr>
+            droneTableHtml += `
+                                <tr class="bg-slate-950/80 font-bold">
+                                    <td class="p-4 text-slate-400" colspan="3">CỘNG TIỂU MỤC DRONE</td>
+                                    <td class="p-4 text-right text-blue-400 font-mono text-xs" colspan="2">${droneTotal.toLocaleString('vi-VN')} VND</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             `;
+
+            // 2. Render Base Table
+            let baseTableHtml = `
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="box" class="w-4 h-4"></i> Phân hệ 2: Hạ tầng Base Docker (Trạm tự động hóa mặt đất)
+                    </h3>
+                    <div class="overflow-x-auto bg-slate-950/40 rounded-xl border border-slate-800">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase tracking-wider font-mono">
+                                    <th class="p-4">Tên Linh Kiện</th>
+                                    <th class="p-4">Thông số Kỹ thuật</th>
+                                    <th class="p-4 text-center">Số lượng</th>
+                                    <th class="p-4 text-right">Đơn giá</th>
+                                    <th class="p-4 text-right">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            baseItems.forEach(item => {
+                const sub = item.price * item.qty;
+                baseTotal += sub;
+                baseTableHtml += `
+                    <tr class="hover:bg-slate-900 border-b border-slate-850/60">
+                        <td class="p-4 font-semibold text-white">${item.name}</td>
+                        <td class="p-4 text-slate-400">${item.spec}</td>
+                        <td class="p-4 text-center text-slate-300">${item.qty}</td>
+                        <td class="p-4 text-right font-mono text-slate-400">${item.price.toLocaleString('vi-VN')}đ</td>
+                        <td class="p-4 text-right font-mono text-cyan-400">${sub.toLocaleString('vi-VN')}đ</td>
+                    </tr>
+                `;
+            });
+
+            baseTableHtml += `
+                                <tr class="bg-slate-950/80 font-bold">
+                                    <td class="p-4 text-slate-400" colspan="3">CỘNG TIỂU MỤC BASE DOCKER</td>
+                                    <td class="p-4 text-right text-cyan-400 font-mono text-xs" colspan="2">${baseTotal.toLocaleString('vi-VN')} VND</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // 3. Render Grand Total Box
+            const grandTotal = droneTotal + baseTotal;
+            const grandTotalHtml = `
+                <div class="bg-gradient-to-r from-slate-900 to-indigo-950 border border-indigo-500/30 rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-xl mt-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-wide">
+                            <i data-lucide="wallet" class="text-indigo-400 w-4 h-4"></i>
+                            TỔNG KINH PHÍ ĐẦU TƯ TOÀN DIỆN HỆ THỐNG ĐỒNG BỘ
+                        </h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Bao gồm thiết bị bay chiến lược và hạ tầng tủ trạm sạc thông minh tích hợp cơ cấu cơ điện khép kín.</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-extrabold text-emerald-400 font-mono tracking-tight">${grandTotal.toLocaleString('vi-VN')} VND</span>
+                        <span class="block text-[10px] text-slate-500 font-bold uppercase mt-0.5 font-mono">Đạt chuẩn ngân sách thiết kế (~158 Triệu)</span>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = droneTableHtml + baseTableHtml + grandTotalHtml;
+            
+            // Re-render matching lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
 
         // Search BOM logic
