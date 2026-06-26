@@ -60,7 +60,9 @@
                 <button onclick="switchTab('software')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-software">5. Phần mềm Bay</button>
                 <button onclick="switchTab('failsafe')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-failsafe">6. Hệ An toàn</button>
                 <button onclick="switchTab('bom')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-bom">7. BOM & STEM</button>
-                <button onclick="switchTab('business')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-business">8. Mô hình DaaS</button>
+                <button onclick="switchTab('sec-costs')" class="tab-btn px-4 py-2 text-sm font-semibold text-slate-400 hover:text-white border-b-2 border-transparent transition flex items-center gap-2" id="btn-costs"><i data-lucide="wallet" class="w-4 h-4 text-emerald-500"></i>8. Chi phí Base & Dự toán</button>
+                <button onclick="switchTab('business')" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white" id="btn-business">9. Mô hình DaaS</button>
+                
             </div>
             <div class="flex items-center gap-2">
                 <span class="hidden lg:inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -763,8 +765,132 @@
                 </div>
             </div>
         </section>
+        <!-- SECTION 8: BILL OF BASE material -->
+        <section id="sec-costs" class="tab-content space-y-6 hidden">
+            <div class="border-l-4 border-emerald-500 pl-4 mb-4">
+                <span class="text-xs font-bold text-emerald-500 uppercase tracking-widest">Hạch toán Tài chính Dự án</span>
+                <h2 class="text-3xl font-extrabold text-white">Bảng Dự Toán Chi Phí Cơ Sở (Base Cost & BOM)</h2>
+                <p class="text-slate-400 text-sm mt-1">Hệ thống phân tích định mức linh kiện phần cứng và chi phí vận hành nền tảng Drone Volt Heliplane</p>
+            </div>
 
-        <!-- SECTION 8: BUSINESS MODEL -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 block">Tổng Chi Phí Base (BOM)</span>
+                        <span class="text-xl font-bold text-emerald-400 font-mono">158.000.000đ</span>
+                    </div>
+                    <div class="bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20">
+                        <i data-lucide="layers" class="w-6 h-6 text-emerald-400"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 block">Chi Phí Vận Hành / Chuyến</span>
+                        <span class="text-xl font-bold text-blue-400 font-mono">120.000đ</span>
+                    </div>
+                    <div class="bg-blue-500/10 p-3 rounded-xl border border-blue-500/20">
+                        <i data-lucide="gauge" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 block">Khấu Hao Thiết Bị (1 Năm)</span>
+                        <span class="text-xl font-bold text-amber-400 font-mono">15% / năm</span>
+                    </div>
+                    <div class="bg-amber-500/10 p-3 rounded-xl border border-amber-500/20">
+                        <i data-lucide="trending-down" class="w-6 h-6 text-amber-400"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 block">Trạng Thái Ngân Sách</span>
+                        <span class="text-xl font-bold text-teal-400">Tối Ưu Hoá</span>
+                    </div>
+                    <div class="bg-teal-500/10 p-3 rounded-xl border border-teal-500/20">
+                        <i data-lucide="check-circle" class="w-6 h-6 text-teal-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="clipboard-list" class="w-5 h-5 text-emerald-500"></i>
+                            Chi Tiết Danh Mục Vật Tư Gốc (Base Cost Itemization)
+                        </h3>
+                        <div class="relative">
+                            <input type="text" id="bom-search" oninput="searchBOM()" placeholder="Tìm nhanh linh kiện..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-300 w-full sm:w-48 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-slate-950 border-b border-slate-850 text-slate-400 font-semibold uppercase">
+                                    <th class="p-4">Tên Linh Kiện / Hạng Mục</th>
+                                    <th class="p-4">Thông Số Kỹ Thuật Base</th>
+                                    <th class="p-4 text-center">SL</th>
+                                    <th class="p-4 text-right">Đơn Giá Dự Toán</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bom-table-body" class="divide-y divide-slate-850/60">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-wider text-slate-400">Tỷ trọng Cơ Cấu Chi Phí Base</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-300">Khung vỏ & Cơ khí cánh (50%)</span>
+                                    <span class="text-slate-400 font-mono">79.000.000đ</span>
+                                </div>
+                                <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 50%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-300">Hệ thống động cơ & ESC (28%)</span>
+                                    <span class="text-slate-400 font-mono">44.240.000đ</span>
+                                </div>
+                                <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-blue-500 h-full rounded-full" style="width: 28%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-300">Mạch điều khiển & Avionics (22%)</span>
+                                    <span class="text-slate-400 font-mono">34.760.000đ</span>
+                                </div>
+                                <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-purple-500 h-full rounded-full" style="width: 22%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-emerald-950/30 to-slate-900 border border-emerald-900/30 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-emerald-400 uppercase flex items-center gap-1 mb-1">
+                            <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                            Ghi chú Ngân Sách
+                        </h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Tổng ngân sách dự toán phần cứng nền tảng đang được cấu hình ở mức tối ưu 158 triệu VNĐ. Hệ thống tự động đồng bộ hóa bảng kê vật tư thông qua cơ sở dữ liệu xử lý thời gian thực.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: BUSINESS MODEL -->
         <section id="sec-business" class="tab-content space-y-6 hidden">
             <div class="border-l-4 border-indigo-500 pl-4 mb-4">
                 <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Thương mại &amp; Pháp lý</span>
